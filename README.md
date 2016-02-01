@@ -1,4 +1,4 @@
-# Auth Module
+# Auth Module (WIP)
 
 Documentation and tests are coming.
 
