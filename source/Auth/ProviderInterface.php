@@ -17,6 +17,12 @@ use Spiral\Auth\Exceptions\InvalidTokenException;
 interface ProviderInterface
 {
     /**
+     * @param UserInterface $user
+     * @return TokenInterface
+     */
+    public function createToken(UserInterface $user);
+
+    /**
      * @param Request $request
      * @return bool
      */
@@ -27,12 +33,6 @@ interface ProviderInterface
      * @return TokenInterface|null
      */
     public function fetchToken(Request $request);
-
-    /**
-     * @param UserInterface $user
-     * @return TokenInterface
-     */
-    public function createToken(UserInterface $user);
 
     /**
      * @param Request        $request

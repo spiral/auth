@@ -39,6 +39,15 @@ class SessionProvider implements ProviderInterface
     }
 
     /**
+     * @param UserInterface $user
+     * @return SessionToken
+     */
+    public function createToken(UserInterface $user)
+    {
+        return new SessionToken($user->primaryKey());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hasToken(Request $request)
@@ -52,15 +61,6 @@ class SessionProvider implements ProviderInterface
     public function fetchToken(Request $request)
     {
         return new SessionToken($this->session->has($this->key));
-    }
-
-    /**
-     * @param UserInterface $user
-     * @return SessionToken
-     */
-    public function createToken(UserInterface $user)
-    {
-        return new SessionToken($user->primaryKey());
     }
 
     /**
