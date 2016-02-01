@@ -98,7 +98,7 @@ class AuthContext
             return null;
         }
 
-        return $this->users->getUser($this->token);
+        return $this->user = $this->users->getUser($this->token);
     }
 
     /**
