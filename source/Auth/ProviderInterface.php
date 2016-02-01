@@ -26,7 +26,6 @@ interface ProviderInterface
     public function fetchToken(Request $request);
 
     /**
-     * @todo split into another abstraction
      * @param UserInterface $user
      * @return TokenInterface
      */
