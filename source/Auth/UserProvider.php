@@ -10,14 +10,14 @@ namespace Spiral\Auth;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var SourceInterface
+     * @var UserSourceInterface
      */
     private $source;
 
     /**
-     * @param SourceInterface $source
+     * @param UserSourceInterface $source
      */
-    public function __construct(SourceInterface $source)
+    public function __construct(UserSourceInterface $source)
     {
         $this->source = $source;
     }
