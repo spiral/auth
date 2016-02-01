@@ -60,7 +60,7 @@ class SessionProvider implements ProviderInterface
      */
     public function createToken(UserInterface $user)
     {
-        return new SessionToken($this->session->has($this->key));
+        return new SessionToken($user->primaryKey());
     }
 
     /**
