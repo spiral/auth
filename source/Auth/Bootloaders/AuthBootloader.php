@@ -11,8 +11,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\Exceptions\AuthException;
-use Spiral\Auth\SourceInterface;
-use Spiral\Auth\Sources\UsernameSourceInterface;
+use Spiral\Auth\UserSourceInterface;
+use Spiral\Auth\Sources\UsernameUserSourceInterface;
 use Spiral\Auth\UserProvider;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Core\Bootloaders\Bootloader;
@@ -27,25 +27,25 @@ class AuthBootloader extends Bootloader
      */
     protected $singletons = [
         //Default user provider
-        UserProviderInterface::class   => UserProvider::class,
+        UserProviderInterface::class       => UserProvider::class,
 
         //Default source linking
-        UsernameSourceInterface::class => SourceInterface::class,
+        UsernameUserSourceInterface::class => UserSourceInterface::class,
 
         //Automatically resolved thought configuration
-        SourceInterface::class         => [self::class, 'userSource'],
+        UserSourceInterface::class         => [self::class, 'userSource'],
 
         //Auth Context resolver
-        AuthContext::class             => [self::class, 'authContext'],
+        AuthContext::class                 => [self::class, 'authContext'],
 
         //Shortcut
-        'auth'                         => AuthContext::class
+        'auth'                             => AuthContext::class
     ];
 
     /**
      * @param AuthConfig       $config
      * @param FactoryInterface $factory
-     * @return SourceInterface
+     * @return UserSourceInterface
      */
     public function userSource(AuthConfig $config, FactoryInterface $factory)
     {

@@ -16,9 +16,9 @@ return [
     /*
      * Set of auth providers responsible for session support (
      */
-    'providers'  => [
+    'operators'  => [
         'session' => [
-            'class'   => Providers\SessionProvider::class,
+            'class'   => Providers\SessionTokenOperator::class,
             'options' => [
                 'key' => 'userID'
             ]

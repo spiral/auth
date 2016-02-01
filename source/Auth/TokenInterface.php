@@ -12,10 +12,10 @@ interface TokenInterface
     /**
      * @return string
      */
-    public function userPK();
+    public function getHash();
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getProvider();
+    public function userPK();
 }

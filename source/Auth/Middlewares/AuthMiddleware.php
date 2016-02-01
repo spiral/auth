@@ -10,7 +10,7 @@ namespace Spiral\Auth\Middlewares;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Entities\AuthContext;
-use Spiral\Auth\ProviderFactory;
+use Spiral\Auth\TokenManager;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Http\MiddlewareInterface;
 use Spiral\Tokenizer\TokenizerInterface;
@@ -23,18 +23,18 @@ class AuthMiddleware implements MiddlewareInterface
     private $users;
 
     /**
-     * @var ProviderFactory
+     * @var TokenManager
      */
-    private $providers;
+    private $manager;
 
     /**
      * @param UserProviderInterface $users
-     * @param ProviderFactory       $providers
+     * @param TokenManager          $manager
      */
-    public function __construct(UserProviderInterface $users, ProviderFactory $providers)
+    public function __construct(UserProviderInterface $users, TokenManager $manager)
     {
         $this->users = $users;
-        $this->providers = $providers;
+        $this->manager = $manager;
     }
 
     /**
@@ -42,7 +42,7 @@ class AuthMiddleware implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        $context = new AuthContext($this->users, $this->fetchToken($request));
+        $context = $this->createContext($request);
 
         $response = $next(
             $request->withAttribute('auth', $context),
@@ -60,17 +60,17 @@ class AuthMiddleware implements MiddlewareInterface
 
     /**
      * @param Request $request
-     * @return TokenizerInterface|null
+     * @return AuthContext
      */
-    private function fetchToken(Request $request)
+    private function createContext(Request $request)
     {
-        $provider = $this->providers->detectProvider($request);
+        $operator = $this->manager->detectOperator($request, $name);
 
-        if (empty($provider)) {
-            return null;
+        if (empty($operator)) {
+            return new AuthContext($this->users);
         }
 
-        return $this->providers->getProvider($provider)->fetchToken($request, $provider);
+        return new AuthContext($this->users, $name, $operator->fetchToken($request));
     }
 
     /**
@@ -81,15 +81,14 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function updateToken(Request $request, Response $response, AuthContext $context)
     {
-        $token = $context->getToken();
-        $provider = $this->providers->getProvider($token->getProvider());
+        $operator = $this->manager->getOperator($context->getOperator());
 
         //Session was either continued or ended.
         if ($context->isLogout()) {
-            return $provider->removeToken($request, $response, $token);
+            return $operator->removeToken($request, $response, $context->getToken());
         }
 
-        return $provider->refreshToken($request, $response, $token);
+        return $operator->updateToken($request, $response, $context->getToken());
     }
 
     /**
@@ -100,8 +99,12 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createToken(Request $request, Response $response, AuthContext $context)
     {
-        $provider = $this->providers->getProvider($context->requestedProvider());
+        $operator = $this->manager->getOperator($context->getOperator());
 
-        return $provider->createToken($request, $response, $context->getUser());
+        return $operator->mountToken(
+            $request,
+            $response,
+            $operator->createToken($context->getUser())
+        );
     }
 }

@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Core\FactoryInterface;
 
-class ProviderFactory
+class TokenManager
 {
     /**
      * @var AuthConfig
@@ -34,16 +34,27 @@ class ProviderFactory
     }
 
     /**
-     * @param Request $request
-     * @return string
+     * @param string        $operator
+     * @param UserInterface $user
+     * @return TokenInterface
      */
-    public function detectProvider(Request $request)
+    public function createToken($operator, UserInterface $user)
     {
-        foreach ($this->config->getProviders() as $name) {
-            $provider = $this->getProvider($name);
+        return $this->getOperator($operator)->createToken($user);
+    }
 
-            if ($provider->hasToken($request)) {
-                return $name;
+    /**
+     * @param Request $request
+     * @param string  $name
+     * @return TokenOperatorInterface|null
+     */
+    public function detectOperator(Request $request, &$name)
+    {
+        foreach ($this->config->getOperators() as $name) {
+            $operator = $this->getOperator($name);
+
+            if ($operator->hasToken($request)) {
+                return $operator;
             }
         }
 
@@ -52,13 +63,13 @@ class ProviderFactory
 
     /**
      * @param string $name
-     * @return ProviderInterface
+     * @return TokenOperatorInterface
      */
-    public function getProvider($name)
+    public function getOperator($name)
     {
         return $this->factory->make(
-            $this->config->providerClass($name),
-            $this->config->providerOptions($name)
+            $this->config->operatorClass($name),
+            $this->config->operatorOptions($name)
         );
     }
 }

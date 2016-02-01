@@ -7,7 +7,7 @@
  */
 namespace Spiral\Auth;
 
-interface SourceInterface
+interface UserSourceInterface
 {
     /**
      * @param string $id

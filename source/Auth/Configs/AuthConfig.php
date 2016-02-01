@@ -21,7 +21,7 @@ class AuthConfig extends InjectableConfig
      */
     protected $config = [
         'userSource' => '',
-        'providers'  => [
+        'operators'  => [
 
         ]
     ];
@@ -37,26 +37,26 @@ class AuthConfig extends InjectableConfig
     /**
      * @return array
      */
-    public function getProviders()
+    public function getOperators()
     {
-        return array_keys($this->config['providers']);
+        return array_keys($this->config['operators']);
     }
 
     /**
      * @param string $name
      * @return string
      */
-    public function providerClass($name)
+    public function operatorClass($name)
     {
-        return $this->config['providers'][$name]['class'];
+        return $this->config['operators'][$name]['class'];
     }
 
     /**
      * @param string $name
      * @return array
      */
-    public function providerOptions($name)
+    public function operatorOptions($name)
     {
-        return $this->config['providers'][$name]['options'];
+        return $this->config['operators'][$name]['options'];
     }
 }
