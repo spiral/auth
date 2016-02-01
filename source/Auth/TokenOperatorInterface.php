@@ -14,7 +14,7 @@ use Spiral\Auth\Exceptions\InvalidTokenException;
 /**
  * @todo polish abstraction names
  */
-interface ProviderInterface
+interface TokenOperatorInterface
 {
     /**
      * @param UserInterface $user

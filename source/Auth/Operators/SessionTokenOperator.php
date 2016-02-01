@@ -10,13 +10,13 @@ namespace Spiral\Auth\Providers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\InvalidTokenException;
-use Spiral\Auth\ProviderInterface;
+use Spiral\Auth\TokenOperatorInterface;
 use Spiral\Auth\Providers\Session\SessionToken;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Session\SessionInterface;
 
-class SessionProvider implements ProviderInterface
+class SessionTokenOperator implements TokenOperatorInterface
 {
     /**
      * @var SessionInterface

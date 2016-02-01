@@ -64,17 +64,13 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createContext(Request $request)
     {
-        $provider = $this->manager->detectProvider($request);
+        $operator = $this->manager->detectOperator($request, $operatorName);
 
-        if (empty($provider)) {
+        if (empty($operator)) {
             return new AuthContext($this->users);
         }
 
-        return new AuthContext(
-            $this->users,
-            $provider,
-            $this->manager->getProvider($provider)->fetchToken($request)
-        );
+        return new AuthContext($this->users, $operatorName, $operator->fetchToken($request));
     }
 
     /**
@@ -85,14 +81,14 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function updateToken(Request $request, Response $response, AuthContext $context)
     {
-        $provider = $this->manager->getProvider($context->getProvider());
+        $operator = $this->manager->getOperator($context->getOperator());
 
         //Session was either continued or ended.
         if ($context->isLogout()) {
-            return $provider->removeToken($request, $response, $context->getToken());
+            return $operator->removeToken($request, $response, $context->getToken());
         }
 
-        return $provider->updateToken($request, $response, $context->getToken());
+        return $operator->updateToken($request, $response, $context->getToken());
     }
 
     /**
@@ -103,12 +99,12 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createToken(Request $request, Response $response, AuthContext $context)
     {
-        $provider = $this->manager->getProvider($context->getProvider());
+        $operator = $this->manager->getOperator($context->getOperator());
 
-        return $provider->mountToken(
+        return $operator->mountToken(
             $request,
             $response,
-            $provider->createToken($context->getUser())
+            $operator->createToken($context->getUser())
         );
     }
 }
