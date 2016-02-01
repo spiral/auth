@@ -42,7 +42,7 @@ class AuthMiddleware implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        $context = new AuthContext($this->users, $this->fetchToken($request));
+        $context = $this->createContext($request);
 
         $response = $next(
             $request->withAttribute('auth', $context),
