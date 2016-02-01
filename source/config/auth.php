@@ -5,7 +5,7 @@
  *
  * @see AuthConfig
  */
-use Spiral\Auth\Providers;
+use Spiral\Auth\Operators;
 
 return [
     /*
@@ -18,7 +18,7 @@ return [
      */
     'operators'  => [
         'session' => [
-            'class'   => Providers\SessionTokenOperator::class,
+            'class'   => Operators\SessionTokenOperator::class,
             'options' => [
                 'key' => 'userID'
             ]

@@ -5,13 +5,13 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
-namespace Spiral\Auth\Providers;
+namespace Spiral\Auth\Operators;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\InvalidTokenException;
 use Spiral\Auth\TokenOperatorInterface;
-use Spiral\Auth\Providers\Session\SessionToken;
+use Spiral\Auth\Operators\Session\SessionToken;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Session\SessionInterface;
