@@ -68,10 +68,10 @@ class Aware extends Record implements PasswordAwareInterface
 }
 ```
 
-Source must entend CredentialsInterface and implement needed methods:
+Source must implement `UsernameSourceInterface` and needed methods:
 
 ```php
-class UserSource extends RecordSource implements CredentialsInterface
+class UserSource extends RecordSource implements UsernameSourceInterface
 {
     const RECORD = Aware::class;
 
