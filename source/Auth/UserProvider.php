@@ -15,6 +15,7 @@ class UserProvider implements UserProviderInterface
     private $source;
 
     /**
+     * @todo lazy loading
      * @param UserSourceInterface $source
      */
     public function __construct(UserSourceInterface $source)
