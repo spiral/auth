@@ -9,7 +9,7 @@ namespace Spiral\Auth\Entities;
 
 use Spiral\Auth\TokenInterface;
 
-abstract class AbstractToken implements TokenInterface
+abstract class AbstractToken implements TokenInterface, \JsonSerializable
 {
     /**
      * @var mixed
@@ -30,5 +30,21 @@ abstract class AbstractToken implements TokenInterface
     public function userPK()
     {
         return $this->userPK;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function jsonSerialize()
+    {
+        return $this->getHash();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->getHash();
     }
 }
