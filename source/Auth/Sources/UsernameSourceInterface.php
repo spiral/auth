@@ -10,7 +10,7 @@ namespace Spiral\Auth\Sources;
 use Spiral\Auth\SourceInterface;
 use Spiral\Auth\PasswordAwareInterface;
 
-interface CredentialsInterface extends SourceInterface
+interface UsernameSourceInterface extends SourceInterface
 {
     /**
      * @param string $username

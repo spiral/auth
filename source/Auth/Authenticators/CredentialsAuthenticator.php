@@ -9,7 +9,7 @@ namespace Spiral\Auth\Authenticators;
 
 use Spiral\Auth\Exceptions\InvalidUserException;
 use Spiral\Auth\PasswordAwareInterface;
-use Spiral\Auth\Sources\CredentialsInterface;
+use Spiral\Auth\Sources\UsernameSourceInterface;
 
 class CredentialsAuthenticator
 {
@@ -19,7 +19,7 @@ class CredentialsAuthenticator
     /**
      * @param CredentialsInterface $source
      */
-    public function __construct(CredentialsInterface $source)
+    public function __construct(UsernameSourceInterface $source)
     {
         $this->source = $source;
     }
