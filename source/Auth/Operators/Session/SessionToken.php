@@ -5,7 +5,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
-namespace Spiral\Auth\Providers\Session;
+namespace Spiral\Auth\Operators\Session;
 
 use Spiral\Auth\Entities\AbstractToken;
 
