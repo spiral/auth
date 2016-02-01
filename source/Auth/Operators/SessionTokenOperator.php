@@ -60,7 +60,7 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function fetchToken(Request $request)
     {
-        return new SessionToken($this->session->has($this->key));
+        return new SessionToken($this->session->get($this->key));
     }
 
     /**
