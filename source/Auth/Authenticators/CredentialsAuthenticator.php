@@ -13,11 +13,11 @@ use Spiral\Auth\Sources\UsernameSourceInterface;
 
 class CredentialsAuthenticator
 {
-    /** @var CredentialsInterface */
+    /** @var UsernameSourceInterface */
     private $source;
 
     /**
-     * @param CredentialsInterface $source
+     * @param UsernameSourceInterface $source
      */
     public function __construct(UsernameSourceInterface $source)
     {
