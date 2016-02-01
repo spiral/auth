@@ -1,4 +1,4 @@
-# Auth Module
+# Auth Module (WIP)
 
 Documentation and tests are coming.
 
@@ -8,7 +8,7 @@ composer require spiral/auth
 spiral register spiral/auth
 ```
 
-To enable authorization service in your application foollowing steps are reuquired.
+To enable authentication service in your application foollowing steps are reuquired.
 
 ### Add bootloder
 Mount `Spiral\Auth\AuthBootloader` to your application.
@@ -30,24 +30,22 @@ Mount `Spiral\Auth\AuthBootloader` to your application.
 ```
 
 ### Add AuthMiddleware
-You can either add middleware to a specific route or enable authroization services across application via http config:
+You can either add middleware to a specific route or enable authentication services across application via http config:
 
 ```php
 'middlewares'  => [
     Middlewares\CsrfFilter::class,
     Middlewares\ExceptionWrapper::class,
   
-    //Auth
-    \Spiral\Auth\Middlewares\AuthMiddleware::class,
-
     //Sample middleware
     \Middlewares\LocaleDetector::class,
 
     Session\Http\SessionStarter::class,
-
-    //Middlewares\JsonParser::class,
     Http\Cookies\CookieManager::class,
 
+    //Auth
+    \Spiral\Auth\Middlewares\AuthMiddleware::class,
+    
     /*{{middlewares}}*/
 ],
 ```
