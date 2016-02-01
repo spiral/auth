@@ -99,7 +99,7 @@ class AuthMiddleware implements MiddlewareInterface
         return $provider->mountToken(
             $request,
             $response,
-            $provider->createToken($context->getUser())
+            $this->manager->createToken($context->requestedProvider(), $context->getUser())
         );
     }
 }
