@@ -10,7 +10,7 @@ namespace Spiral\Auth\Exceptions;
 /**
  * When source supplied user uncompatible with authenticator.
  */
-class InvalidUserException extends \RuntimeException
+class InvalidUserException extends AuthException
 {
 
 }

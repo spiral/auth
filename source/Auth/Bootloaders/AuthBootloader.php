@@ -10,6 +10,7 @@ namespace Spiral\Auth\Bootloaders;
 use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\Entities\AuthContext;
+use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\SourceInterface;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 use Spiral\Auth\UserProvider;
@@ -48,6 +49,10 @@ class AuthBootloader extends Bootloader
      */
     public function userSource(AuthConfig $config, FactoryInterface $factory)
     {
+        if (empty($config->userSource())) {
+            throw new AuthException("User source is not set");
+        }
+
         return $factory->make($config->userSource());
     }
 
@@ -63,12 +68,12 @@ class AuthBootloader extends Bootloader
             throw new AutowireException("No active request found");
         }
 
-        $session = $request->getAttribute('auth');
+        $auth = $request->getAttribute('auth');
 
-        if (!$session instanceof AuthContext) {
-            throw new SugarException("Unable to resolve active session using active request");
+        if (!$auth instanceof AuthContext) {
+            throw new SugarException("Unable to resolve auth context using active request");
         }
 
-        return $session;
+        return $auth;
     }
 }
