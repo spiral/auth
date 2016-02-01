@@ -9,8 +9,9 @@ namespace Spiral\Auth\Providers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Spiral\Auth\Entities\Token;
+use Spiral\Auth\Exceptions\InvalidTokenException;
 use Spiral\Auth\ProviderInterface;
+use Spiral\Auth\Providers\Session\SessionToken;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Session\SessionInterface;
@@ -48,17 +49,30 @@ class SessionProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchToken(Request $request, $name)
+    public function fetchToken(Request $request)
     {
-        return new Token($this->session->has($this->key), $name);
+        return new SessionToken($this->session->has($this->key));
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return SessionToken
+     */
+    public function createToken(UserInterface $user)
+    {
+        return new SessionToken($this->session->has($this->key));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createToken(Request $request, Response $response, UserInterface $user)
+    public function mountToken(Request $request, Response $response, TokenInterface $token)
     {
-        $this->session->set($this->key, $user->primaryKey());
+        if ($token instanceof SessionToken) {
+            throw new InvalidTokenException("Only session tokens are allowed");
+        }
+
+        $this->session->set($this->key, $token->userPK());
 
         return $response;
     }
@@ -68,6 +82,10 @@ class SessionProvider implements ProviderInterface
      */
     public function removeToken(Request $request, Response $response, TokenInterface $token)
     {
+        if ($token instanceof SessionToken) {
+            throw new InvalidTokenException("Only session tokens are allowed");
+        }
+
         $this->session->delete($this->key);
 
         return $response;
@@ -78,6 +96,10 @@ class SessionProvider implements ProviderInterface
      */
     public function refreshToken(Request $request, Response $response, TokenInterface $token)
     {
+        if ($token instanceof SessionToken) {
+            throw new InvalidTokenException("Only session tokens are allowed");
+        }
+
         return $response;
     }
 }

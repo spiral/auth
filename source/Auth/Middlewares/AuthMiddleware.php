@@ -70,7 +70,7 @@ class AuthMiddleware implements MiddlewareInterface
             return null;
         }
 
-        return $this->providers->getProvider($provider)->fetchToken($request, $provider);
+        return $this->providers->getProvider($provider)->fetchToken($request);
     }
 
     /**
@@ -102,6 +102,10 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $provider = $this->providers->getProvider($context->requestedProvider());
 
-        return $provider->createToken($request, $response, $context->getUser());
+        return $provider->mountToken(
+            $request,
+            $response,
+            $provider->createToken($context->getUser())
+        );
     }
 }
