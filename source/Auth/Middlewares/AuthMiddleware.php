@@ -92,7 +92,7 @@ class AuthMiddleware implements MiddlewareInterface
             return $provider->removeToken($request, $response, $context->getToken());
         }
 
-        return $provider->refreshToken($request, $response, $context->getToken());
+        return $provider->updateToken($request, $response, $context->getToken());
     }
 
     /**

@@ -59,5 +59,5 @@ interface ProviderInterface
      * @return Response
      * @throws InvalidTokenException
      */
-    public function refreshToken(Request $request, Response $response, TokenInterface $token);
+    public function updateToken(Request $request, Response $response, TokenInterface $token);
 }

@@ -94,7 +94,7 @@ class SessionProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshToken(Request $request, Response $response, TokenInterface $token)
+    public function updateToken(Request $request, Response $response, TokenInterface $token)
     {
         if ($token instanceof SessionToken) {
             throw new InvalidTokenException("Only session tokens are allowed");
