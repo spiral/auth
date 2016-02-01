@@ -11,6 +11,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\InvalidTokenException;
 
+/**
+ * @todo polish abstraction names
+ */
 interface ProviderInterface
 {
     /**
