@@ -10,6 +10,11 @@ namespace Spiral\Auth;
 interface TokenInterface
 {
     /**
+     * @return string|null
+     */
+    public function getHash();
+
+    /**
      * @return mixed
      */
     public function userPK();

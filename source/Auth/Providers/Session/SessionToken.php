@@ -11,5 +11,11 @@ use Spiral\Auth\Entities\AbstractToken;
 
 class SessionToken extends AbstractToken
 {
-
+    /**
+     * {@inheritdoc}
+     */
+    public function getHash()
+    {
+        return null;
+    }
 }
