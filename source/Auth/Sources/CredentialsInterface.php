@@ -3,7 +3,7 @@
  * Spiral Framework.
  *
  * @license   MIT
- * @author    Anton Titov (Wolfy-J)
+ * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
 namespace Spiral\Auth\Sources;
 
