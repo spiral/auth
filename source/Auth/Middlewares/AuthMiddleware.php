@@ -20,12 +20,12 @@ class AuthMiddleware implements MiddlewareInterface
     /**
      * @var UserProviderInterface
      */
-    private $users;
+    protected $users;
 
     /**
      * @var TokenManager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @param UserProviderInterface $users
