@@ -17,11 +17,36 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
     private $userPK;
 
     /**
+     * @var string
+     */
+    private $name;
+
+    /**
      * @param mixed $userPK
      */
     public function __construct($userPK)
     {
         $this->userPK = $userPK;
+    }
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function withName($name)
+    {
+        $token = clone $this;
+        $token->name = $name;
+
+        return $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Core\FactoryInterface;
 
-class ProviderFactory
+class TokenManager
 {
     /**
      * @var AuthConfig
@@ -35,19 +35,27 @@ class ProviderFactory
 
     /**
      * @param Request $request
-     * @return string
+     * @return null|TokenInterface
      */
-    public function detectProvider(Request $request)
+    public function fetchToken(Request $request)
     {
-        foreach ($this->config->getProviders() as $name) {
-            $provider = $this->getProvider($name);
+        $provider = $this->detectProvider($request);
 
-            if ($provider->hasToken($request)) {
-                return $name;
-            }
+        if (empty($provider)) {
+            return null;
         }
 
-        return null;
+        return $this->getProvider($provider)->fetchToken($request)->withName($provider);
+    }
+
+    /**
+     * @param string        $provider
+     * @param UserInterface $user
+     * @return TokenInterface
+     */
+    public function createToken($provider, UserInterface $user)
+    {
+        return $this->getProvider($provider)->createToken($user)->withName($provider);
     }
 
     /**
@@ -60,5 +68,22 @@ class ProviderFactory
             $this->config->providerClass($name),
             $this->config->providerOptions($name)
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    protected function detectProvider(Request $request)
+    {
+        foreach ($this->config->getProviders() as $name) {
+            $provider = $this->getProvider($name);
+
+            if ($provider->hasToken($request)) {
+                return $name;
+            }
+        }
+
+        return null;
     }
 }

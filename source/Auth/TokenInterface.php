@@ -15,6 +15,19 @@ interface TokenInterface
     public function getHash();
 
     /**
+     * Specify token provider name.
+     *
+     * @param string $name
+     * @return self
+     */
+    public function withName($name);
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
      * @return mixed
      */
     public function userPK();

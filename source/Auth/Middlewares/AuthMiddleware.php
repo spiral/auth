@@ -10,7 +10,7 @@ namespace Spiral\Auth\Middlewares;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Entities\AuthContext;
-use Spiral\Auth\ProviderFactory;
+use Spiral\Auth\TokenManager;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Http\MiddlewareInterface;
 use Spiral\Tokenizer\TokenizerInterface;
@@ -23,18 +23,18 @@ class AuthMiddleware implements MiddlewareInterface
     private $users;
 
     /**
-     * @var ProviderFactory
+     * @var TokenManager
      */
-    private $providers;
+    private $manager;
 
     /**
      * @param UserProviderInterface $users
-     * @param ProviderFactory       $providers
+     * @param TokenManager          $manager
      */
-    public function __construct(UserProviderInterface $users, ProviderFactory $providers)
+    public function __construct(UserProviderInterface $users, TokenManager $manager)
     {
         $this->users = $users;
-        $this->providers = $providers;
+        $this->manager = $manager;
     }
 
     /**
@@ -64,13 +64,7 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function fetchToken(Request $request)
     {
-        $provider = $this->providers->detectProvider($request);
-
-        if (empty($provider)) {
-            return null;
-        }
-
-        return $this->providers->getProvider($provider)->fetchToken($request);
+        return $this->manager->fetchToken($request);
     }
 
     /**
@@ -82,7 +76,7 @@ class AuthMiddleware implements MiddlewareInterface
     private function updateToken(Request $request, Response $response, AuthContext $context)
     {
         $token = $context->getToken();
-        $provider = $this->providers->getProvider($token->getProvider());
+        $provider = $this->manager->getProvider($token->getName());
 
         //Session was either continued or ended.
         if ($context->isLogout()) {
@@ -100,7 +94,7 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createToken(Request $request, Response $response, AuthContext $context)
     {
-        $provider = $this->providers->getProvider($context->requestedProvider());
+        $provider = $this->manager->getProvider($context->requestedProvider());
 
         return $provider->mountToken(
             $request,
