@@ -64,13 +64,13 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createContext(Request $request)
     {
-        $operator = $this->manager->detectOperator($request, $operatorName);
+        $operator = $this->manager->detectOperator($request, $name);
 
         if (empty($operator)) {
             return new AuthContext($this->users);
         }
 
-        return new AuthContext($this->users, $operatorName, $operator->fetchToken($request));
+        return new AuthContext($this->users, $name, $operator->fetchToken($request));
     }
 
     /**
