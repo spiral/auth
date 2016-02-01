@@ -68,7 +68,7 @@ class Aware extends Record implements PasswordAwareInterface
 }
 ```
 
-Source must implement `UsernameSourceInterface` and implement needed methods:
+Source must implement `UsernameSourceInterface` and needed methods:
 
 ```php
 class UserSource extends RecordSource implements UsernameSourceInterface
