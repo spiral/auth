@@ -31,12 +31,12 @@ class AuthContext
     /**
      * @var string
      */
-    private $operator = null;
+    private $operator;
 
     /**
      * @var UserProviderInterface
      */
-    protected $users = null;
+    protected $users;
 
     /**
      * @param UserProviderInterface $users
