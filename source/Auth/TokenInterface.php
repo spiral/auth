@@ -10,7 +10,7 @@ namespace Spiral\Auth;
 interface TokenInterface
 {
     /**
-     * @return string|null
+     * @return string
      */
     public function getHash();
 

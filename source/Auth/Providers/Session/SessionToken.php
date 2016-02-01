@@ -16,6 +16,6 @@ class SessionToken extends AbstractToken
      */
     public function getHash()
     {
-        return null;
+        return 'session';
     }
 }
