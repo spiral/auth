@@ -37,17 +37,15 @@ You can either add middleware to a specific route or enable authroization servic
     Middlewares\CsrfFilter::class,
     Middlewares\ExceptionWrapper::class,
   
-    //Auth
-    \Spiral\Auth\Middlewares\AuthMiddleware::class,
-
     //Sample middleware
     \Middlewares\LocaleDetector::class,
 
     Session\Http\SessionStarter::class,
-
-    //Middlewares\JsonParser::class,
     Http\Cookies\CookieManager::class,
 
+    //Auth
+    \Spiral\Auth\Middlewares\AuthMiddleware::class,
+    
     /*{{middlewares}}*/
 ],
 ```
