@@ -33,7 +33,7 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function jsonSerialize()
     {
@@ -41,7 +41,7 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function __toString()
     {
