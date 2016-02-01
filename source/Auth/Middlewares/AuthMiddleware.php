@@ -60,11 +60,21 @@ class AuthMiddleware implements MiddlewareInterface
 
     /**
      * @param Request $request
-     * @return TokenizerInterface|null
+     * @return AuthContext
      */
-    private function fetchToken(Request $request)
+    private function createContext(Request $request)
     {
-        return $this->manager->fetchToken($request);
+        $provider = $this->manager->detectProvider($request);
+
+        if (empty($provider)) {
+            return new AuthContext($this->users);
+        }
+
+        return new AuthContext(
+            $this->users,
+            $provider,
+            $this->manager->getProvider($provider)->fetchToken($request)
+        );
     }
 
     /**
@@ -75,15 +85,14 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function updateToken(Request $request, Response $response, AuthContext $context)
     {
-        $token = $context->getToken();
-        $provider = $this->manager->getProvider($token->getName());
+        $provider = $this->manager->getProvider($context->getProvider());
 
         //Session was either continued or ended.
         if ($context->isLogout()) {
-            return $provider->removeToken($request, $response, $token);
+            return $provider->removeToken($request, $response, $context->getToken());
         }
 
-        return $provider->refreshToken($request, $response, $token);
+        return $provider->refreshToken($request, $response, $context->getToken());
     }
 
     /**
@@ -94,12 +103,12 @@ class AuthMiddleware implements MiddlewareInterface
      */
     private function createToken(Request $request, Response $response, AuthContext $context)
     {
-        $provider = $this->manager->getProvider($context->requestedProvider());
+        $provider = $this->manager->getProvider($context->getProvider());
 
         return $provider->mountToken(
             $request,
             $response,
-            $this->manager->createToken($context->requestedProvider(), $context->getUser())
+            $provider->createToken($context->getUser())
         );
     }
 }

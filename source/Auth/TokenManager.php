@@ -35,17 +35,19 @@ class TokenManager
 
     /**
      * @param Request $request
-     * @return null|TokenInterface
+     * @return string
      */
-    public function fetchToken(Request $request)
+    public function detectProvider(Request $request)
     {
-        $provider = $this->detectProvider($request);
+        foreach ($this->config->getProviders() as $name) {
+            $provider = $this->getProvider($name);
 
-        if (empty($provider)) {
-            return null;
+            if ($provider->hasToken($request)) {
+                return $name;
+            }
         }
 
-        return $this->getProvider($provider)->fetchToken($request)->withName($provider);
+        return null;
     }
 
     /**
@@ -55,7 +57,7 @@ class TokenManager
      */
     public function createToken($provider, UserInterface $user)
     {
-        return $this->getProvider($provider)->createToken($user)->withName($provider);
+        return $this->getProvider($provider)->createToken($user);
     }
 
     /**
@@ -68,22 +70,5 @@ class TokenManager
             $this->config->providerClass($name),
             $this->config->providerOptions($name)
         );
-    }
-
-    /**
-     * @param Request $request
-     * @return string
-     */
-    protected function detectProvider(Request $request)
-    {
-        foreach ($this->config->getProviders() as $name) {
-            $provider = $this->getProvider($name);
-
-            if ($provider->hasToken($request)) {
-                return $name;
-            }
-        }
-
-        return null;
     }
 }

@@ -31,7 +31,7 @@ class AuthContext
     /**
      * @var string
      */
-    private $requestedProvider = null;
+    private $provider = null;
 
     /**
      * @var UserProviderInterface
@@ -40,11 +40,16 @@ class AuthContext
 
     /**
      * @param UserProviderInterface $users
+     * @param string                $provider
      * @param TokenInterface|null   $token
      */
-    public function __construct(UserProviderInterface $users, TokenInterface $token = null)
-    {
+    public function __construct(
+        UserProviderInterface $users,
+        $provider = '',
+        TokenInterface $token = null
+    ) {
         $this->users = $users;
+        $this->provider = $provider;
         $this->token = $token;
     }
 
@@ -111,7 +116,7 @@ class AuthContext
     public function authenticate(UserInterface $user, $provider)
     {
         $this->user = $user;
-        $this->requestedProvider = $provider;
+        $this->provider = $provider;
 
         $this->token = null;
         $this->logout = false;
@@ -130,9 +135,9 @@ class AuthContext
      *
      * @return string
      */
-    public function requestedProvider()
+    public function getProvider()
     {
-        return $this->requestedProvider;
+        return $this->provider;
     }
 
     /**
