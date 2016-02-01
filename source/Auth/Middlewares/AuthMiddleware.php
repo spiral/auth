@@ -62,7 +62,7 @@ class AuthMiddleware implements MiddlewareInterface
      * @param Request $request
      * @return AuthContext
      */
-    private function createContext(Request $request)
+    protected function createContext(Request $request)
     {
         $operator = $this->manager->detectOperator($request, $name);
 
