@@ -22,10 +22,9 @@ return [
          */
         'session' => [
             'class'   => Operators\SessionTokenOperator::class,
-            'options' => [
-                'key' => 'userID'
-            ]
+            'options' => ['key' => 'userID']
         ],
+
         /*
          * Utilized default HTTP basic auth protocol to authenticate user
          */
@@ -38,10 +37,13 @@ return [
          * Reads token hash from a specified header
          */
         'header'  => [
-            'class'   => Operators\CookieTokenOperator::class,
+            'class'   => Operators\HeaderTokenOperator::class,
             'options' => [
                 //Header to read token hash from
                 'header'      => 'X-Auth-Token',
+
+                //Token lifetime
+                'lifetime'    => 86400 * 14,
 
                 //Persistent token storage
                 'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,

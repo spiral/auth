@@ -23,6 +23,11 @@ class AuthModule implements ModuleInterface
             "//Authorization cookie",
             "'auth-token'"
         ]);
+
+        //Models
+        $registrator->configure('tokenizer', 'directories', 'spiral/auth', [
+            "directory('libraries') . 'spiral/auth'"
+        ]);
     }
 
     /**
