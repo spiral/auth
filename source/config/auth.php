@@ -67,6 +67,6 @@ return [
             ]
         ],
 
-        /*{{providers}}*/
+        /*{{operators}}*/
     ]
 ];
