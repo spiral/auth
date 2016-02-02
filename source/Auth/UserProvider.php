@@ -17,7 +17,7 @@ class UserProvider implements UserProviderInterface
      *
      * @var UserSourceInterface
      */
-    private $source;
+    private $userSource = null;
 
     /** @var AuthConfig */
     protected $config;
@@ -38,13 +38,13 @@ class UserProvider implements UserProviderInterface
     /**
      * @return UserSourceInterface
      */
-    protected function getSource()
+    private function getUserSource()
     {
-        if (empty($this->source)) {
-            $this->source = $this->factory->make($this->config->userSource());
+        if (empty($this->userSource)) {
+            $this->userSource = $this->factory->make($this->config->userSource());
         }
 
-        return $this->source;
+        return $this->userSource;
     }
 
     /**
@@ -53,6 +53,6 @@ class UserProvider implements UserProviderInterface
      */
     public function getUser(TokenInterface $token)
     {
-        return $this->getSource()->findByPK($token->userPK());
+        return $this->getUserSource()->findByPK($token->userPK());
     }
 }
