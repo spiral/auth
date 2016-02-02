@@ -10,9 +10,9 @@ namespace Spiral\Auth\Operators;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\InvalidTokenException;
-use Spiral\Auth\TokenOperatorInterface;
 use Spiral\Auth\Operators\Session\SessionToken;
 use Spiral\Auth\TokenInterface;
+use Spiral\Auth\TokenOperatorInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Session\SessionInterface;
 
@@ -71,7 +71,7 @@ class SessionTokenOperator implements TokenOperatorInterface
             throw new InvalidTokenException("Only session tokens are allowed");
         }
 
-        $this->session->set($this->key, $token->userPK());
+        $this->session->set($this->key, $token->getUserPK());
 
         return $response;
     }

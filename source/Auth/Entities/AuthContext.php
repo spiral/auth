@@ -35,6 +35,7 @@ class AuthContext implements ContextInterface
     private $operator;
 
     /**
+     * @invisible
      * @var UserProviderInterface
      */
     protected $users;
@@ -75,7 +76,7 @@ class AuthContext implements ContextInterface
      */
     public function isAuthenticated()
     {
-        return $this->hasToken() && $this->hasUser();
+        return $this->hasToken() || $this->hasUser();
     }
 
     /**

@@ -20,6 +20,16 @@ interface ContextInterface
     public function getToken();
 
     /**
+     * @return bool
+     */
+    public function hasUser();
+
+    /**
+     * @return UserInterface
+     */
+    public function getUser();
+
+    /**
      * @param UserInterface $user
      * @param string        $operator Auth operator which has to handle token creation and mounting
      *                                to response.

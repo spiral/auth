@@ -9,9 +9,11 @@ namespace Spiral\Auth\Middlewares;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Auth\ContextInterface;
 use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\TokenManager;
 use Spiral\Auth\UserProviderInterface;
+use Spiral\Core\ContainerInterface;
 use Spiral\Http\MiddlewareInterface;
 
 class AuthMiddleware implements MiddlewareInterface
@@ -27,13 +29,23 @@ class AuthMiddleware implements MiddlewareInterface
     protected $manager;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @param UserProviderInterface $users
      * @param TokenManager          $manager
+     * @param ContainerInterface    $container
      */
-    public function __construct(UserProviderInterface $users, TokenManager $manager)
-    {
+    public function __construct(
+        UserProviderInterface $users,
+        TokenManager $manager,
+        ContainerInterface $container
+    ) {
         $this->users = $users;
         $this->manager = $manager;
+        $this->container = $container;
     }
 
     /**
@@ -43,10 +55,15 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $context = $this->createContext($request);
 
-        $response = $next(
-            $request->withAttribute('auth', $context),
-            $response
-        );
+        $scope = $this->container->replace(ContextInterface::class, $context);
+        try {
+            $response = $next(
+                $request->withAttribute('auth', $context),
+                $response
+            );
+        } finally {
+            $this->container->restore($scope);
+        }
 
         if ($context->hasToken()) {
             $response = $this->updateToken($request, $response, $context);
