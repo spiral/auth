@@ -19,7 +19,7 @@ class AuthModule implements ModuleInterface
      */
     public function register(RegistratorInterface $registrator)
     {
-        $registrator->configure('http', 'cookies.exclude', 'spiral/auth', [
+        $registrator->configure('http', 'cookies.excluded', 'spiral/auth', [
             "//Authorization cookie",
             "'auth-token'"
         ]);
