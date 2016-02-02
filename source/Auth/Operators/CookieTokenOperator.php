@@ -73,6 +73,16 @@ class CookieTokenOperator extends AbstractTokenOperator
     /**
      * {@inheritdoc}
      */
+    public function updateToken(Request $request, Response $response, TokenInterface $token)
+    {
+        $response = parent::updateToken($request, $response, $token);
+
+        return $this->mountToken($request, $response, $token);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function extractHash(Request $request)
     {
         $cookies = $request->getCookieParams();
