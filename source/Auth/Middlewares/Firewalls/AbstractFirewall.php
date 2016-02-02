@@ -7,15 +7,16 @@
  */
 namespace Spiral\Auth\Middlewares\Firewalls;
 
-use Spiral\Auth\Entities\AuthContext;
-use Spiral\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Auth\ContextInterface;
+use Spiral\Http\MiddlewareInterface;
 
 abstract class AbstractFirewall implements MiddlewareInterface
 {
     /**
-     * @param Request $request
+     * @param Request  $request
      * @param Response $response
      * @param callable $next
      *
@@ -23,33 +24,33 @@ abstract class AbstractFirewall implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        /** @var AuthContext $authentication */
+        /**
+         * @var ContextInterface $authentication
+         */
         $authContext = $request->getAttribute('auth');
 
         if (empty($authContext) || !$authContext->isAuthenticated()) {
-            return $this->onAccessDenied($request, $response, $next);
+            return $this->denyAccess($request, $response, $next);
         }
 
-        return $this->onAccessGranted($request, $response, $next);
+        return $this->grantAccess($request, $response, $next);
     }
 
     /**
-     * @param Request $request
+     * @param Request  $request
      * @param Response $response
      * @param callable $next
-     *
-     * @return mixed
+     * @return ResponseInterface
      */
-    abstract public function onAccessDenied(Request $request, Response $response, callable $next);
+    abstract public function denyAccess(Request $request, Response $response, callable $next);
 
     /**
-     * @param Request $request
+     * @param Request  $request
      * @param Response $response
      * @param callable $next
-     *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function onAccessGranted(Request $request, Response $response, callable $next)
+    public function grantAccess(Request $request, Response $response, callable $next)
     {
         return $next($request, $response);
     }

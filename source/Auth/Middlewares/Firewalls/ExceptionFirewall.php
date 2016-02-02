@@ -16,7 +16,7 @@ class ExceptionFirewall extends AbstractFirewall
     /**
      * {@inheritdoc}
      */
-    public function onAccessDenied(Request $request, Response $response, callable $next)
+    public function denyAccess(Request $request, Response $response, callable $next)
     {
         throw new ForbiddenException();
     }

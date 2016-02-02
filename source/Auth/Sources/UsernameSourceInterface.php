@@ -7,7 +7,6 @@
  */
 namespace Spiral\Auth\Sources;
 
-use Spiral\Auth\UserSourceInterface;
 use Spiral\Auth\PasswordAwareInterface;
 
 interface UsernameSourceInterface extends UserSourceInterface

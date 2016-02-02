@@ -12,26 +12,39 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class BasicAuthFirewall extends AbstractFirewall
 {
-    const REDIRECT_HTTP_STATUS = 301;
-
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $realm;
 
     /**
      * @param string $realm
      */
-    public function __construct($realm = 'Admin area')
+    public function __construct($realm = 'Login')
     {
         $this->realm = $realm;
     }
 
     /**
+     * @param string $realm
+     * @return BasicAuthFirewall
+     */
+    public function withRealm($realm)
+    {
+        $middleware = clone $this;
+        $middleware->realm = $realm;
+
+        return $middleware;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function onAccessDenied(Request $request, Response $response, callable $next)
+    public function denyAccess(Request $request, Response $response, callable $next)
     {
-        $value = sprintf('Basic realm="%s"', $this->realm);
-
-        return $response->withStatus('401')->withHeader('WWW-Authenticate', $value);
+        return $response->withStatus(401)->withHeader(
+            'WWW-Authenticate',
+            sprintf('Basic realm="%s"', $this->realm)
+        );
     }
 }

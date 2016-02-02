@@ -17,5 +17,5 @@ interface TokenInterface
     /**
      * @return mixed
      */
-    public function userPK();
+    public function getUserPK();
 }

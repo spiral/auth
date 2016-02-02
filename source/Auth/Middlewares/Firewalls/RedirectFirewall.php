@@ -7,21 +7,26 @@
  */
 namespace Spiral\Auth\Middlewares\Firewalls;
 
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\UriInterface;
 use Spiral\Http\Uri;
 
 class RedirectFirewall extends AbstractFirewall
 {
-    protected $status;
+    /**
+     * @var int
+     */
+    protected $status = 301;
 
-    /** @var UriInterface */
+    /**
+     * @var UriInterface
+     */
     protected $redirect = null;
 
     /**
-     * @param $redirect
-     * @param int $status
+     * @param string|UriInterface $redirect
+     * @param int                 $status
      */
     public function __construct($redirect, $status = 301)
     {
@@ -29,23 +34,31 @@ class RedirectFirewall extends AbstractFirewall
             $redirect = new Uri($redirect);
         }
 
-        $this->setRedirect($redirect);
         $this->status = $status;
+
+        $this->withRedirect($redirect);
     }
 
     /**
      * @param UriInterface $uri
+     * @return RedirectFirewall
      */
-    public function setRedirect(UriInterface $uri)
+    public function withRedirect(UriInterface $uri)
     {
-        $this->redirect = $uri;
+        $middleware = clone $this;
+        $middleware->redirect = $uri;
+
+        return $middleware;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onAccessDenied(Request $request, Response $response, callable $next)
+    public function denyAccess(Request $request, Response $response, callable $next)
     {
-        return $response->withStatus($this->status)->withHeader('Location',(string)$this->redirect);
+        return $response->withStatus($this->status)->withHeader(
+            'Location',
+            (string)$this->redirect
+        );
     }
 }

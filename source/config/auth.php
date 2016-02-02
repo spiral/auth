@@ -14,39 +14,56 @@ return [
     'userSource' => null,
 
     /*
-     * Set of auth providers responsible for session support (
+     * Set of auth providers responsible for user session support
      */
     'operators'  => [
+        /*
+         * Uses active session storage to store user information
+         */
         'session' => [
             'class'   => Operators\SessionTokenOperator::class,
             'options' => [
                 'key' => 'userID'
             ]
         ],
-        'basic' => [
-            'class'   => Operators\HTTPBasicSessionOperator::class,
-            'options' => [
-                'key' => 'userID' //used for session
-            ]
+        /*
+         * Utilized default HTTP basic auth protocol to authenticate user
+         */
+        'basic'   => [
+            'class' => Operators\BasicTokenOperator::class,
         ],
-        'cookie' => [
+
+        /*
+         * Stores authentication token into cookie
+         */
+        'cookie'  => [
             'class'   => Operators\CookieTokenOperator::class,
             'options' => [
-                'name' => 'auth-token',
-                'lifetime' => 0,
-                'source' => \Database\Sources\TokenSource::class,
+                //Cookie name, do not forget to exclude cookie name from cookie manager
+                'cookie'      => 'auth-token',
+
+                //Cookie and token lifetime
+                'lifetime'    => 86400 * 7,
+
+                //Persistent token storage
+                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
             ]
         ],
-        'rememberMe' => [
+
+        /*
+         * Reads token hash from a specified header
+         */
+        'header'  => [
             'class'   => Operators\CookieTokenOperator::class,
             'options' => [
-                'name' => 'remember-me',
-                'lifetime' => 86400*7, //1 week
-                'storage' => [
-                    'source' => \Database\Sources\TokenSource::class,
-                ],
+                //Header to read token hash from
+                'header'      => 'X-Auth-Token',
+
+                //Persistent token storage
+                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
             ]
         ],
+
         /*{{providers}}*/
     ]
 ];

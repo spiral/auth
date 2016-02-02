@@ -7,22 +7,18 @@
  */
 namespace Spiral\Auth\Sources;
 
+use Spiral\Auth\Exceptions\UndefinedTokenException;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 
 interface TokenSourceInterface
 {
     /**
-     * @param $hash
+     * @param string $hash
      * @return TokenInterface
+     * @throws UndefinedTokenException
      */
     public function getToken($hash);
-
-    /**
-     * @param $hash
-     * @return bool
-     */
-    public function hasToken($hash);
 
     /**
      * @param TokenInterface $token
@@ -30,16 +26,18 @@ interface TokenSourceInterface
     public function deleteToken(TokenInterface $token);
 
     /**
-     * must automatic store token into database
+     * Must return already stored token.
      *
      * @param UserInterface $user
+     * @param  int          $lifetime
      * @return TokenInterface
      */
-    public function createToken(UserInterface $user);
+    public function createToken(UserInterface $user, $lifetime);
 
     /**
      * @param TokenInterface $token
+     * @param  int           $lifetime
      * @return bool
      */
-    public function refreshToken(TokenInterface $token);
+    public function updateToken(TokenInterface $token, $lifetime);
 }

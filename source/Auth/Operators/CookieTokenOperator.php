@@ -9,95 +9,43 @@ namespace Spiral\Auth\Operators;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\UriInterface;
-use Spiral\Auth\Configs\AuthConfig;
-use Spiral\Auth\Sources\TokenSourceInterface;
 use Spiral\Auth\TokenInterface;
-use Spiral\Auth\TokenOperatorInterface;
-use Spiral\Auth\UserInterface;
 use Spiral\Core\FactoryInterface;
+use Spiral\Http\Configs\HttpConfig;
 use Spiral\Http\Cookies\Cookie;
 
-class CookieTokenOperator implements TokenOperatorInterface
+class CookieTokenOperator extends AbstractTokenOperator
 {
-    /** @var AuthConfig */
-    protected $config;
-
-    /** @var TokenSourceInterface */
-    protected $source;
-
-    /** @var FactoryInterface */
-    protected $factory;
-
-    /** @var string */
-    protected $name;
-
-    /** @var int */
-    protected $lifetime;
-
-    public function __construct(FactoryInterface $factory, $name, $lifetime, $source)
-    {
-        $this->factory = $factory;
-        $this->name = $name;
-        $this->lifetime = intval($lifetime);
-        $this->source = $factory->make($source);
-    }
+    /**
+     * Required to resolve valid cookie domain and path.
+     *
+     * @var HttpConfig
+     */
+    private $httpConfig;
 
     /**
-     * @return TokenSourceInterface
+     * @var string
      */
-    public function getSource()
-    {
-        if (!is_object($this->source)) {
-            $this->source = $this->factory->make($this->source);
-        }
-
-        return $this->source;
-    }
+    private $cookie;
 
     /**
-     * @param Request $request
-     * @return string
+     * @param FactoryInterface $factory
+     * @param int              $lifetime
+     * @param string           $sourceClass
+     * @param HttpConfig       $httpConfig
+     * @param string           $cookie
      */
-    protected function extractHash(Request $request)
-    {
-        $data = $request->getCookieParams();
+    public function __construct(
+        FactoryInterface $factory,
+        $lifetime,
+        $sourceClass,
+        HttpConfig $httpConfig,
+        $cookie
+    ) {
+        parent::__construct($factory, $lifetime, $sourceClass);
 
-        return isset($data[$this->name]) ? $data[$this->name] : null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createToken(UserInterface $user)
-    {
-        return $this->getSource()->createToken($user);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasToken(Request $request)
-    {
-        $hash = $this->extractHash($request);
-        if (!empty($hash)) {
-            $hash = $this->getSource()->hasToken($hash);
-        }
-
-        return !empty($hash);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fetchToken(Request $request)
-    {
-        $hash = $this->extractHash($request);
-        if (!empty($hash)) {
-            $hash = $this->getSource()->getToken($hash);
-        }
-
-        return $hash;
+        $this->httpConfig = $httpConfig;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -105,15 +53,10 @@ class CookieTokenOperator implements TokenOperatorInterface
      */
     public function mountToken(Request $request, Response $response, TokenInterface $token)
     {
-        $this->getSource()->refreshToken($token);
-
-        $cookie = $this->createCookie($request->getUri(), $token->getHash());
-        $response = $response->withAddedHeader(
+        return $response->withAddedHeader(
             'Set-Cookie',
-            $cookie->createHeader()
+            Cookie::create($this->cookie, $token->getHash())
         );
-
-        return $response;
     }
 
     /**
@@ -121,48 +64,35 @@ class CookieTokenOperator implements TokenOperatorInterface
      */
     public function removeToken(Request $request, Response $response, TokenInterface $token)
     {
-        $this->getSource()->refreshToken($token);
-
-        $cookie = $this->createCookie($request->getUri(), '');
-        $response = $response->withAddedHeader(
+        return $response->withAddedHeader(
             'Set-Cookie',
-            $cookie->createHeader()
+            $this->createCookie($request, null)
         );
-
-        return $response;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function updateToken(Request $request, Response $response, TokenInterface $token)
+    protected function extractHash(Request $request)
     {
-        $this->getSource()->refreshToken($token);
+        $cookies = $request->getCookieParams();
 
-        $cookie = $this->createCookie($request->getUri(), $token->getHash());
-        $response = $response->withAddedHeader(
-            'Set-Cookie',
-            $cookie->createHeader()
-        );
-
-        return $response;
+        return isset($cookies[$this->cookie]) ? $cookies[$this->cookie] : null;
     }
 
     /**
-     * todo: check for correct creation
-     *
-     * @param UriInterface $uri
-     * @param string $value
+     * @param Request     $request
+     * @param string|null $hash
      * @return Cookie
      */
-    private function createCookie(UriInterface $uri, $value)
+    protected function createCookie(Request $request, $hash)
     {
         return Cookie::create(
-            $this->name,
-            $value,
-            $this->lifetime > 0 ? $this->lifetime : null,
-            '/',
-            $uri->getHost()
+            $this->cookie,
+            $hash,
+            $this->getLifetime(),
+            $this->httpConfig->basePath(),
+            $this->httpConfig->cookiesDomain($request->getUri())
         );
     }
 }

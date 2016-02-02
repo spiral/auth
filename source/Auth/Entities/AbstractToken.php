@@ -27,7 +27,7 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
     /**
      * @return mixed
      */
-    public function userPK()
+    public function getUserPK()
     {
         return $this->userPK;
     }

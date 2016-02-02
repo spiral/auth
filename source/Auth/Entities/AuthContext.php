@@ -7,12 +7,12 @@
  */
 namespace Spiral\Auth\Entities;
 
-use Spiral\Auth\AuthContextInterface;
+use Spiral\Auth\ContextInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Auth\UserProviderInterface;
 
-class AuthContext implements AuthContextInterface
+class AuthContext implements ContextInterface
 {
     /**
      * @var null|TokenInterface

@@ -13,7 +13,9 @@ use Spiral\Auth\Sources\UsernameSourceInterface;
 
 class CredentialsAuthenticator
 {
-    /** @var UsernameSourceInterface */
+    /**
+     * @var UsernameSourceInterface
+     */
     private $source;
 
     /**
