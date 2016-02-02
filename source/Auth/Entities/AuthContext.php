@@ -7,11 +7,12 @@
  */
 namespace Spiral\Auth\Entities;
 
+use Spiral\Auth\AuthContextInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\Auth\UserProviderInterface;
 
-class AuthContext
+class AuthContext implements AuthContextInterface
 {
     /**
      * @var null|TokenInterface
@@ -54,7 +55,7 @@ class AuthContext
     }
 
     /**
-     * @param TokenInterface $token
+     * {@inheritdoc}
      */
     public function setToken(TokenInterface $token)
     {
@@ -62,7 +63,7 @@ class AuthContext
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasToken()
     {
@@ -70,7 +71,7 @@ class AuthContext
     }
 
     /**
-     * @return TokenInterface
+     * {@inheritdoc}
      */
     public function getToken()
     {
@@ -78,7 +79,7 @@ class AuthContext
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isAuthenticated()
     {
@@ -124,7 +125,7 @@ class AuthContext
     }
 
     /**
-     * Mark context as logouted.
+     * {@inheritdoc}
      */
     public function logout()
     {
@@ -142,7 +143,7 @@ class AuthContext
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isLogout()
     {
