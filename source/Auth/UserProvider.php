@@ -36,6 +36,15 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
+     * @param TokenInterface $token
+     * @return UserInterface
+     */
+    public function getUser(TokenInterface $token)
+    {
+        return $this->getUserSource()->findByPK($token->userPK());
+    }
+
+    /**
      * @return UserSourceInterface
      */
     private function getUserSource()
@@ -45,14 +54,5 @@ class UserProvider implements UserProviderInterface
         }
 
         return $this->userSource;
-    }
-
-    /**
-     * @param TokenInterface $token
-     * @return UserInterface
-     */
-    public function getUser(TokenInterface $token)
-    {
-        return $this->getUserSource()->findByPK($token->userPK());
     }
 }

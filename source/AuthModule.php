@@ -19,6 +19,7 @@ class AuthModule implements ModuleInterface
      */
     public function register(RegistratorInterface $registrator)
     {
+        
     }
 
     /**

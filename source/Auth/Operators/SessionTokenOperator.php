@@ -39,8 +39,7 @@ class SessionTokenOperator implements TokenOperatorInterface
     }
 
     /**
-     * @param UserInterface $user
-     * @return SessionToken
+     * {@inheritdoc}
      */
     public function createToken(UserInterface $user)
     {

@@ -8,7 +8,6 @@
 namespace Spiral\Auth\Middlewares\Firewalls;
 
 use Spiral\Auth\Entities\AuthContext;
-use Spiral\Auth\Exceptions\FirewallException;
 use Spiral\Http\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -27,7 +26,7 @@ abstract class AbstractFirewall implements MiddlewareInterface
         /** @var AuthContext $authentication */
         $authContext = $request->getAttribute('auth');
 
-        if (!$authContext || !$authContext->isAuthenticated()) {
+        if (empty($authContext) || !$authContext->isAuthenticated()) {
             return $this->onAccessDenied($request, $response, $next);
         }
 
@@ -41,10 +40,7 @@ abstract class AbstractFirewall implements MiddlewareInterface
      *
      * @return mixed
      */
-    public function onAccessDenied(Request $request, Response $response, callable $next)
-    {
-        throw new FirewallException('You need override onAccessDenied');
-    }
+    abstract public function onAccessDenied(Request $request, Response $response, callable $next);
 
     /**
      * @param Request $request

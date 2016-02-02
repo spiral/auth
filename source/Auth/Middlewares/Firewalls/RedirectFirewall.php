@@ -11,24 +11,26 @@ use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Http\Uri;
-use Zend\Diactoros\Response\RedirectResponse;
 
 class RedirectFirewall extends AbstractFirewall
 {
-    const REDIRECT_HTTP_STATUS = 301;
+    protected $status;
 
     /** @var UriInterface */
-    private $redirect = null;
+    protected $redirect = null;
 
     /**
-     * @param string|UriInterface $redirect
+     * @param $redirect
+     * @param int $status
      */
-    public function __construct($redirect)
+    public function __construct($redirect, $status = 301)
     {
         if (!$redirect instanceof UriInterface) {
             $redirect = new Uri($redirect);
         }
+
         $this->setRedirect($redirect);
+        $this->status = $status;
     }
 
     /**
@@ -44,6 +46,6 @@ class RedirectFirewall extends AbstractFirewall
      */
     public function onAccessDenied(Request $request, Response $response, callable $next)
     {
-        return new RedirectResponse($this->redirect, self::REDIRECT_HTTP_STATUS);
+        return $response->withStatus($this->status)->withHeader('Location',(string)$this->redirect);
     }
 }

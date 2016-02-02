@@ -7,7 +7,6 @@
  */
 namespace Spiral\Auth;
 
-
 interface AuthContextInterface
 {
     /**

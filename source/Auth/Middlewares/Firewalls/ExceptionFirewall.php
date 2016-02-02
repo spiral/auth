@@ -9,7 +9,7 @@ namespace Spiral\Auth\Middlewares\Firewalls;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Spiral\Http\Exceptions\ClientExceptions\ForbiddenException;
 
 class ExceptionFirewall extends AbstractFirewall
 {
@@ -18,6 +18,6 @@ class ExceptionFirewall extends AbstractFirewall
      */
     public function onAccessDenied(Request $request, Response $response, callable $next)
     {
-        throw new AccessDeniedException('Access denied');
+        throw new ForbiddenException();
     }
 }
