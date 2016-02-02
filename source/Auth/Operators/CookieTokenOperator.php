@@ -55,7 +55,7 @@ class CookieTokenOperator extends AbstractTokenOperator
     {
         return $response->withAddedHeader(
             'Set-Cookie',
-            Cookie::create($this->cookie, $token->getHash())
+            $this->cookieHeader($request, $token->getHash())
         );
     }
 
@@ -66,7 +66,7 @@ class CookieTokenOperator extends AbstractTokenOperator
     {
         return $response->withAddedHeader(
             'Set-Cookie',
-            $this->createCookie($request, null)
+            $this->cookieHeader($request, null)
         );
     }
 
@@ -93,9 +93,9 @@ class CookieTokenOperator extends AbstractTokenOperator
     /**
      * @param Request     $request
      * @param string|null $hash
-     * @return Cookie
+     * @return string
      */
-    protected function createCookie(Request $request, $hash)
+    protected function cookieHeader(Request $request, $hash)
     {
         return Cookie::create(
             $this->cookie,
@@ -103,6 +103,6 @@ class CookieTokenOperator extends AbstractTokenOperator
             $this->getLifetime(),
             $this->httpConfig->basePath(),
             $this->httpConfig->cookiesDomain($request->getUri())
-        );
+        )->createHeader();
     }
 }

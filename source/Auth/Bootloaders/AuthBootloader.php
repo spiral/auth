@@ -7,18 +7,14 @@
  */
 namespace Spiral\Auth\Bootloaders;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\ContextInterface;
-use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 use Spiral\Auth\Sources\UserSourceInterface;
 use Spiral\Auth\UserProvider;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Core\Bootloaders\Bootloader;
-use Spiral\Core\Exceptions\Container\AutowireException;
-use Spiral\Core\Exceptions\SugarException;
 use Spiral\Core\FactoryInterface;
 
 class AuthBootloader extends Bootloader
@@ -37,7 +33,7 @@ class AuthBootloader extends Bootloader
         UserSourceInterface::class     => [self::class, 'userSource'],
 
         //Shortcut
-        'auth'                         => AuthContext::class
+        'auth'                         => ContextInterface::class
     ];
 
     /**
