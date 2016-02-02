@@ -13,7 +13,6 @@ use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\TokenManager;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Http\MiddlewareInterface;
-use Spiral\Tokenizer\TokenizerInterface;
 
 class AuthMiddleware implements MiddlewareInterface
 {

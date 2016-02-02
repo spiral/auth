@@ -23,6 +23,30 @@ return [
                 'key' => 'userID'
             ]
         ],
+        'basic' => [
+            'class'   => Operators\HTTPBasicSessionOperator::class,
+            'options' => [
+                'key' => 'userID' //used for session
+            ]
+        ],
+        'cookie' => [
+            'class'   => Operators\CookieTokenOperator::class,
+            'options' => [
+                'name' => 'auth-token',
+                'lifetime' => 0,
+                'source' => \Database\Sources\TokenSource::class,
+            ]
+        ],
+        'rememberMe' => [
+            'class'   => Operators\CookieTokenOperator::class,
+            'options' => [
+                'name' => 'remember-me',
+                'lifetime' => 86400*7, //1 week
+                'storage' => [
+                    'source' => \Database\Sources\TokenSource::class,
+                ],
+            ]
+        ],
         /*{{providers}}*/
     ]
 ];
