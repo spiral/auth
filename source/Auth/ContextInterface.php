@@ -10,11 +10,6 @@ namespace Spiral\Auth;
 interface ContextInterface
 {
     /**
-     * @param TokenInterface $token
-     */
-    public function setToken(TokenInterface $token);
-
-    /**
      * @return bool
      */
     public function hasToken();
