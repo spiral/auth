@@ -21,7 +21,7 @@ use Spiral\Core\Exceptions\SugarException;
  *
  * Application bindings:
  *
- * @property-read \Spiral\Auth\Entities\AuthContext $auth
+ * @property-read \Spiral\Auth\ContextInterface $auth
  */
 trait SharedTrait
 {
