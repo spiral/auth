@@ -34,6 +34,20 @@ return [
         ],
 
         /*
+         * Reads token hash from a specified header
+         */
+        'header'  => [
+            'class'   => Operators\CookieTokenOperator::class,
+            'options' => [
+                //Header to read token hash from
+                'header'      => 'X-Auth-Token',
+
+                //Persistent token storage
+                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
+            ]
+        ],
+
+        /*
          * Stores authentication token into cookie
          */
         'cookie'  => [
@@ -44,20 +58,6 @@ return [
 
                 //Cookie and token lifetime
                 'lifetime'    => 86400 * 7,
-
-                //Persistent token storage
-                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
-            ]
-        ],
-
-        /*
-         * Reads token hash from a specified header
-         */
-        'header'  => [
-            'class'   => Operators\CookieTokenOperator::class,
-            'options' => [
-                //Header to read token hash from
-                'header'      => 'X-Auth-Token',
 
                 //Persistent token storage
                 'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
