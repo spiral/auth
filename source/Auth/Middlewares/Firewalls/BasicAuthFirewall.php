@@ -7,7 +7,6 @@
  */
 namespace Spiral\Auth\Middlewares\Firewalls;
 
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -15,14 +14,14 @@ class BasicAuthFirewall extends AbstractFirewall
 {
     const REDIRECT_HTTP_STATUS = 301;
 
-    /** @var UriInterface */
-    protected $providerName = null;
-
+    /** @var string */
     protected $realm;
 
-    public function __construct($realm = 'Admin area', $providerName = null)
+    /**
+     * @param string $realm
+     */
+    public function __construct($realm = 'Admin area')
     {
-        $this->providerName = $providerName;
         $this->realm = $realm;
     }
 
