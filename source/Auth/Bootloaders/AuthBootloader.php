@@ -36,12 +36,6 @@ class AuthBootloader extends Bootloader
         //Automatically resolved thought configuration
         UserSourceInterface::class     => [self::class, 'userSource'],
 
-        //Auth context
-        ContextInterface::class        => AuthContext::class,
-
-        //Auth Context resolver
-        AuthContext::class             => [self::class, 'authContext'],
-
         //Shortcut
         'auth'                         => AuthContext::class
     ];
@@ -58,26 +52,5 @@ class AuthBootloader extends Bootloader
         }
 
         return $factory->make($config->userSource());
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @return AuthContext
-     * @throws AutowireException
-     * @throws SugarException
-     */
-    public function authContext(ServerRequestInterface $request)
-    {
-        if (empty($request)) {
-            throw new AutowireException("No active request found");
-        }
-
-        $auth = $request->getAttribute('auth');
-
-        if (!$auth instanceof AuthContext) {
-            throw new SugarException("Unable to resolve auth context using active request");
-        }
-
-        return $auth;
     }
 }
