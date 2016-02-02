@@ -5,7 +5,9 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
-namespace Spiral\Auth;
+namespace Spiral\Auth\Sources;
+
+use Spiral\Auth\UserInterface;
 
 interface UserSourceInterface
 {

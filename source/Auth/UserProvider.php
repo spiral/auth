@@ -7,20 +7,35 @@
  */
 namespace Spiral\Auth;
 
+use Spiral\Auth\Configs\AuthConfig;
+use Spiral\Auth\Sources\UserSourceInterface;
+use Spiral\Core\FactoryInterface;
+
 class UserProvider implements UserProviderInterface
 {
     /**
      * @var UserSourceInterface
      */
-    private $source;
+    private $userSource = null;
 
     /**
-     * @todo lazy loading
-     * @param UserSourceInterface $source
+     * @var AuthConfig
      */
-    public function __construct(UserSourceInterface $source)
+    protected $config;
+
+    /**
+     * @var FactoryInterface
+     */
+    protected $factory;
+
+    /**
+     * @param AuthConfig       $config
+     * @param FactoryInterface $factory
+     */
+    public function __construct(AuthConfig $config, FactoryInterface $factory)
     {
-        $this->source = $source;
+        $this->config = $config;
+        $this->factory = $factory;
     }
 
     /**
@@ -29,6 +44,21 @@ class UserProvider implements UserProviderInterface
      */
     public function getUser(TokenInterface $token)
     {
-        return $this->source->findByPK($token->userPK());
+        return $this->userSource()->findByPK($token->getUserPK());
+    }
+
+    /**
+     * @return UserSourceInterface
+     */
+    private function userSource()
+    {
+        if (empty($this->userSource)) {
+            //Lazy loading
+            $this->userSource = $this->factory->make(
+                $this->config->userSource()
+            );
+        }
+
+        return $this->userSource;
     }
 }
