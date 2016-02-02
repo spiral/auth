@@ -26,7 +26,7 @@ class AbstractTokenSource extends RecordSource implements TokenSourceInterface
     {
         return $this->find()->findOne([
             'hashCode'        => $hashCode,
-            'time_expiration' => ['<', new \DateTime('now')]
+            'time_expiration' => ['>' => new \DateTime('now')]
         ]);
     }
 
