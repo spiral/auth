@@ -8,6 +8,7 @@
 namespace Spiral\Auth\ORM;
 
 use Spiral\Auth\TokenInterface;
+use Spiral\Models\Traits\TimestampsTrait;
 use Spiral\ORM\Record;
 
 /**
@@ -15,6 +16,8 @@ use Spiral\ORM\Record;
  */
 abstract class AbstractToken extends Record implements TokenInterface
 {
+    use TimestampsTrait;
+
     /**
      * Field to be used to store user primary key reference.
      */
