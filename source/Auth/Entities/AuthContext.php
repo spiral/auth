@@ -57,14 +57,6 @@ class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function setToken(TokenInterface $token)
-    {
-        $this->token = $token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasToken()
     {
         return !empty($this->token);
