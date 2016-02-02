@@ -30,7 +30,8 @@ return [
          * Utilized default HTTP basic auth protocol to authenticate user
          */
         'basic'   => [
-            'class' => Operators\BasicTokenOperator::class,
+            'class'   => Operators\BasicTokenOperator::class,
+            'options' => []
         ],
 
         /*
