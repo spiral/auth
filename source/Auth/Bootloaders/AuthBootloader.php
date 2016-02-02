@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\Exceptions\AuthException;
-use Spiral\Auth\Sources\UsernameUserSourceInterface;
+use Spiral\Auth\Sources\UsernameSourceInterface;
 use Spiral\Auth\UserProvider;
 use Spiral\Auth\UserProviderInterface;
 use Spiral\Auth\UserSourceInterface;

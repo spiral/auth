@@ -68,7 +68,7 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function mountToken(Request $request, Response $response, TokenInterface $token)
     {
-        if ($token instanceof SessionToken) {
+        if (!$token instanceof SessionToken) {
             throw new InvalidTokenException("Only session tokens are allowed");
         }
 
@@ -82,7 +82,7 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function removeToken(Request $request, Response $response, TokenInterface $token)
     {
-        if ($token instanceof SessionToken) {
+        if (!$token instanceof SessionToken) {
             throw new InvalidTokenException("Only session tokens are allowed");
         }
 
@@ -96,7 +96,7 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function updateToken(Request $request, Response $response, TokenInterface $token)
     {
-        if ($token instanceof SessionToken) {
+        if (!$token instanceof SessionToken) {
             throw new InvalidTokenException("Only session tokens are allowed");
         }
 
