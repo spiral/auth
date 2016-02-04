@@ -16,7 +16,7 @@ use Spiral\Auth\UserInterface;
 use Spiral\ORM\Entities\RecordSource;
 use Spiral\Support\Strings;
 
-class AbstractTokenSource extends RecordSource implements TokenSourceInterface
+abstract class AbstractTokenSource extends RecordSource implements TokenSourceInterface
 {
     /**
      * @param string $hashCode
