@@ -8,6 +8,7 @@
 namespace Spiral\Auth\Authenticators;
 
 use Spiral\Auth\Exceptions\InvalidUserException;
+use Spiral\Auth\Hasher;
 use Spiral\Auth\PasswordAwareInterface;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 
@@ -19,11 +20,17 @@ class CredentialsAuthenticator
     private $source;
 
     /**
+     * @var Hasher
+     */
+    private $hasher;
+
+    /**
      * @param UsernameSourceInterface $source
      */
-    public function __construct(UsernameSourceInterface $source)
+    public function __construct(UsernameSourceInterface $source, Hasher $hasher)
     {
         $this->source = $source;
+        $this->hasher = $hasher;
     }
 
     /**
@@ -42,7 +49,7 @@ class CredentialsAuthenticator
             throw new InvalidUserException("User must be instance of PasswordAwareInterface");
         }
 
-        if (password_verify($password, $user->getPasswordHash())) {
+        if ($this->hasher->verifyHashes($password, $user->getPasswordHash())) {
             //Password needs rehash logic dedicated to user application
             return $user;
         }
