@@ -30,7 +30,7 @@ Mount `Spiral\Auth\AuthBootloader` to your application.
 ```
 
 ### Add AuthMiddleware
-You can either add middleware to a specific route or enable authentication services across application via http config:
+You can either add middleware to a specific route or enable authentication services and scope across application via http config:
 
 ```php
 'middlewares'  => [
