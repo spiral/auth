@@ -57,10 +57,7 @@ class AuthMiddleware implements MiddlewareInterface
 
         $scope = $this->container->replace(ContextInterface::class, $context);
         try {
-            $response = $next(
-                $request->withAttribute('auth', $context),
-                $response
-            );
+            $response = $next($request->withAttribute('auth', $context), $response);
         } finally {
             $this->container->restore($scope);
         }

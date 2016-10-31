@@ -18,4 +18,8 @@ class BasicToken extends AbstractToken
     {
         return 'basic-http';
     }
+
+    public function isExpired()
+    {
+    }
 }
