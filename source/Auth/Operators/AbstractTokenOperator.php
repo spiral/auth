@@ -116,6 +116,12 @@ abstract class AbstractTokenOperator implements TokenOperatorInterface, Lifetime
                 return null;
             }
 
+            if ($authToken->isExpired()) {
+                $this->tokenSource()->deleteToken($authToken);
+
+                return null;
+            }
+
             //If series is incorrect - skip record (token is invalid)
             if (strcasecmp($authToken->getSeries(), $series) !== 0) {
                 return null;

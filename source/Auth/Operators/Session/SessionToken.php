@@ -18,8 +18,4 @@ class SessionToken extends AbstractToken
     {
         return 'session';
     }
-
-    public function isExpired()
-    {
-    }
 }

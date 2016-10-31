@@ -119,6 +119,6 @@ abstract class AbstractToken extends Record implements TokenInterface
      */
     public function isExpired()
     {
-        return $this->time_expiration > new \DateTime('now');
+        return $this->time_expiration <= new \DateTime('now');
     }
 }
