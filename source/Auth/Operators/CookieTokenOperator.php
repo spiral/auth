@@ -9,6 +9,7 @@ namespace Spiral\Auth\Operators;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Auth\Hashes\TokenHashes;
 use Spiral\Auth\TokenInterface;
 use Spiral\Core\FactoryInterface;
 use Spiral\Http\Configs\HttpConfig;
@@ -21,18 +22,19 @@ class CookieTokenOperator extends AbstractTokenOperator
      *
      * @var HttpConfig
      */
-    private $httpConfig;
+    protected $httpConfig;
 
     /**
      * @var string
      */
-    private $cookie;
+    protected $cookie;
 
     /**
      * @param FactoryInterface $factory
      * @param int              $lifetime
      * @param string           $sourceClass
      * @param HttpConfig       $httpConfig
+     * @param TokenHashes      $hashes
      * @param string           $cookie
      */
     public function __construct(
@@ -40,9 +42,10 @@ class CookieTokenOperator extends AbstractTokenOperator
         $lifetime,
         $sourceClass,
         HttpConfig $httpConfig,
+        TokenHashes $hashes,
         $cookie
     ) {
-        parent::__construct($factory, $lifetime, $sourceClass);
+        parent::__construct($factory, $lifetime, $sourceClass, $hashes);
 
         $this->httpConfig = $httpConfig;
         $this->cookie = $cookie;

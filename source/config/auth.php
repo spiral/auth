@@ -20,7 +20,7 @@ return [
         /*
          * Uses active session storage to store user information
          */
-        'session' => [
+        'session'    => [
             'class'   => Operators\SessionTokenOperator::class,
             'options' => ['key' => 'userID']
         ],
@@ -28,7 +28,7 @@ return [
         /*
          * Utilized default HTTP basic auth protocol to authenticate user
          */
-        'basic'   => [
+        'basic'      => [
             'class'   => Operators\BasicTokenOperator::class,
             'options' => []
         ],
@@ -36,7 +36,7 @@ return [
         /*
          * Reads token hash from a specified header
          */
-        'header'  => [
+        'header'     => [
             'class'   => Operators\HeaderTokenOperator::class,
             'options' => [
                 //Header to read token hash from
@@ -53,7 +53,7 @@ return [
         /*
          * Stores authentication token into cookie
          */
-        'cookie'  => [
+        'cookie'     => [
             'class'   => Operators\CookieTokenOperator::class,
             'options' => [
                 //Cookie name, do not forget to exclude cookie name from cookie manager
@@ -61,6 +61,24 @@ return [
 
                 //Cookie and token lifetime
                 'lifetime'    => 86400 * 7,
+
+                //Persistent token storage
+                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
+            ]
+        ],
+
+        /*
+         * Stores authentication token into cookie as a remember-me cookie
+         */
+        'rememberMe' => [
+            'enabled' => true,
+            'class'   => Operators\CookieTokenOperator::class,
+            'options' => [
+                //Cookie name, do not forget to exclude cookie name from cookie manager
+                'cookie'      => 'rememberMe-token',
+
+                //Cookie and token lifetime
+                'lifetime'    => 86400 * 30,
 
                 //Persistent token storage
                 'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,

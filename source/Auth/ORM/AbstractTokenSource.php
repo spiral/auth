@@ -7,26 +7,71 @@
  */
 namespace Spiral\Auth\ORM;
 
+use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\Exceptions\InvalidTokenException;
 use Spiral\Auth\Exceptions\UndefinedTokenException;
+use Spiral\Auth\Hashes\TokenHashes;
+use Spiral\Auth\RandomGenerator;
 use Spiral\Auth\Sources\TokenSourceInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
+use Spiral\Database\Builders\Prototypes\AbstractSelect;
+use Spiral\ORM\Entities\RecordSelector;
 use Spiral\ORM\Entities\RecordSource;
+use Spiral\ORM\Exceptions\SourceException;
+use Spiral\ORM\ORM;
 use Spiral\Support\Strings;
 
 abstract class AbstractTokenSource extends RecordSource implements TokenSourceInterface
 {
     /**
-     * @param string $hashCode
+     * @var RandomGenerator
+     */
+    protected $generator = null;
+
+    /**
+     * @var TokenHashes
+     */
+    protected $hashes = null;
+
+    /**
+     * @param string          $class
+     * @param ORM             $orm
+     * @param RandomGenerator $generator
+     * @param TokenHashes     $hashes
+     * @param AuthConfig      $config
+     */
+    public function __construct(
+        $class = null,
+        ORM $orm = null,
+        RandomGenerator $generator,
+        TokenHashes $hashes,
+        AuthConfig $config
+    ) {
+        parent::__construct($class, $orm);
+
+        $this->hashes = $hashes;
+        $this->generator = $generator;
+    }
+
+    /**
+     * @param string $selector
+     * @return null|\Spiral\ORM\RecordEntity|AbstractToken
+     */
+    public function findBySelector($selector)
+    {
+        return $this->findOne(compact('selector'));
+    }
+
+    /**
+     * @param string $hash
      * @return AbstractToken
      */
-    public function findByHash($hashCode)
+    public function findByHash($hash)
     {
         return $this->find()->findOne([
-            'hashCode'        => $hashCode,
-            'time_expiration' => ['>' => new \DateTime('now')]
+            'hash' => $hash
         ]);
     }
 
@@ -38,7 +83,7 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
     public function getToken($hash)
     {
         if (empty($token = $this->findByHash($hash))) {
-            throw  new UndefinedTokenException("Unable to find token associated with given hash");
+            throw new UndefinedTokenException("Unable to find token associated with given hash");
         }
 
         return $token;
@@ -73,8 +118,11 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
         /*
          * Configuring token attributes.
          */
-        $token->setHash($this->generateHash());
+        $token->tokenCode = $this->generateHash();
+        $token->setField('hash', $this->hashes->makeHash($token->tokenCode));
         $token->setUserPK($user->primaryKey());
+        $token->setField('selector', $this->generateSelector());
+        $token->setField('series', $this->generateSeries());
         $token->setExpiration(new \DateTime("now + {$lifetime} seconds"));
 
         if (!$this->save($token)) {
@@ -95,8 +143,18 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
             throw new InvalidTokenException("Only instances of " . static::RECORD . " is allowed.");
         }
 
+        /**
+         * Set new hash, new unique selector, same series.
+         * Then delete old token.
+         */
+        $token->tokenCode = $this->generateHash();
+        $token->setField('hash', $this->hashes->makeHash($token->tokenCode));
+        $token->setField('selector', $this->generateSelector($token->getSelector()));
         $token->setExpiration(new \DateTime("now + {$lifetime} seconds"));
-        $this->save($token);
+
+        if (!$this->save($token)) {
+            throw new AuthException("Unable to save token to database");
+        }
     }
 
     /**
@@ -126,9 +184,37 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
     /**
      * @return string
      */
-    protected function generateHash()
+    public function generateHash()
     {
-        //Using openssl_random_pseudo_bytes
-        return Strings::random(128);
+        return $this->generator->generateTokenHash();
+    }
+
+    /**
+     * @return string
+     */
+    public function generateSeries()
+    {
+        return $this->generator->generateTokenSeries();
+    }
+
+    /**
+     * @param string|null $passedSelector
+     * @return string
+     */
+    public function generateSelector($passedSelector = null)
+    {
+        $selector = $this->generator->generateTokenSelector();
+
+        //Selector is not unique
+        if (strcasecmp($selector, $passedSelector) === 0) {
+            return $this->generateSelector($selector);
+        }
+
+        //Selector is not unique
+        if ($this->findBySelector($selector)) {
+            return $this->generateSelector($selector);
+        }
+
+        return $selector;
     }
 }

@@ -21,11 +21,6 @@ interface TokenSourceInterface
     public function getToken($hash);
 
     /**
-     * @param TokenInterface $token
-     */
-    public function deleteToken(TokenInterface $token);
-
-    /**
      * Must return already stored token.
      *
      * @param UserInterface $user
@@ -40,4 +35,16 @@ interface TokenSourceInterface
      * @return bool
      */
     public function updateToken(TokenInterface $token, $lifetime);
+
+    /**
+     * @param TokenInterface $token
+     */
+    public function deleteToken(TokenInterface $token);
+
+    /**
+     * @param string $selector
+     * @return TokenInterface
+     * @throws UndefinedTokenException
+     */
+    public function findBySelector($selector);
 }
