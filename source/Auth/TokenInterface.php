@@ -10,6 +10,13 @@ namespace Spiral\Auth;
 interface TokenInterface
 {
     /**
+     * Char to join/explode token partials.
+     */
+    const DELIMITER = '.';
+
+    /**
+     * Fully compiled hash code for a stored token.
+     *
      * @return string
      */
     public function getHash();
@@ -18,4 +25,9 @@ interface TokenInterface
      * @return mixed
      */
     public function getUserPK();
+
+    /**
+     * @return bool
+     */
+    public function isExpired();
 }

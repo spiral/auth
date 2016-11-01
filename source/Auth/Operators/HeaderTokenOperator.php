@@ -9,6 +9,7 @@ namespace Spiral\Auth\Operators;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Auth\Hashes\TokenHashes;
 use Spiral\Auth\TokenInterface;
 use Spiral\Core\FactoryInterface;
 
@@ -23,15 +24,17 @@ class HeaderTokenOperator extends AbstractTokenOperator
      * @param FactoryInterface $factory
      * @param int              $lifetime
      * @param string           $sourceClass
+     * @param TokenHashes      $hashes
      * @param string           $header Header to read token hash from.
      */
     public function __construct(
         FactoryInterface $factory,
         $lifetime,
         $sourceClass,
+        TokenHashes $hashes,
         $header
     ) {
-        parent::__construct($factory, $lifetime, $sourceClass);
+        parent::__construct($factory, $lifetime, $sourceClass, $hashes);
 
         $this->header = $header;
     }
