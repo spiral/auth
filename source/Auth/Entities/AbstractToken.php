@@ -17,6 +17,20 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
     private $userPK;
 
     /**
+     * Operator which has created this token.
+     *
+     * @var string
+     */
+    protected $operator;
+
+    /**
+     * Source from which token was fetched.
+     *
+     * @var string
+     */
+    protected $source;
+
+    /**
      * @param mixed $userPK
      */
     public function __construct($userPK)
@@ -50,5 +64,37 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
 
     public function isExpired()
     {
+    }
+
+    /**
+     * @return string
+     */
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+
+    /**
+     * @param string $operator
+     */
+    public function setOperator($operator)
+    {
+        $this->operator = $operator;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
     }
 }

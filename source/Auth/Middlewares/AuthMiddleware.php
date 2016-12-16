@@ -83,7 +83,12 @@ class AuthMiddleware implements MiddlewareInterface
             return new AuthContext($this->users);
         }
 
-        return new AuthContext($this->users, $name, $operator->fetchToken($request));
+        $token = $operator->fetchToken($request);
+        if (!empty($token)) {
+            $token->setOperator($name);
+        }
+
+        return new AuthContext($this->users, $name, $token);
     }
 
     /**
@@ -96,12 +101,17 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $operator = $this->manager->getOperator($context->getOperator());
 
-        //Session was either continued or ended.
-        if ($context->isLogout()) {
-            return $operator->removeToken($request, $response, $context->getToken());
+        $token = $context->getToken();
+        if (!empty($token)) {
+            $token->setOperator($context->getOperator());
         }
 
-        return $operator->updateToken($request, $response, $context->getToken());
+        //Session was either continued or ended.
+        if ($context->isLogout()) {
+            return $operator->removeToken($request, $response, $token);
+        }
+
+        return $operator->updateToken($request, $response, $token);
     }
 
     /**
@@ -113,11 +123,11 @@ class AuthMiddleware implements MiddlewareInterface
     private function createToken(Request $request, Response $response, AuthContext $context)
     {
         $operator = $this->manager->getOperator($context->getOperator());
+        $token = $operator->createToken($context->getUser());
+        if (!empty($token)) {
+            $token->setOperator($context->getOperator());
+        }
 
-        return $operator->mountToken(
-            $request,
-            $response,
-            $operator->createToken($context->getUser())
-        );
+        return $operator->mountToken($request, $response, $token);
     }
 }

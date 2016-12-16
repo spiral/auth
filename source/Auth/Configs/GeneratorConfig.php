@@ -16,7 +16,7 @@ class GeneratorConfig extends InjectableConfig
     /**
      * Configuration section.
      */
-    const CONFIG = 'modules/generator';
+    const CONFIG = 'modules/auth/generator';
 
     /**
      * @var array
@@ -24,10 +24,6 @@ class GeneratorConfig extends InjectableConfig
     protected $config = [
         'token' => [
             'selector' => [
-                'length'  => 12,
-                'bin2hex' => true
-            ],
-            'series'   => [
                 'length'  => 12,
                 'bin2hex' => true
             ],
@@ -44,14 +40,6 @@ class GeneratorConfig extends InjectableConfig
     public function tokenSelector()
     {
         return $this->config['token']['selector'];
-    }
-
-    /**
-     * @return string
-     */
-    public function tokenSeries()
-    {
-        return $this->config['token']['series'];
     }
 
     /**

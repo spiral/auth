@@ -43,7 +43,12 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function createToken(UserInterface $user)
     {
-        return new SessionToken($user->primaryKey());
+        $source = $user->primaryKey();
+
+        $token = new SessionToken($source);
+        $token->setSource($source);
+
+        return $token;
     }
 
     /**
@@ -59,7 +64,20 @@ class SessionTokenOperator implements TokenOperatorInterface
      */
     public function fetchToken(Request $request)
     {
-        return new SessionToken($this->session->get($this->key));
+        $source = $this->session->get($this->key);
+
+        $token = new SessionToken($source);
+        $token->setSource($source);
+
+        return $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function compareTokens(TokenInterface $token, $hash)
+    {
+        return strcasecmp($token->getHash(), $hash) === 0;
     }
 
     /**

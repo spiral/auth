@@ -13,13 +13,19 @@ return [
             'algo' => PASSWORD_DEFAULT
         ],
         'primaryHashing' => [
-            [
-                'func'   => 'hash',
-                'params' => ['sha256']
-            ],
-            [
-                'func' => 'base64_encode',
-            ],
+            /*
+             * Below is an example of how you can enable additional password hashing
+             * before password_hash function will be applied
+             *
+             * [
+             *     'func'   => 'hash',
+             *     'params' => ['sha256']
+             * ],
+             * [
+             *     'func' => 'base64_encode',
+             * ],
+             *
+             */
         ],
     ]
 ];
