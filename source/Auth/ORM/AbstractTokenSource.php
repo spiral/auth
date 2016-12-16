@@ -115,14 +115,15 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
          */
         $token = $this->create();
 
+        $code = $this->generateHash();
+        $token->setSource($code);
+
         /*
          * Configuring token attributes.
          */
-        $token->tokenCode = $this->generateHash();
-        $token->setField('hash', $this->hashes->makeHash($token->tokenCode));
         $token->setUserPK($user->primaryKey());
+        $token->setField('hash', $this->hashes->makeHash($code));
         $token->setField('selector', $this->generateSelector());
-        $token->setField('series', $this->generateSeries());
         $token->setExpiration(new \DateTime("now + {$lifetime} seconds"));
 
         if (!$this->save($token)) {
@@ -143,13 +144,6 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
             throw new InvalidTokenException("Only instances of " . static::RECORD . " is allowed.");
         }
 
-        /**
-         * Set new hash, new unique selector, same series.
-         * Then delete old token.
-         */
-        $token->tokenCode = $this->generateHash();
-        $token->setField('hash', $this->hashes->makeHash($token->tokenCode));
-        $token->setField('selector', $this->generateSelector($token->getSelector()));
         $token->setExpiration(new \DateTime("now + {$lifetime} seconds"));
 
         if (!$this->save($token)) {
@@ -187,14 +181,6 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
     public function generateHash()
     {
         return $this->generator->generateTokenHash();
-    }
-
-    /**
-     * @return string
-     */
-    public function generateSeries()
-    {
-        return $this->generator->generateTokenSeries();
     }
 
     /**

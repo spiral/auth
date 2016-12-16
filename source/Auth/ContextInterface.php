@@ -42,7 +42,7 @@ interface ContextInterface
     public function isAuthenticated();
 
     /**
-     * Mark context as logouted.
+     * Mark context as logged out.
      */
     public function logout();
 

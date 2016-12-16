@@ -35,7 +35,12 @@ class BasicTokenOperator implements TokenOperatorInterface
      */
     public function createToken(UserInterface $user)
     {
-        return new BasicToken($user->primaryKey());
+        $source = $user->primaryKey();
+
+        $token = new BasicToken($source);
+        $token->setSource($source);
+
+        return $token;
     }
 
     /**
@@ -67,7 +72,18 @@ class BasicTokenOperator implements TokenOperatorInterface
             return null;
         }
 
-        return $this->createToken($user);
+        $token = $this->createToken($user);
+        $token->setSource($header);
+
+        return $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function compareTokens(TokenInterface $token, $hash)
+    {
+        return strcasecmp($token->getHash(), $hash) === 0;
     }
 
     /**

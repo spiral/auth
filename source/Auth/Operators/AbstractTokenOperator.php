@@ -12,6 +12,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\UndefinedTokenException;
 use Spiral\Auth\Hashes\TokenHashes;
 use Spiral\Auth\LifetimeTokenOperatorInterface;
+use Spiral\Auth\ORM\AbstractToken;
 use Spiral\Auth\ORM\AbstractTokenSource;
 use Spiral\Auth\Sources\TokenSourceInterface;
 use Spiral\Auth\TokenInterface;
@@ -109,35 +110,59 @@ abstract class AbstractTokenOperator implements TokenOperatorInterface, Lifetime
             return null;
         }
 
-        list($selector, $series, $value) = $partials;
+        list($selector, $value) = $partials;
 
         try {
+            //Find by a selector
             if (!$authToken = $this->tokenSource()->findBySelector($selector)) {
                 return null;
             }
 
+            //Time-leaking safe comparison
+            if (!$this->hashes->hashEquals($value, $authToken->getHashValue())) {
+                return null;
+            }
+
+            //Check expiration
             if ($authToken->isExpired()) {
                 $this->tokenSource()->deleteToken($authToken);
 
                 return null;
             }
 
-            //If series is incorrect - skip record (token is invalid)
-            if (strcasecmp($authToken->getSeries(), $series) !== 0) {
-                return null;
-            }
-
-            //If hash is incorrect - record should be deleted because series is compromised
-            if (!$this->hashes->hashEquals($value, $authToken->getHashValue())) {
-                $this->tokenSource()->deleteToken($authToken);
-
-                return null;
-            }
+            $authToken->setSource($value);
 
             return $authToken;
         } catch (UndefinedTokenException $e) {
             return null;
         }
+    }
+
+    /**
+     * @param TokenInterface|AbstractToken $token
+     * @param string                       $hash
+     * @return bool|null
+     */
+    public function compareTokens(TokenInterface $token, $hash)
+    {
+        $partials = $this->getTokenPartials($hash);
+        if (empty($partials)) {
+            return null;
+        }
+
+        list($selector, $value) = $partials;
+
+        //Compare selectors
+        if (strcasecmp($token->getSelector(), $selector) !== 0) {
+            return null;
+        }
+
+        //Time-leaking safe comparison
+        if (!$this->hashes->hashEquals($value, $token->getHashValue())) {
+            return null;
+        }
+
+        return true;
     }
 
     /**
@@ -151,7 +176,7 @@ abstract class AbstractTokenOperator implements TokenOperatorInterface, Lifetime
         //todo delimiter may be overwritten in app
         $result = explode(TokenInterface::DELIMITER, $value);
 
-        if (count($result) !== 3) {
+        if (count($result) !== 2) {
             return false;
         }
 

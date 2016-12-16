@@ -35,6 +35,13 @@ interface TokenOperatorInterface
     public function fetchToken(Request $request);
 
     /**
+     * @param TokenInterface $token
+     * @param string         $hash
+     * @return mixed
+     */
+    public function compareTokens(TokenInterface $token, $hash);
+
+    /**
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token

@@ -29,12 +29,24 @@ abstract class AbstractToken extends Record implements TokenInterface
     const USER_PRIMARY_KEY = 'user_id';
 
     /**
+     * Operator which has created this token.
+     *
+     * @var string
+     */
+    protected $operator;
+
+    /**
+     * Source from which token was fetched.
+     *
+     * @var string
+     */
+    protected $source;
+
+    /**
      * @var array
      */
     protected $schema = [
-        'id'              => 'primary',
         'selector'        => 'string(128)',
-        'series'          => 'string(128)',
         'hash'            => 'string(128)',
         'time_expiration' => 'datetime'
     ];
@@ -47,18 +59,15 @@ abstract class AbstractToken extends Record implements TokenInterface
         [self::INDEX, 'hash', 'selector', 'time_expiration']
     ];
 
-    public $tokenCode;
-
     /**
      * {@inheritdoc}
      */
     public function getHash()
     {
-        $hash = $this->tokenCode;
+        $code = $this->getSource();
         $selector = $this->getSelector();
-        $series = $this->getSeries();
 
-        return join(static::DELIMITER, [$selector, $series, $hash]);
+        return join(static::DELIMITER, [$selector, $code]);
     }
 
     /**
@@ -69,16 +78,31 @@ abstract class AbstractToken extends Record implements TokenInterface
         return $this->getField(static::USER_PRIMARY_KEY);
     }
 
-    public function getSeries()
-    {
-        return $this->getField('series');
-    }
-
+    /**
+     * Get selector field value.
+     *
+     * @return mixed|null|\Spiral\Models\AccessorInterface
+     */
     public function getSelector()
     {
         return $this->getField('selector');
     }
 
+    /**
+     * Get selector field value.
+     *
+     * @return mixed|null|\Spiral\Models\AccessorInterface
+     */
+    public function getCode()
+    {
+        return $this->getField('code');
+    }
+
+    /**
+     * Get hash field value.
+     *
+     * @return mixed|null|\Spiral\Models\AccessorInterface
+     */
     public function getHashValue()
     {
         return $this->getField('hash');
@@ -120,5 +144,37 @@ abstract class AbstractToken extends Record implements TokenInterface
     public function isExpired()
     {
         return $this->time_expiration <= new \DateTime('now');
+    }
+
+    /**
+     * @return string
+     */
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+
+    /**
+     * @param string $operator
+     */
+    public function setOperator($operator)
+    {
+        $this->operator = $operator;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
     }
 }

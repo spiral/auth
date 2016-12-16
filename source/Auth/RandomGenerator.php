@@ -52,16 +52,6 @@ class RandomGenerator
     /**
      * @return string
      */
-    public function generateTokenSeries()
-    {
-        $params = $this->config->tokenSeries();
-
-        return $this->generate($params['length'], $params['bin2hex']);
-    }
-
-    /**
-     * @return string
-     */
     public function generateTokenHash()
     {
         $params = $this->config->tokenHash();

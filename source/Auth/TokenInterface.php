@@ -30,4 +30,24 @@ interface TokenInterface
      * @return bool
      */
     public function isExpired();
+
+    /**
+     * @return string
+     */
+    public function getOperator();
+
+    /**
+     * @param string $operator
+     */
+    public function setOperator($operator);
+
+    /**
+     * @return string
+     */
+    public function getSource();
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source);
 }

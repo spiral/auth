@@ -27,10 +27,6 @@ class GeneratorConfig extends InjectableConfig
                 'length'  => 12,
                 'bin2hex' => true
             ],
-            'series'   => [
-                'length'  => 12,
-                'bin2hex' => true
-            ],
             'hash'     => [
                 'length'  => 64,
                 'bin2hex' => true
@@ -44,14 +40,6 @@ class GeneratorConfig extends InjectableConfig
     public function tokenSelector()
     {
         return $this->config['token']['selector'];
-    }
-
-    /**
-     * @return string
-     */
-    public function tokenSeries()
-    {
-        return $this->config['token']['series'];
     }
 
     /**
