@@ -84,7 +84,9 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         $token = $operator->fetchToken($request);
-        $token->setOperator($name);
+        if (!empty($token)) {
+            $token->setOperator($name);
+        }
 
         return new AuthContext($this->users, $name, $token);
     }
@@ -122,7 +124,9 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $operator = $this->manager->getOperator($context->getOperator());
         $token = $operator->createToken($context->getUser());
-        $token->setOperator($context->getOperator());
+        if (!empty($token)) {
+            $token->setOperator($context->getOperator());
+        }
 
         return $operator->mountToken($request, $response, $token);
     }

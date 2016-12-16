@@ -7,6 +7,9 @@
  */
 namespace Spiral;
 
+use Spiral\Auth\Configs\AuthConfig;
+use Spiral\Auth\Configs\GeneratorConfig;
+use Spiral\Auth\Configs\HashesConfig;
 use Spiral\Core\DirectoriesInterface;
 use Spiral\Modules\ModuleInterface;
 use Spiral\Modules\PublisherInterface;
@@ -38,7 +41,19 @@ class AuthModule implements ModuleInterface
     {
         $publisher->publish(
             __DIR__ . '/config/auth.php',
-            $directories->directory('config') . 'modules/auth.php',
+            $directories->directory('config') . AuthConfig::CONFIG . '.php',
+            PublisherInterface::FOLLOW
+        );
+
+        $publisher->publish(
+            __DIR__ . '/config/hashes.php',
+            $directories->directory('config') . HashesConfig::CONFIG . '.php',
+            PublisherInterface::FOLLOW
+        );
+
+        $publisher->publish(
+            __DIR__ . '/config/generator.php',
+            $directories->directory('config') . GeneratorConfig::CONFIG . '.php',
             PublisherInterface::FOLLOW
         );
     }

@@ -15,7 +15,7 @@ class HashesConfig extends InjectableConfig
     /**
      * Configuration section.
      */
-    const CONFIG = 'modules/hashes';
+    const CONFIG = 'modules/auth/hashes';
 
     /**
      * @var array

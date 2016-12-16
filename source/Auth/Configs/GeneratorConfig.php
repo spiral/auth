@@ -16,7 +16,7 @@ class GeneratorConfig extends InjectableConfig
     /**
      * Configuration section.
      */
-    const CONFIG = 'modules/generator';
+    const CONFIG = 'modules/auth/generator';
 
     /**
      * @var array
