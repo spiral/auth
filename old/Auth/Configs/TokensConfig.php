@@ -8,15 +8,14 @@
 
 namespace Spiral\Auth\Configs;
 
-
 use Spiral\Core\InjectableConfig;
 
-class GeneratorConfig extends InjectableConfig
+/**
+ * Defines how authorization tokens must be generated.
+ */
+class TokensConfig extends InjectableConfig
 {
-    /**
-     * Configuration section.
-     */
-    const CONFIG = 'modules/auth/generator';
+    const CONFIG = 'modules/auth/tokens';
 
     /**
      * @var array
@@ -24,11 +23,11 @@ class GeneratorConfig extends InjectableConfig
     protected $config = [
         'token' => [
             'selector' => [
-                'length'  => 12,
+                'length' => 12,
                 'bin2hex' => true
             ],
-            'hash'     => [
-                'length'  => 64,
+            'hash' => [
+                'length' => 64,
                 'bin2hex' => true
             ],
         ]
@@ -37,7 +36,7 @@ class GeneratorConfig extends InjectableConfig
     /**
      * @return string
      */
-    public function tokenSelector()
+    public function tokenSelector():string
     {
         return $this->config['token']['selector'];
     }
@@ -45,7 +44,7 @@ class GeneratorConfig extends InjectableConfig
     /**
      * @return string
      */
-    public function tokenHash()
+    public function tokenHash(): string
     {
         return $this->config['token']['hash'];
     }

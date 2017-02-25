@@ -1,7 +1,7 @@
 <?php
 namespace Spiral\Auth;
 
-use Spiral\Auth\Configs\GeneratorConfig;
+use Spiral\Auth\Configs\TokensConfig;
 use Spiral\Support\Strings;
 
 /**
@@ -10,16 +10,16 @@ use Spiral\Support\Strings;
 class RandomGenerator
 {
     /**
-     * @var GeneratorConfig
+     * @var TokensConfig
      */
     private $config;
 
     /**
      * RandomGenerator constructor.
      *
-     * @param GeneratorConfig $config
+     * @param TokensConfig $config
      */
-    public function __construct(GeneratorConfig $config)
+    public function __construct(TokensConfig $config)
     {
         $this->config = $config;
     }

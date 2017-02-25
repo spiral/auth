@@ -5,6 +5,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral\Auth\Middlewares;
 
 use Psr\Http\Message\ResponseInterface as Response;
@@ -16,35 +17,38 @@ use Spiral\Auth\UserProviderInterface;
 use Spiral\Core\ContainerInterface;
 use Spiral\Http\MiddlewareInterface;
 
+/**
+ * Manages user session over database tokens.
+ */
 class AuthMiddleware implements MiddlewareInterface
 {
     /**
      * @var UserProviderInterface
      */
-    protected $users;
+    private $users;
 
     /**
      * @var TokenManager
      */
-    protected $manager;
+    private $tokens;
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @param UserProviderInterface $users
-     * @param TokenManager          $manager
-     * @param ContainerInterface    $container
+     * @param TokenManager $tokens
+     * @param ContainerInterface $container Creates authorization context.
      */
     public function __construct(
         UserProviderInterface $users,
-        TokenManager $manager,
+        TokenManager $tokens,
         ContainerInterface $container
     ) {
         $this->users = $users;
-        $this->manager = $manager;
+        $this->tokens = $tokens;
         $this->container = $container;
     }
 
@@ -57,14 +61,19 @@ class AuthMiddleware implements MiddlewareInterface
 
         $scope = $this->container->replace(ContextInterface::class, $context);
         try {
-            $response = $next($request->withAttribute('auth', $context), $response);
+            $response = $next(
+                $request->withAttribute('auth', $context),
+                $response
+            );
         } finally {
             $this->container->restore($scope);
         }
 
         if ($context->hasToken()) {
+            //Refresh token state (if needed)
             $response = $this->updateToken($request, $response, $context);
         } elseif ($context->hasUser()) {
+            //User was authorized inside scope, let's make sure that session persist
             $response = $this->createToken($request, $response, $context);
         }
 
@@ -75,9 +84,10 @@ class AuthMiddleware implements MiddlewareInterface
      * @param Request $request
      * @return AuthContext
      */
-    protected function createContext(Request $request)
+    protected function createContext(Request $request): AuthContext
     {
-        $operator = $this->manager->detectOperator($request, $name);
+        //Different tokens might be handled by different operators
+        $operator = $this->tokens->detectOperator($request, $name);
 
         if (empty($operator)) {
             return new AuthContext($this->users);
@@ -92,14 +102,17 @@ class AuthMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param Request     $request
-     * @param Response    $response
+     * @param Request $request
+     * @param Response $response
      * @param AuthContext $context
      * @return Response
      */
-    private function updateToken(Request $request, Response $response, AuthContext $context)
-    {
-        $operator = $this->manager->getOperator($context->getOperator());
+    private function updateToken(
+        Request $request,
+        Response $response,
+        AuthContext $context
+    ): Response {
+        $operator = $this->tokens->getOperator($context->getOperator());
 
         $token = $context->getToken();
         if (!empty($token)) {
@@ -115,14 +128,17 @@ class AuthMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param Request     $request
-     * @param Response    $response
+     * @param Request $request
+     * @param Response $response
      * @param AuthContext $context
      * @return Response
      */
-    private function createToken(Request $request, Response $response, AuthContext $context)
-    {
-        $operator = $this->manager->getOperator($context->getOperator());
+    private function createToken(
+        Request $request,
+        Response $response,
+        AuthContext $context
+    ): Response {
+        $operator = $this->tokens->getOperator($context->getOperator());
         $token = $operator->createToken($context->getUser());
         if (!empty($token)) {
             $token->setOperator($context->getOperator());
