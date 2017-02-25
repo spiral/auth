@@ -13,8 +13,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\ContextInterface;
 use Spiral\Auth\Entities\AuthContext;
 use Spiral\Auth\TokenManager;
-use Spiral\Auth\UserProviderInterface;
+use Spiral\Auth\UserSourceInterface;
 use Spiral\Core\ContainerInterface;
+use Spiral\Core\ScoperInterface;
 use Spiral\Http\MiddlewareInterface;
 
 /**
@@ -24,7 +25,7 @@ use Spiral\Http\MiddlewareInterface;
 class AuthMiddleware implements MiddlewareInterface
 {
     /**
-     * @var UserProviderInterface
+     * @var UserSourceInterface
      */
     private $users;
 
@@ -34,23 +35,23 @@ class AuthMiddleware implements MiddlewareInterface
     private $tokens;
 
     /**
-     * @var ContainerInterface
+     * @var ScoperInterface
      */
-    private $container;
+    private $scopes;
 
     /**
-     * @param UserProviderInterface $users
+     * @param UserSourceInterface $users
      * @param TokenManager $tokens
-     * @param ContainerInterface $container Creates authorization context.
+     * @param ScoperInterface $scopes
      */
     public function __construct(
-        UserProviderInterface $users,
+        UserSourceInterface $users,
         TokenManager $tokens,
-        ContainerInterface $container
+        ScoperInterface $scopes
     ) {
         $this->users = $users;
         $this->tokens = $tokens;
-        $this->container = $container;
+        $this->scopes = $scopes;
     }
 
     /**
@@ -60,14 +61,14 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $context = $this->createContext($request);
 
-        $scope = $this->container->replace(ContextInterface::class, $context);
+        $scope = $this->scopes->replace(ContextInterface::class, $context);
         try {
             $response = $next(
                 $request->withAttribute('auth', $context),
                 $response
             );
         } finally {
-            $this->container->restore($scope);
+            $this->scopes->restore($scope);
         }
 
         if ($context->hasToken()) {

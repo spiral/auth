@@ -10,7 +10,7 @@ namespace Spiral\Auth\Entities;
 use Spiral\Auth\ContextInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
-use Spiral\Auth\UserProviderInterface;
+use Spiral\Auth\UserSourceInterface;
 
 class AuthContext implements ContextInterface
 {
@@ -36,17 +36,17 @@ class AuthContext implements ContextInterface
 
     /**
      * @invisible
-     * @var UserProviderInterface
+     * @var UserSourceInterface
      */
     protected $users;
 
     /**
-     * @param UserProviderInterface $users
+     * @param UserSourceInterface $users
      * @param string                $operator
      * @param TokenInterface|null   $token
      */
     public function __construct(
-        UserProviderInterface $users,
+        UserSourceInterface $users,
         $operator = '',
         TokenInterface $token = null
     ) {
