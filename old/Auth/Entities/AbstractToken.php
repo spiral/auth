@@ -62,7 +62,7 @@ abstract class AbstractToken implements TokenInterface, \JsonSerializable
         return $this->getHash();
     }
 
-    public function isExpired()
+    public function hasExpired()
     {
     }
 

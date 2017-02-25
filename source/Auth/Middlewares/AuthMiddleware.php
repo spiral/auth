@@ -18,7 +18,8 @@ use Spiral\Core\ContainerInterface;
 use Spiral\Http\MiddlewareInterface;
 
 /**
- * Manages user session over database tokens.
+ * Manages user session over database tokens. This is primary middleware which must always be set
+ * before any auth firewalls.
  */
 class AuthMiddleware implements MiddlewareInterface
 {
