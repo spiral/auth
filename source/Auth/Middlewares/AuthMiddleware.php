@@ -122,7 +122,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         //Session was either continued or ended.
-        if ($context->isLogout()) {
+        if ($context->isClosed()) {
             return $operator->removeToken($request, $response, $token);
         }
 

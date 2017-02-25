@@ -92,7 +92,7 @@ class AuthContext implements ContextInterface
             return null;
         }
 
-        return $this->user = $this->users->getUser($this->token);
+        return $this->user = $this->users->findByPK($this->token->getUserPK());
     }
 
     /**
@@ -120,7 +120,7 @@ class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function logout()
+    public function close()
     {
         $this->logout = true;
     }
@@ -138,7 +138,7 @@ class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function isLogout()
+    public function isClosed()
     {
         return $this->logout;
     }
