@@ -1,10 +1,12 @@
 <?php
 /**
- * Spiral Framework.
+ * Spiral Framework, SpiralScout LLC.
  *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J), Lev Seleznev
+ * @package   spiralFramework
+ * @author    Anton Titov (Wolfy-J)
+ * @copyright ©2009-2011
  */
+
 namespace Spiral\Auth\Middlewares\Firewalls;
 
 use Psr\Http\Message\ResponseInterface as Response;
@@ -17,24 +19,24 @@ class RedirectFirewall extends AbstractFirewall
     /**
      * @var int
      */
-    protected $status = 301;
+    private $status = 301;
 
     /**
      * @var UriInterface
      */
-    protected $redirect = null;
+    private $redirect = null;
 
     /**
      * @param string|UriInterface $redirect
      * @param int                 $status
      */
-    public function __construct($redirect, $status = 301)
+    public function __construct($redirect, int $status = 301)
     {
+        $this->status = $status;
+
         if (!$redirect instanceof UriInterface) {
             $redirect = new Uri($redirect);
         }
-
-        $this->status = $status;
 
         $this->withRedirect($redirect);
     }
@@ -43,7 +45,7 @@ class RedirectFirewall extends AbstractFirewall
      * @param UriInterface $uri
      * @return RedirectFirewall
      */
-    public function withRedirect(UriInterface $uri)
+    public function withRedirect(UriInterface $uri): self
     {
         $middleware = clone $this;
         $middleware->redirect = $uri;

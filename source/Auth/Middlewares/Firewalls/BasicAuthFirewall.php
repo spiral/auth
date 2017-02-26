@@ -1,10 +1,12 @@
 <?php
 /**
- * Spiral Framework.
+ * Spiral Framework, SpiralScout LLC.
  *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J), Lev Seleznev
+ * @package   spiralFramework
+ * @author    Anton Titov (Wolfy-J)
+ * @copyright ©2009-2011
  */
+
 namespace Spiral\Auth\Middlewares\Firewalls;
 
 use Psr\Http\Message\ResponseInterface as Response;
@@ -15,12 +17,12 @@ class BasicAuthFirewall extends AbstractFirewall
     /**
      * @var string
      */
-    protected $realm;
+    private $realm;
 
     /**
      * @param string $realm
      */
-    public function __construct($realm = 'Login')
+    public function __construct(string $realm = 'Login')
     {
         $this->realm = $realm;
     }
@@ -29,7 +31,7 @@ class BasicAuthFirewall extends AbstractFirewall
      * @param string $realm
      * @return BasicAuthFirewall
      */
-    public function withRealm($realm)
+    public function withRealm(string $realm): self
     {
         $middleware = clone $this;
         $middleware->realm = $realm;
