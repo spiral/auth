@@ -9,6 +9,7 @@
 namespace Spiral\Auth\Bootloaders;
 
 use Spiral\Auth\ContextInterface;
+use Spiral\Auth\TokenManager;
 use Spiral\Core\Bootloaders\Bootloader;
 
 class AuthBootloader extends Bootloader
@@ -18,6 +19,7 @@ class AuthBootloader extends Bootloader
      */
     const BINDINGS = [
         //Authorization context
-        'auth' => ContextInterface::class
+        'auth'   => ContextInterface::class,
+        'tokens' => TokenManager::class
     ];
 }

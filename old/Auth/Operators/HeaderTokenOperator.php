@@ -44,7 +44,7 @@ class HeaderTokenOperator extends AbstractTokenOperator
      */
     public function mountToken(Request $request, Response $response, TokenInterface $token)
     {
-        return $response->withAddedHeader($this->header, $token->getHash());
+        return $response->withAddedHeader($this->header, $token->getValue());
     }
 
     /**

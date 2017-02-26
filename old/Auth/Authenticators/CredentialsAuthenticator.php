@@ -12,7 +12,7 @@ use Spiral\Auth\Hashes\PasswordHashes;
 use Spiral\Auth\PasswordAwareInterface;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 
-class CredentialsAuthenticator
+class CredentialsAuthenticator1
 {
     /**
      * @var UsernameSourceInterface

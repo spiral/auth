@@ -6,6 +6,7 @@
  * @author    Anton Titov (Wolfy-J)
  * @copyright ©2009-2011
  */
+
 namespace Spiral\Auth\Database;
 
 use Spiral\Models\Traits\TimestampsTrait;
@@ -15,5 +16,5 @@ class AuthToken extends RecordEntity
 {
     use TimestampsTrait;
 
-
+    const DATABASE = 'auth';
 }

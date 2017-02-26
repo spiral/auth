@@ -62,7 +62,7 @@ abstract class AbstractToken extends Record implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getHash()
+    public function getValue()
     {
         $code = $this->getSource();
         $selector = $this->getSelector();
@@ -135,7 +135,7 @@ abstract class AbstractToken extends Record implements TokenInterface
      */
     public function __toString()
     {
-        return $this->getHash();
+        return $this->getValue();
     }
 
     /**

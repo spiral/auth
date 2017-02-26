@@ -58,7 +58,7 @@ class CookieTokenOperator extends AbstractTokenOperator
     {
         return $response->withAddedHeader(
             'Set-Cookie',
-            $this->cookieHeader($request, $token->getHash())
+            $this->cookieHeader($request, $token->getValue())
         );
     }
 

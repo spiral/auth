@@ -14,7 +14,7 @@ class BasicToken extends AbstractToken
     /**
      * {@inheritdoc}
      */
-    public function getHash()
+    public function getValue()
     {
         return 'basic-http';
     }

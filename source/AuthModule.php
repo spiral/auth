@@ -45,11 +45,11 @@ class AuthModule implements ModuleInterface
             PublisherInterface::FOLLOW
         );
 
-        $publisher->publish(
-            dirname(__DIR__) . '/resources/hashes.php',
-            $directories->directory('config') . HashesConfig::CONFIG . '.php',
-            PublisherInterface::FOLLOW
-        );
+//        $publisher->publish(
+//            dirname(__DIR__) . '/resources/hashes.php',
+//            $directories->directory('config') . HashesConfig::CONFIG . '.php',
+//            PublisherInterface::FOLLOW
+//        );
 
         $publisher->publish(
             dirname(__DIR__) . '/resources/tokens.php',

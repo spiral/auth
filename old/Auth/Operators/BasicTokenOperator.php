@@ -83,7 +83,7 @@ class BasicTokenOperator implements TokenOperatorInterface
      */
     public function compareTokens(TokenInterface $token, $hash)
     {
-        return strcasecmp($token->getHash(), $hash) === 0;
+        return strcasecmp($token->getValue(), $hash) === 0;
     }
 
     /**

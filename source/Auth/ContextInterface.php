@@ -13,6 +13,18 @@ use Spiral\Auth\Exceptions\AuthException;
 interface ContextInterface
 {
     /**
+     * Init authentication token using given token. Example:
+     * $this->auth->init(
+     *      $this->tokens->createToken('cookies', $user)
+     * );
+     *
+     * Attention, method will overwrite already existed user and token.
+     *
+     * @param TokenInterface $token
+     */
+    public function init(TokenInterface $token);
+
+    /**
      * @return bool
      */
     public function hasToken(): bool;
@@ -33,18 +45,6 @@ interface ContextInterface
      * @throws AuthException When no user are set.
      */
     public function getUser(): UserInterface;
-
-    /**
-     * Example:
-     * $this->auth->authenticate($user, 'cookie');
-     *
-     * @param UserInterface $user
-     * @param string $operator Auth operator which has to handle token creation and mounting to
-     *                         response.
-     */
-    public function authenticate(UserInterface $user, string $operator);
-
-    //there is set operator... no get operator?
 
     /**
      * @return bool
