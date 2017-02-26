@@ -40,8 +40,8 @@ class AuthMiddleware implements MiddlewareInterface
 
     /**
      * @param UserSourceInterface $users
-     * @param TokenManager $tokens
-     * @param ScoperInterface $scopes
+     * @param TokenManager        $tokens
+     * @param ScoperInterface     $scopes
      */
     public function __construct(
         UserSourceInterface $users,
@@ -85,49 +85,49 @@ class AuthMiddleware implements MiddlewareInterface
         return $response;
     }
 
-//    /**
-//     * @param Request $request
-//     * @param Response $response
-//     * @param AuthContext $context
-//     * @return Response
-//     */
-//    private function updateToken(
-//        Request $request,
-//        Response $response,
-//        AuthContext $context
-//    ): Response {
-//        $operator = $this->tokens->getOperator($context->getOperator());
-//
-//        $token = $context->getToken();
-//        if (!empty($token)) {
-//            $token->setOperator($context->getOperator());
-//        }
-//
-//        //Session was either continued or ended.
-//        if ($context->isClosed()) {
-//            return $operator->removeToken($request, $response, $token);
-//        }
-//
-//        return $operator->updateToken($request, $response, $token);
-//    }
-//
-//    /**
-//     * @param Request $request
-//     * @param Response $response
-//     * @param AuthContext $context
-//     * @return Response
-//     */
-//    private function createToken(
-//        Request $request,
-//        Response $response,
-//        AuthContext $context
-//    ): Response {
-//        $operator = $this->tokens->getOperator($context->getOperator());
-//        $token = $operator->createToken($context->getUser());
-//        if (!empty($token)) {
-//            $token->setOperator($context->getOperator());
-//        }
-//
-//        return $operator->mountToken($request, $response, $token);
-//    }
+    //    /**
+    //     * @param Request $request
+    //     * @param Response $response
+    //     * @param AuthContext $context
+    //     * @return Response
+    //     */
+    //    private function updateToken(
+    //        Request $request,
+    //        Response $response,
+    //        AuthContext $context
+    //    ): Response {
+    //        $operator = $this->tokens->getOperator($context->getOperator());
+    //
+    //        $token = $context->getToken();
+    //        if (!empty($token)) {
+    //            $token->setOperator($context->getOperator());
+    //        }
+    //
+    //        //Session was either continued or ended.
+    //        if ($context->isClosed()) {
+    //            return $operator->removeToken($request, $response, $token);
+    //        }
+    //
+    //        return $operator->updateToken($request, $response, $token);
+    //    }
+    //
+    //    /**
+    //     * @param Request $request
+    //     * @param Response $response
+    //     * @param AuthContext $context
+    //     * @return Response
+    //     */
+    //    private function createToken(
+    //        Request $request,
+    //        Response $response,
+    //        AuthContext $context
+    //    ): Response {
+    //        $operator = $this->tokens->getOperator($context->getOperator());
+    //        $token = $operator->createToken($context->getUser());
+    //        if (!empty($token)) {
+    //            $token->setOperator($context->getOperator());
+    //        }
+    //
+    //        return $operator->mountToken($request, $response, $token);
+    //    }
 }

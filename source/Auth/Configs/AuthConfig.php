@@ -39,6 +39,15 @@ class AuthConfig extends InjectableConfig
 
     /**
      * @param string $name
+     * @return bool
+     */
+    public function hasOperator(string $name): bool
+    {
+        return isset($this->config['operators'][$name]);
+    }
+
+    /**
+     * @param string $name
      * @return string
      */
     public function operatorClass(string $name): string
