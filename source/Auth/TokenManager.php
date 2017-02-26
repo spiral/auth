@@ -26,6 +26,11 @@ class TokenManager implements SingletonInterface
     private $config;
 
     /**
+     * @var TokenOperatorInterface[]
+     */
+    private $operators = [];
+
+    /**
      * @var FactoryInterface
      */
     private $factory;
@@ -51,18 +56,18 @@ class TokenManager implements SingletonInterface
     }
 
     /**
-     * Detect token operator based on given request.
+     * Fetch authorization token from request if any.
      *
      * @param Request $request
-     * @return TokenOperatorInterface|null
+     * @return TokenInterface|null
      */
-    public function detectOperator(Request $request)
+    public function fetchToken(Request $request)
     {
         foreach ($this->config->getOperators() as $name) {
             $operator = $this->getOperator($name);
 
             if ($operator->hasToken($request)) {
-                return $operator;
+                return $operator->fetchToken($request);
             }
         }
 
@@ -75,11 +80,15 @@ class TokenManager implements SingletonInterface
      */
     protected function getOperator(string $name): TokenOperatorInterface
     {
+        if (isset($this->operators[$name])) {
+            return $this->operators[$name];
+        }
+
         if (!$this->config->hasOperator($name)) {
             throw new AuthException("Undefined token operator '{$name}'");
         }
 
-        return $this->factory->make(
+        return $this->operators[$name] = $this->factory->make(
             $this->config->operatorClass($name),
             $this->config->operatorOptions($name)
         );

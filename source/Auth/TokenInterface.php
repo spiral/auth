@@ -25,18 +25,16 @@ interface TokenInterface
     public function getUserPK(): string;
 
     /**
-     * Name of operator which created this token.
+     * Associated token operator.
      *
-     * @return string
+     * @return TokenOperatorInterface
      */
-    public function getOperator(): string;
-
+    public function getOperator(): TokenOperatorInterface;
 
     //    /**
 //     * @return bool
 //     */
 //    public function hasExpired(): bool;
-
 
     /**
      * Transfer token to another operator handler.

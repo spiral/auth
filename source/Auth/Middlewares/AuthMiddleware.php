@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\AuthContext;
 use Spiral\Auth\ContextInterface;
+use Spiral\Auth\TokenInterface;
 use Spiral\Auth\TokenManager;
 use Spiral\Auth\UserSourceInterface;
 use Spiral\Core\ScoperInterface;
@@ -72,62 +73,44 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         if ($context->hasToken()) {
-            //Refresh token state (if needed)
-            return $this->updateToken($request, $response, $context);
+            if ($context->isClosed()) {
+                //Close user session and remove associated tokens
+                return $this->closeContext($request, $response, $context->getToken());
+            }
+
+            //Mount token value in response or remove it if context is closed
+            return $this->commitContext($request, $response, $context->getToken());
         }
 
-        if ($context->hasUser()) {
-            //User was authorized inside scope, let's make sure that session persist
-            return $this->createToken($request, $response, $context);
-        }
-
-        //Guest request
+        //No user session was created
         return $response;
     }
 
-    //    /**
-    //     * @param Request $request
-    //     * @param Response $response
-    //     * @param AuthContext $context
-    //     * @return Response
-    //     */
-    //    private function updateToken(
-    //        Request $request,
-    //        Response $response,
-    //        AuthContext $context
-    //    ): Response {
-    //        $operator = $this->tokens->getOperator($context->getOperator());
-    //
-    //        $token = $context->getToken();
-    //        if (!empty($token)) {
-    //            $token->setOperator($context->getOperator());
-    //        }
-    //
-    //        //Session was either continued or ended.
-    //        if ($context->isClosed()) {
-    //            return $operator->removeToken($request, $response, $token);
-    //        }
-    //
-    //        return $operator->updateToken($request, $response, $token);
-    //    }
-    //
-    //    /**
-    //     * @param Request $request
-    //     * @param Response $response
-    //     * @param AuthContext $context
-    //     * @return Response
-    //     */
-    //    private function createToken(
-    //        Request $request,
-    //        Response $response,
-    //        AuthContext $context
-    //    ): Response {
-    //        $operator = $this->tokens->getOperator($context->getOperator());
-    //        $token = $operator->createToken($context->getUser());
-    //        if (!empty($token)) {
-    //            $token->setOperator($context->getOperator());
-    //        }
-    //
-    //        return $operator->mountToken($request, $response, $token);
-    //    }
+    /**
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
+     * @return Response
+     */
+    protected function commitContext(
+        Request $request,
+        Response $response,
+        TokenInterface $token
+    ): Response {
+        return $token->getOperator()->updateToken($request, $response, $token);
+    }
+
+    /**
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
+     * @return Response
+     */
+    protected function closeContext(
+        Request $request,
+        Response $response,
+        TokenInterface $token
+    ): Response {
+        return $token->getOperator()->removeToken($request, $response, $token);
+    }
 }
