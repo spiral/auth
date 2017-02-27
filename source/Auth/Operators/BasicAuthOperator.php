@@ -56,12 +56,12 @@ class BasicAuthOperator implements TokenOperatorInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchToken(Request $request): TokenInterface
+    public function fetchToken(Request $request)
     {
         $header = $request->getHeaderLine('Authorization');
 
         if (strpos($header, 'Basic') !== 0) {
-            throw new AuthException("Unable to locate authorization header");
+            return null;
         }
 
         list($username, $password) = $this->parseHeader($header);
@@ -70,7 +70,7 @@ class BasicAuthOperator implements TokenOperatorInterface
         try {
             $user = $this->authenticator->getUser($username, $password);
         } catch (CredentialsException $e) {
-            throw new AuthException("Unable to authorize user", $e->getCode(), $e);
+            return null;
         }
 
         return new AuthToken('basic-auth', $user->primaryKey(), $this);

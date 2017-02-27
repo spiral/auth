@@ -11,7 +11,6 @@ namespace Spiral\Auth;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Spiral\Auth\Exceptions\AuthException;
 
 /**
  * Manages token persistence withing given request and response.
@@ -36,14 +35,13 @@ interface TokenOperatorInterface
     public function hasToken(Request $request): bool;
 
     /**
-     * Fetch token from request, make sure to call hasToken first.
+     * Fetch token from request, make sure to call hasToken first. Return null when token not found
+     * or invalid.
      *
      * @param Request $request
-     * @return TokenInterface
-     *
-     * @throws AuthException If operator token does not exists in request.
+     * @return TokenInterface|null
      */
-    public function fetchToken(Request $request): TokenInterface;
+    public function fetchToken(Request $request);
 
     /**
      * Must declare token in outgoing response.

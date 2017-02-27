@@ -67,10 +67,10 @@ class SessionOperator implements TokenOperatorInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchToken(Request $request): TokenInterface
+    public function fetchToken(Request $request)
     {
         if (!$this->hasToken($request)) {
-            throw new AuthException("Unable to find session token");
+            return null;
         }
 
         return new AuthToken(
