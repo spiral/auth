@@ -9,20 +9,17 @@ use Spiral\Auth\Operators;
 
 return [
     /*
-     * Must point to the class name used to resolve users via username or id by default.
-     */
-    'userSource' => null,
-
-    /*
-     * Set of auth providers responsible for user session support
-     */
-    'operators'  => [
+      * Set of auth providers/operators responsible for user session support
+      */
+    'operators' => [
         /*
          * Uses active session storage to store user information
          */
         'session'    => [
             'class'   => Operators\SessionTokenOperator::class,
-            'options' => ['key' => 'userID']
+            'options' => [
+                'section' => 'auth'
+            ]
         ],
 
         /*
@@ -40,13 +37,13 @@ return [
             'class'   => Operators\HeaderTokenOperator::class,
             'options' => [
                 //Header to read token hash from
-                'header'      => 'X-Auth-Token',
+                'header'   => 'X-Auth-Token',
 
                 //Token lifetime
-                'lifetime'    => 86400 * 14,
+                'lifetime' => 86400 * 14,
 
                 //Persistent token storage
-                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
+                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
             ]
         ],
 
@@ -57,13 +54,13 @@ return [
             'class'   => Operators\CookieTokenOperator::class,
             'options' => [
                 //Cookie name, do not forget to exclude cookie name from cookie manager
-                'cookie'      => 'auth-token',
+                'cookie'   => 'auth-token',
 
                 //Cookie and token lifetime
-                'lifetime'    => 86400 * 7,
+                'lifetime' => 86400 * 7,
 
                 //Persistent token storage
-                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
+                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
             ]
         ],
 
@@ -75,13 +72,13 @@ return [
             'class'   => Operators\CookieTokenOperator::class,
             'options' => [
                 //Cookie name, do not forget to exclude cookie name from cookie manager
-                'cookie'      => 'rememberMe-token',
+                'cookie'   => 'rememberMe-token',
 
                 //Cookie and token lifetime
-                'lifetime'    => 86400 * 30,
+                'lifetime' => 86400 * 30,
 
                 //Persistent token storage
-                'sourceClass' => \Spiral\Auth\Sources\TokenSourceInterface::class,
+                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
             ]
         ],
 

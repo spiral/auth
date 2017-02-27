@@ -47,7 +47,7 @@ final class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function init(TokenInterface $token)
+    public function start(TokenInterface $token)
     {
         $this->user = null;
         $this->token = $token;

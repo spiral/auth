@@ -18,48 +18,7 @@ use Spiral\Session\SessionInterface;
 
 class SessionTokenOperator implements TokenOperatorInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session = null;
-
-    /**
-     * @var string
-     */
-    private $key;
-
-    /**
-     * @param SessionInterface $session
-     * @param string           $key
-     */
-    public function __construct(SessionInterface $session, $key)
-    {
-        $this->session = $session;
-        $this->key = $key;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createToken(UserInterface $user)
-    {
-        $source = $user->primaryKey();
-
-        $token = new SessionToken($source);
-        $token->setSource($source);
-
-        return $token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasToken(Request $request)
-    {
-        return $this->session->has($this->key);
-    }
-
-    /**
+         /**
      * {@inheritdoc}
      */
     public function fetchToken(Request $request)

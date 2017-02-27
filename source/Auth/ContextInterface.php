@@ -14,15 +14,16 @@ interface ContextInterface
 {
     /**
      * Init authentication token using given token. Example:
-     * $this->auth->init(
+     * $this->auth->start(
      *      $this->tokens->createToken('cookies', $user)
      * );
      *
-     * Attention, method will overwrite already existed user and token.
+     * Attention, method will overwrite already existed user and token. Use close() method to remove
+     * previously set token and de-auth user.
      *
      * @param TokenInterface $token
      */
-    public function init(TokenInterface $token);
+    public function start(TokenInterface $token);
 
     /**
      * @return bool

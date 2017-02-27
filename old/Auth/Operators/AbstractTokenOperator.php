@@ -63,12 +63,10 @@ abstract class AbstractTokenOperator implements TokenOperatorInterface, Lifetime
      * @param TokenHashes      $hashes
      */
     public function __construct(
-        FactoryInterface $factory,
         $lifetime,
         $sourceClass,
         TokenHashes $hashes
     ) {
-        $this->factory = $factory;
         $this->lifetime = $lifetime;
         $this->sourceClass = $sourceClass;
         $this->hashes = $hashes;

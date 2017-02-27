@@ -20,9 +20,9 @@ interface TokenInterface
     /**
      * PrimaryKey of associated user instance.
      *
-     * @return string|mixed
+     * @return mixed
      */
-    public function getUserPK(): string;
+    public function getUserPK();
 
     /**
      * Associated token operator.
