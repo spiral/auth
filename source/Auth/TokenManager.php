@@ -67,7 +67,11 @@ class TokenManager implements SingletonInterface
             $operator = $this->getOperator($name);
 
             if ($operator->hasToken($request)) {
-                return $operator->fetchToken($request);
+                try {
+                    return $operator->fetchToken($request);
+                } catch (AuthException $e) {
+                    //Unable to authorize based on given token
+                }
             }
         }
 

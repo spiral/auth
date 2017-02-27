@@ -39,6 +39,7 @@ interface TokenOperatorInterface
      *
      * @param Request $request
      * @return TokenInterface
+     *
      * @throws AuthException If operator token does not exists in request.
      */
     public function fetchToken(Request $request): TokenInterface;

@@ -12,9 +12,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\AuthContext;
 use Spiral\Auth\ContextInterface;
+use Spiral\Auth\Sources\UserSourceInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\TokenManager;
-use Spiral\Auth\UserSourceInterface;
 use Spiral\Core\ScoperInterface;
 use Spiral\Http\MiddlewareInterface;
 

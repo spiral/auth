@@ -5,6 +5,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 namespace Spiral\Auth\ORM;
 
 use Spiral\Auth\Configs\AuthConfig;
@@ -156,15 +157,9 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
      * @param array         $errors
      * @return bool
      */
-    public function save(AbstractToken $token, &$errors = null)
+    public function store(AbstractToken $token)
     {
-        if (!$token->save()) {
-            $errors = $token->getErrors();
 
-            return false;
-        }
-
-        return true;
     }
 
     /**

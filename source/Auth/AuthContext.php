@@ -10,6 +10,7 @@
 namespace Spiral\Auth;
 
 use Spiral\Auth\Exceptions\AuthException;
+use Spiral\Auth\Sources\UserSourceInterface;
 
 final class AuthContext implements ContextInterface
 {
@@ -47,19 +48,19 @@ final class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function start(TokenInterface $token)
+    public function hasToken(): bool
     {
-        $this->user = null;
-        $this->token = $token;
-        $this->closed = false;
+        return !empty($this->token);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasToken(): bool
+    public function init(TokenInterface $token)
     {
-        return !empty($this->token);
+        $this->user = null;
+        $this->token = $token;
+        $this->closed = false;
     }
 
     /**

@@ -13,8 +13,13 @@ use Spiral\Auth\Exceptions\AuthException;
 interface ContextInterface
 {
     /**
+     * @return bool
+     */
+    public function hasToken(): bool;
+
+    /**
      * Init authentication token using given token. Example:
-     * $this->auth->start(
+     * $this->auth->init(
      *      $this->tokens->createToken('cookies', $user)
      * );
      *
@@ -23,12 +28,7 @@ interface ContextInterface
      *
      * @param TokenInterface $token
      */
-    public function start(TokenInterface $token);
-
-    /**
-     * @return bool
-     */
-    public function hasToken(): bool;
+    public function init(TokenInterface $token);
 
     /**
      * @return TokenInterface
