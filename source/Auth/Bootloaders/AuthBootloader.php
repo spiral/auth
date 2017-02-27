@@ -9,6 +9,8 @@
 namespace Spiral\Auth\Bootloaders;
 
 use Spiral\Auth\ContextInterface;
+use Spiral\Auth\ORM\AbstractTokenSource;
+use Spiral\Auth\Sources\TokenSourceInterface;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 use Spiral\Auth\Sources\UserSourceInterface;
 use Spiral\Auth\TokenManager;

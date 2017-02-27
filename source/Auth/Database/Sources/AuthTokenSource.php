@@ -12,7 +12,7 @@ namespace Spiral\Auth\Database\Sources;
 use Spiral\Auth\Database\AuthToken;
 use Spiral\ORM\Entities\RecordSource;
 
-class AuthTokensSource extends RecordSource
+class AuthTokenSource extends RecordSource
 {
     const RECORD = AuthToken::class;
 

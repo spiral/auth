@@ -26,7 +26,7 @@ use Spiral\Session\SessionInterface;
  *
  * AuthMiddleware must locate after SessionStarter middleware in order to correctly resolve session.
  */
-class SessionTokenOperator implements TokenOperatorInterface
+class SessionOperator implements TokenOperatorInterface
 {
     /**
      * Segment variable to store authorized user id.

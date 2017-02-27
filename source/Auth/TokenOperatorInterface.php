@@ -12,9 +12,10 @@ namespace Spiral\Auth;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Exceptions\AuthException;
-use Spiral\Auth\Exceptions\InvalidTokenException;
 
-
+/**
+ * Manages token persistence withing given request and response.
+ */
 interface TokenOperatorInterface
 {
     /**
@@ -51,7 +52,6 @@ interface TokenOperatorInterface
      * @param Response       $response
      * @param TokenInterface $token
      * @return Response
-     * @throws InvalidTokenException
      */
     public function mountToken(
         Request $request,
@@ -67,7 +67,6 @@ interface TokenOperatorInterface
      * @param Response       $response
      * @param TokenInterface $token
      * @return Response
-     * @throws InvalidTokenException
      */
     public function removeToken(
         Request $request,
@@ -82,12 +81,10 @@ interface TokenOperatorInterface
      * @param Response       $response
      * @param TokenInterface $token
      * @return Response
-     * @throws InvalidTokenException
      */
     public function updateToken(
         Request $request,
         Response $response,
         TokenInterface $token
     ): Response;
-
 }

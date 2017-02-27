@@ -16,7 +16,7 @@ return [
          * Uses active session storage to store user information
          */
         'session'    => [
-            'class'   => Operators\SessionTokenOperator::class,
+            'class'   => Operators\SessionOperator::class,
             'options' => [
                 'section' => 'auth'
             ]
@@ -26,7 +26,7 @@ return [
          * Utilized default HTTP basic auth protocol to authenticate user
          */
         'basic'      => [
-            'class'   => Operators\BasicTokenOperator::class,
+            'class'   => Operators\BasicAuthOperator::class,
             'options' => []
         ],
 
@@ -34,16 +34,18 @@ return [
          * Reads token hash from a specified header
          */
         'header'     => [
-            'class'   => Operators\HeaderTokenOperator::class,
+            'class'   => Operators\DatabaseOperator::class,
             'options' => [
-                //Header to read token hash from
-                'header'   => 'X-Auth-Token',
-
                 //Token lifetime
                 'lifetime' => 86400 * 14,
 
                 //Persistent token storage
-                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
+                'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
+
+                //How to read and write tokens in request
+                'handler'  => bind(Operators\Handlers\HeaderHandler::class, [
+                    'header' => 'X-Auth-Token',
+                ])
             ]
         ],
 
@@ -51,16 +53,18 @@ return [
          * Stores authentication token into cookie
          */
         'cookie'     => [
-            'class'   => Operators\CookieTokenOperator::class,
+            'class'   => Operators\DatabaseOperator::class,
             'options' => [
-                //Cookie name, do not forget to exclude cookie name from cookie manager
-                'cookie'   => 'auth-token',
-
                 //Cookie and token lifetime
                 'lifetime' => 86400 * 7,
 
                 //Persistent token storage
-                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
+                'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
+
+                //How to read and write tokens in request
+                'handler'  => bind(Operators\Handlers\CookieHandler::class, [
+                    'name' => 'auth-token',
+                ])
             ]
         ],
 
@@ -68,17 +72,18 @@ return [
          * Stores authentication token into cookie as a remember-me cookie
          */
         'rememberMe' => [
-            'enabled' => true,
-            'class'   => Operators\CookieTokenOperator::class,
+            'class'   => Operators\DatabaseOperator::class,
             'options' => [
-                //Cookie name, do not forget to exclude cookie name from cookie manager
-                'cookie'   => 'rememberMe-token',
-
                 //Cookie and token lifetime
                 'lifetime' => 86400 * 30,
 
                 //Persistent token storage
-                'source'   => bind(\Spiral\Auth\Sources\TokenSourceInterface::class)
+                'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
+
+                //How to read and write tokens in request
+                'handler'  => bind(Operators\Handlers\CookieHandler::class, [
+                    'name' => 'long-token',
+                ])
             ]
         ],
 

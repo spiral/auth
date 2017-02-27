@@ -22,7 +22,7 @@ use Spiral\Auth\UserInterface;
  * Provides authorization based on HTTP based Authorization request. Performs password validation
  * on every request!
  */
-class BasicTokenOperator implements TokenOperatorInterface
+class BasicAuthOperator implements TokenOperatorInterface
 {
     /**
      * @var CredentialsAuthenticator

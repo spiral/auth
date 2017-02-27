@@ -6,12 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  * @copyright ©2009-2011
  */
+namespace Spiral\Auth\Operators\Handlers;
 
-namespace Spiral\Auth\Operators;
-
-use Spiral\Auth\TokenOperatorInterface;
-
-class HeaderTokenOperator implements TokenOperatorInterface
+interface HandlerInterface
 {
 
 }

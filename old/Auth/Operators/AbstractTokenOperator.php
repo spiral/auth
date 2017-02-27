@@ -138,33 +138,6 @@ abstract class AbstractTokenOperator implements TokenOperatorInterface, Lifetime
     }
 
     /**
-     * @param TokenInterface|AbstractToken $token
-     * @param string                       $hash
-     * @return bool|null
-     */
-    public function compareTokens(TokenInterface $token, $hash)
-    {
-        $partials = $this->getTokenPartials($hash);
-        if (empty($partials)) {
-            return null;
-        }
-
-        list($selector, $value) = $partials;
-
-        //Compare selectors
-        if (strcasecmp($token->getSelector(), $selector) !== 0) {
-            return null;
-        }
-
-        //Time-leaking safe comparison
-        if (!$this->hashes->hashEquals($value, $token->getHashValue())) {
-            return null;
-        }
-
-        return true;
-    }
-
-    /**
      * Split value into parts.
      *
      * @param $value
