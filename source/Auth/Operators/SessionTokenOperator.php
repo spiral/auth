@@ -13,7 +13,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\AuthToken;
 use Spiral\Auth\Exceptions\AuthException;
-use Spiral\Auth\Exceptions\InvalidTokenException;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\TokenOperatorInterface;
 use Spiral\Auth\UserInterface;
@@ -89,7 +88,9 @@ class SessionTokenOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        // TODO: Implement mountToken() method.
+        $this->sessionSection($request)->set(static::USER_PK, $token->getUserPK());
+
+        return $response;
     }
 
     /**
@@ -100,7 +101,9 @@ class SessionTokenOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        // TODO: Implement removeToken() method.
+        $this->sessionSection($request)->clear();
+
+        return $response;
     }
 
     /**
@@ -111,7 +114,8 @@ class SessionTokenOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        // TODO: Implement updateToken() method.
+        //Nothing to do
+        return $response;
     }
 
     /**
