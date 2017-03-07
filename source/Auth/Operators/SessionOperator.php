@@ -53,6 +53,7 @@ class SessionOperator implements TokenOperatorInterface
      */
     public function createToken(UserInterface $user): TokenInterface
     {
+        //Session tokens does not share session id but rather static token id
         return new AuthToken('session-token', $user->primaryKey(), $this);
     }
 
@@ -88,7 +89,10 @@ class SessionOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        $this->sessionSection($request)->set(static::USER_PK, $token->getUserPK());
+        $this->sessionSection($request)->set(
+            static::USER_PK,
+            $token->getUserPK()
+        );
 
         return $response;
     }
@@ -130,6 +134,7 @@ class SessionOperator implements TokenOperatorInterface
         if (empty($request->getAttribute(SessionStarter::ATTRIBUTE))) {
             throw new AuthException("Unable to use authorization thought session, no session exists");
         }
+
         /** @var SessionInterface $session */
         $session = $request->getAttribute(SessionStarter::ATTRIBUTE);
 

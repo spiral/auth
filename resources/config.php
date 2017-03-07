@@ -34,7 +34,7 @@ return [
          * Reads token hash from a specified header
          */
         'header'     => [
-            'class'   => Operators\DatabaseOperator::class,
+            'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Token lifetime
                 'lifetime' => 86400 * 14,
@@ -43,7 +43,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'handler'  => bind(Operators\Handlers\HeaderHandler::class, [
+                'bridge'  => bind(Operators\Handlers\HeaderBridge::class, [
                     'header' => 'X-Auth-Token',
                 ])
             ]
@@ -53,7 +53,7 @@ return [
          * Stores authentication token into cookie
          */
         'cookie'     => [
-            'class'   => Operators\DatabaseOperator::class,
+            'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Cookie and token lifetime
                 'lifetime' => 86400 * 7,
@@ -62,7 +62,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'handler'  => bind(Operators\Handlers\CookieHandler::class, [
+                'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
                     'name' => 'auth-token',
                 ])
             ]
@@ -72,7 +72,7 @@ return [
          * Stores authentication token into cookie as a remember-me cookie
          */
         'rememberMe' => [
-            'class'   => Operators\DatabaseOperator::class,
+            'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Cookie and token lifetime
                 'lifetime' => 86400 * 30,
@@ -81,7 +81,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'handler'  => bind(Operators\Handlers\CookieHandler::class, [
+                'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
                     'name' => 'long-token',
                 ])
             ]

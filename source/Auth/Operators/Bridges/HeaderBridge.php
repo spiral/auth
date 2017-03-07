@@ -6,9 +6,10 @@
  * @author    Anton Titov (Wolfy-J)
  * @copyright ©2009-2011
  */
-namespace Spiral\Auth\Operators\Handlers;
 
-interface HandlerInterface
+namespace Spiral\Auth\Operators\Bridges;
+
+class HeaderBridge implements BridgeInterface
 {
 
 }

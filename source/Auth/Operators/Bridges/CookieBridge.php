@@ -7,9 +7,9 @@
  * @copyright ©2009-2011
  */
 
-namespace Spiral\Auth\Operators\Handlers;
+namespace Spiral\Auth\Operators\Bridges;
 
-class CookieHandler implements HandlerInterface
+class CookieBridge implements BridgeInterface
 {
 
 }

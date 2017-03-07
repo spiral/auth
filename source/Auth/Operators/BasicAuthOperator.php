@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Authenticators\CredentialsAuthenticator;
 use Spiral\Auth\AuthToken;
-use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\Exceptions\CredentialsException;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\TokenOperatorInterface;
@@ -50,6 +49,7 @@ class BasicAuthOperator implements TokenOperatorInterface
      */
     public function hasToken(Request $request): bool
     {
+        //Auth token does not exists in basic auth, but still identified by specific header
         return strpos($request->getHeaderLine('Authorization'), 'Basic') === 0;
     }
 
