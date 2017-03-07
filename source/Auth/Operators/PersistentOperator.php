@@ -87,7 +87,13 @@ class PersistentOperator implements TokenOperatorInterface
             return null;
         }
 
-        return $this->source->findToken($this->bridge->fetchToken($request))->withOperator($this);
+        $token = $this->source->findToken($this->bridge->fetchToken($request));
+        if (empty($token)) {
+            //Token not found or expired
+            return null;
+        }
+
+        return $token->withOperator($this);
     }
 
     /**
@@ -123,7 +129,7 @@ class PersistentOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        if ($this->updateTokens) {
+        if (!$this->updateTokens) {
             return $response;
         }
 

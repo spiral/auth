@@ -20,10 +20,10 @@ interface TokenSourceInterface
     /**
      * Find token in persistent storage or return null.
      *
-     * @param string $hash
+     * @param string $token
      * @return TokenInterface|null
      */
-    public function findToken(string $hash);
+    public function findToken(string $token);
 
     /**
      * Must return already stored token.
@@ -41,7 +41,7 @@ interface TokenSourceInterface
      * @param  int           $lifetime
      * @return bool
      */
-    public function touchToken(TokenInterface $token, int $lifetime);
+    public function touchToken(TokenInterface $token, int $lifetime): bool;
 
     /**
      * @param TokenInterface $token
