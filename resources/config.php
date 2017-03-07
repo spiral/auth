@@ -63,7 +63,7 @@ return [
 
                 //How to read and write tokens in request
                 'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
-                    'name' => 'auth-token',
+                    'cookie' => 'auth-token',
                 ])
             ]
         ],
@@ -82,7 +82,7 @@ return [
 
                 //How to read and write tokens in request
                 'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
-                    'name' => 'long-token',
+                    'cookie' => 'long-token',
                 ])
             ]
         ],

@@ -15,14 +15,14 @@ use Spiral\Http\Configs\HttpConfig;
 use Spiral\Http\Cookies\Cookie;
 
 /**
- * Stores auth tokens in user cookies.
+ * Stores auth tokens in user cookies. Cookies options depends on HttpConfig.
  */
 class CookieBridge implements BridgeInterface
 {
     /**
      * @var string
      */
-    private $name;
+    private $cookie;
 
     /**
      * @var HttpConfig
@@ -30,12 +30,12 @@ class CookieBridge implements BridgeInterface
     private $httpConfig;
 
     /**
-     * @param string     $name
+     * @param string     $cookie
      * @param HttpConfig $config
      */
-    public function __construct(string $name, HttpConfig $config)
+    public function __construct(string $cookie, HttpConfig $config)
     {
-        $this->name = $name;
+        $this->cookie = $cookie;
         $this->httpConfig = $config;
     }
 
@@ -46,7 +46,7 @@ class CookieBridge implements BridgeInterface
     {
         $cookies = $request->getCookieParams();
 
-        return isset($cookies[$this->name]);
+        return isset($cookies[$this->cookie]);
     }
 
     /**
@@ -56,7 +56,7 @@ class CookieBridge implements BridgeInterface
     {
         $cookies = $request->getCookieParams();
 
-        return isset($cookies[$this->name]) ? $cookies[$this->name] : null;
+        return isset($cookies[$this->cookie]) ? $cookies[$this->cookie] : null;
     }
 
     /**
@@ -69,7 +69,7 @@ class CookieBridge implements BridgeInterface
         string $token = null
     ): Response {
         $cookie = Cookie::create(
-            $this->name,
+            $this->cookie,
             $token,
             $lifetime,
             $this->httpConfig->basePath(),
