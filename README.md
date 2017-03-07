@@ -1,6 +1,11 @@
 # Auth Module (WIP)
+=========================
+[![Latest Stable Version](https://poser.pugx.org/spiral/auth/v/stable)](https://packagist.org/packages/spiral/auth) 
+[![License](https://poser.pugx.org/spiral/auth/license)](https://packagist.org/packages/spiral/auth)
+[![Build Status](https://travis-ci.org/spiral-modules/auth.svg?branch=master)](https://travis-ci.org/spiral-modules/auth)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spiral-modules/auth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spiral-modules/auth/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/spiral-modules/auth/badge.svg?branch=master)](https://coveralls.io/github/spiral-modules/auth?branch=master)
 
-Documentation and tests are coming.
 
 ## Installation
 ```
