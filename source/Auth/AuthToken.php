@@ -9,12 +9,16 @@
 
 namespace Spiral\Auth;
 
+use Spiral\Auth\Traits\OperatorTrait;
+
 /**
  * Authorization token with immutable token value and operator association. Operator association
  * can be completed only on construction.
  */
 final class AuthToken implements TokenInterface, \JsonSerializable
 {
+    use OperatorTrait;
+
     /**
      * @var string
      */
@@ -24,11 +28,6 @@ final class AuthToken implements TokenInterface, \JsonSerializable
      * @var mixed
      */
     private $userPK;
-
-    /**
-     * @var TokenOperatorInterface
-     */
-    private $operator;
 
     /**
      * @param string                 $value
@@ -56,25 +55,6 @@ final class AuthToken implements TokenInterface, \JsonSerializable
     public function getUserPK()
     {
         return $this->userPK;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOperator(): TokenOperatorInterface
-    {
-        return $this->operator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withOperator(TokenOperatorInterface $operator): TokenInterface
-    {
-        $token = clone $this;
-        $token->operator = $operator;
-
-        return $token;
     }
 
     /**

@@ -10,12 +10,13 @@
 namespace Spiral\Auth\Database;
 
 use Spiral\Auth\TokenInterface;
-use Spiral\Auth\TokenOperatorInterface;
+use Spiral\Auth\Traits\OperatorTrait;
 use Spiral\Models\Traits\TimestampsTrait;
 use Spiral\ORM\RecordEntity;
 
 class AuthToken extends RecordEntity implements TokenInterface
 {
+    use OperatorTrait;
     use TimestampsTrait {
         touch as private touchTimestamps;
     }
@@ -40,11 +41,6 @@ class AuthToken extends RecordEntity implements TokenInterface
     const INDEXES = [
         [self::UNIQUE, 'token_hash']
     ];
-
-    /**
-     * @var TokenOperatorInterface
-     */
-    private $operator;
 
     public function touch()
     {
@@ -76,24 +72,5 @@ class AuthToken extends RecordEntity implements TokenInterface
     public function getUserPK()
     {
         return $this->user_pk;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withOperator(TokenOperatorInterface $operator): TokenInterface
-    {
-        $token = clone $this;
-        $token->operator = $operator;
-
-        return $token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOperator(): TokenOperatorInterface
-    {
-        return $this->operator;
     }
 }
