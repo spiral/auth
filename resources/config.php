@@ -43,7 +43,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge'  => bind(Operators\Handlers\HeaderBridge::class, [
+                'bridge'  => bind(Operators\Bridges\HeaderBridge::class, [
                     'header' => 'X-Auth-Token',
                 ])
             ]

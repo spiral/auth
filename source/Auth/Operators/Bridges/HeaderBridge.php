@@ -9,6 +9,9 @@
 
 namespace Spiral\Auth\Operators\Bridges;
 
+/**
+ * Aith token Read-only from user headers.
+ */
 class HeaderBridge implements BridgeInterface
 {
 
