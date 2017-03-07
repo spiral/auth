@@ -17,7 +17,9 @@ return [
         directory('framework') . 'Spiral/Commands/',
 
         //Needed to allow Translator locate i18n validation messages
-        directory('framework') . 'Spiral/Validation/'
+        directory('framework') . 'Spiral/Validation/',
+
+        directory('root') . '../../source/Auth/'
 
         /*{{directories}}*/
     ],

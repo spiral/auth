@@ -8,8 +8,11 @@
 namespace Spiral\Tests;
 
 use Interop\Container\ContainerInterface;
+use Spiral\Auth\Bootloaders\AuthBootloader;
 use Spiral\Core\Bootloaders\SpiralBindings;
 use Spiral\Core\Core;
+use Spiral\Http\Routing\ControllersRoute;
+use TestApplication\Bootloaders\HttpBootloader;
 
 /**
  * @property \Spiral\Core\MemoryInterface             $memory
@@ -40,7 +43,11 @@ use Spiral\Core\Core;
  */
 class TestApplication extends Core
 {
-    const LOAD = [SpiralBindings::class];
+    const LOAD = [
+        SpiralBindings::class,
+        AuthBootloader::class,
+        HttpBootloader::class
+    ];
 
     protected function bootstrap()
     {

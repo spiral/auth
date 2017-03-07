@@ -81,7 +81,7 @@ class AuthToken extends RecordEntity implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function withOperator(TokenOperatorInterface $operator): self
+    public function withOperator(TokenOperatorInterface $operator): TokenInterface
     {
         $token = clone $this;
         $token->operator = $operator;

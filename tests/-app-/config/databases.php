@@ -25,6 +25,7 @@ return [
      */
     'aliases'     => [
         'default' => 'runtime',
+        'auth'    => 'runtime'
 
         /*{{aliases}}*/
     ],

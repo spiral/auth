@@ -57,7 +57,7 @@ abstract class BaseTest extends TestCase
                 'root'        => $root,
                 'libraries'   => dirname(__DIR__) . '/vendor/',
                 'application' => $root,
-                'framework'   => dirname(__DIR__) . '/source/',
+                'framework'   => dirname(__DIR__) . '/vendor/spiral/framework/source/',
                 'runtime'     => $root . 'runtime/',
                 'cache'       => $root . 'runtime/cache/',
             ],
@@ -67,7 +67,7 @@ abstract class BaseTest extends TestCase
         );
 
         //Monolog love to write to CLI when no handler set
-        $this->app->logs->debugHandler(new NullHandler());
+     //   $this->app->logs->debugHandler(new NullHandler());
 
         $files = $this->app->files;
 
@@ -82,6 +82,11 @@ abstract class BaseTest extends TestCase
 
         //Open application scope
         TestApplication::shareContainer($this->app->container);
+
+        //ORM schema update
+        $this->app->console->run('orm:schema', [
+            '--alter' => true
+        ]);
     }
 
     /**

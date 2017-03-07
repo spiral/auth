@@ -22,7 +22,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Spiral\\Tests\\": "tests/"
+      "Spiral\\Tests\\": "tests/",
+      "TestApplication\\": "tests/-app-/classes/"
     }
   }
 }
