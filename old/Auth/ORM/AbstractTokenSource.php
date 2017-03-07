@@ -81,7 +81,7 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
      * @return TokenInterface
      * @throws UndefinedTokenException
      */
-    public function getToken($hash)
+    public function findToken($hash)
     {
         if (empty($token = $this->findByHash($hash))) {
             throw new UndefinedTokenException("Unable to find token associated with given hash");
@@ -139,7 +139,7 @@ abstract class AbstractTokenSource extends RecordSource implements TokenSourceIn
      * @param int            $lifetime
      * @return bool
      */
-    public function updateToken(TokenInterface $token, $lifetime)
+    public function touchToken(TokenInterface $token, $lifetime)
     {
         if (get_class($token) != static::RECORD || !$token instanceof AbstractToken) {
             throw new InvalidTokenException("Only instances of " . static::RECORD . " is allowed.");

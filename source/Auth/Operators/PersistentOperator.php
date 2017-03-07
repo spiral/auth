@@ -38,18 +38,28 @@ class PersistentOperator implements TokenOperatorInterface
     private $lifetime;
 
     /**
+     * When true token lifetime will be refreshed/touched on every visit. Slows down system a bit.
+     *
+     * @var bool
+     */
+    private $updateTokens;
+
+    /**
      * @param TokenSourceInterface $source
      * @param BridgeInterface      $bridge
      * @param int                  $lifetime
+     * @param bool                 $updateTokens
      */
     public function __construct(
         TokenSourceInterface $source,
         BridgeInterface $bridge,
-        int $lifetime
+        int $lifetime,
+        bool $updateTokens = false
     ) {
         $this->source = $source;
         $this->bridge = $bridge;
         $this->lifetime = $lifetime;
+        $this->updateTokens = $updateTokens;
     }
 
     /**
@@ -57,7 +67,7 @@ class PersistentOperator implements TokenOperatorInterface
      */
     public function createToken(UserInterface $user): TokenInterface
     {
-        return $this->source->createToken($user, $this->lifetime);
+        return $this->source->createToken($user, $this->lifetime)->withOperator($this);
     }
 
     /**
@@ -77,7 +87,7 @@ class PersistentOperator implements TokenOperatorInterface
             return null;
         }
 
-        return $this->source->getToken($this->bridge->fetchToken($request));
+        return $this->source->findToken($this->bridge->fetchToken($request))->withOperator($this);
     }
 
     /**
@@ -88,7 +98,7 @@ class PersistentOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        // TODO: Implement mountToken() method.
+        return $this->bridge->writeToken($request, $response, $this->lifetime, null);
     }
 
     /**
@@ -99,8 +109,10 @@ class PersistentOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
+        $this->source->deleteToken($token);
+
         //Reset user token value
-        return $this->bridge->writeToken($request, $response, null);
+        return $this->bridge->writeToken($request, $response, $this->lifetime, null);
     }
 
     /**
@@ -111,7 +123,12 @@ class PersistentOperator implements TokenOperatorInterface
         Response $response,
         TokenInterface $token
     ): Response {
+        if ($this->updateTokens) {
+            return $response;
+        }
 
-        return $this->bridge->writeToken($request, $response, $token->getValue());
+        $this->source->touchToken($token, $this->lifetime);
+
+        return $this->bridge->writeToken($request, $response, $this->lifetime, $token->getValue());
     }
 }

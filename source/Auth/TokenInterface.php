@@ -31,27 +31,11 @@ interface TokenInterface
      */
     public function getOperator(): TokenOperatorInterface;
 
-    //    /**
-//     * @return bool
-//     */
-//    public function hasExpired(): bool;
-
     /**
      * Transfer token to another operator handler.
      *
-     * @param string $operator
+     * @param TokenOperatorInterface $operator
      * @return self
      */
-    // public function withOperator($operator): self;
-
-    /**
-     * @return string
-     */
-    // public function getSource(): string;
-
-    /**
-     * //??
-     * @param string $source
-     */
-    // public function setSource($source): string;
+    public function withOperator(TokenOperatorInterface $operator): self;
 }

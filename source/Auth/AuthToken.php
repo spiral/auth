@@ -67,6 +67,17 @@ final class AuthToken implements TokenInterface, \JsonSerializable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function withOperator(TokenOperatorInterface $operator): TokenInterface
+    {
+        $token = clone $this;
+        $token->operator = $operator;
+
+        return $token;
+    }
+
+    /**
      * @return string
      */
     public function __toString()

@@ -17,5 +17,4 @@ class AuthTokenSource extends RecordSource
     const RECORD = AuthToken::class;
 
 
-
 }
