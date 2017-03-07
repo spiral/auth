@@ -38,14 +38,14 @@ class SessionOperator implements TokenOperatorInterface
      *
      * @var string
      */
-    private $segment;
+    private $section;
 
     /**
-     * @param string $segment
+     * @param string $section
      */
-    public function __construct(string $segment)
+    public function __construct(string $section)
     {
-        $this->segment = $segment;
+        $this->section = $section;
     }
 
     /**
@@ -138,6 +138,6 @@ class SessionOperator implements TokenOperatorInterface
         /** @var SessionInterface $session */
         $session = $request->getAttribute(SessionStarter::ATTRIBUTE);
 
-        return $session->getSection($this->segment);
+        return $session->getSection($this->section);
     }
 }

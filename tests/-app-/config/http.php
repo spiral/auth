@@ -73,6 +73,7 @@ return [
      */
     'middlewares'  => [
         Middlewares\ExceptionWrapper::class,
+        \Spiral\Session\Http\SessionStarter::class
         /*{{middlewares}}*/
     ],
 

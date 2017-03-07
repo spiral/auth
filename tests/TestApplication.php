@@ -9,10 +9,12 @@ namespace Spiral\Tests;
 
 use Interop\Container\ContainerInterface;
 use Spiral\Auth\Bootloaders\AuthBootloader;
+use Spiral\Auth\Sources\CredentialsSourceInterface;
 use Spiral\Core\Bootloaders\SpiralBindings;
 use Spiral\Core\Core;
 use Spiral\Http\Routing\ControllersRoute;
 use TestApplication\Bootloaders\HttpBootloader;
+use TestApplication\Database\Sources\UserSource;
 
 /**
  * @property \Spiral\Core\MemoryInterface             $memory
@@ -51,7 +53,7 @@ class TestApplication extends Core
 
     protected function bootstrap()
     {
-        //Nothing to do
+        $this->container->bind(CredentialsSourceInterface::class, UserSource::class);
     }
 
     /**
