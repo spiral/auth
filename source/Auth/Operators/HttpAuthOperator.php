@@ -21,7 +21,7 @@ use Spiral\Auth\UserInterface;
  * Provides authorization based on HTTP based Authorization request. Performs password validation
  * on every request!
  */
-class BasicAuthOperator implements TokenOperatorInterface
+class HttpAuthOperator implements TokenOperatorInterface
 {
     /**
      * @var CredentialsAuthenticator
