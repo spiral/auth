@@ -9,8 +9,6 @@
 namespace Spiral;
 
 use Spiral\Auth\Configs\AuthConfig;
-use Spiral\Auth\Configs\TokensConfig;
-use Spiral\Auth\Configs\HashesConfig;
 use Spiral\Core\DirectoriesInterface;
 use Spiral\Modules\ModuleInterface;
 use Spiral\Modules\PublisherInterface;
