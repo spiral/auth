@@ -88,7 +88,7 @@ final class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getUser(): UserInterface
+    public function getUser()
     {
         if (!empty($this->user)) {
             return $this->user;

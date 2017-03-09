@@ -42,10 +42,9 @@ interface ContextInterface
     public function hasUser(): bool;
 
     /**
-     * @return UserInterface
-     * @throws AuthException When no user are set.
+     * @return UserInterface|null
      */
-    public function getUser(): UserInterface;
+    public function getUser();
 
     /**
      * @return bool
