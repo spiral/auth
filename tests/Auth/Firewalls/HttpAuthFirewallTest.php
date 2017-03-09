@@ -10,8 +10,6 @@ namespace Spiral\Tests\Auth\Firewalls;
 use Spiral\Auth\Hashing\PasswordHasher;
 use Spiral\Auth\Middlewares\AuthMiddleware;
 use Spiral\Auth\Middlewares\Firewalls\HttpAuthFirewall;
-use Spiral\Auth\Middlewares\Firewalls\RedirectFirewall;
-use Spiral\Http\Uri;
 use Spiral\Tests\HttpTest;
 use TestApplication\Database\User;
 

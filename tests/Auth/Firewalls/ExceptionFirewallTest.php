@@ -13,7 +13,7 @@ use Spiral\Auth\Middlewares\Firewalls\ExceptionFirewall;
 use Spiral\Tests\HttpTest;
 use TestApplication\Database\User;
 
-class RedirectFirewallTest extends HttpTest
+class ExceptionFirewallTest extends HttpTest
 {
     /**
      * @expectedException \Spiral\Http\Exceptions\ClientExceptions\ForbiddenException
