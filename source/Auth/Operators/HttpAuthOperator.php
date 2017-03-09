@@ -114,6 +114,7 @@ class HttpAuthOperator implements TokenOperatorInterface
 
     /**
      * @param string $header
+     *
      * @return array
      */
     private static function parseHeader(string $header): array

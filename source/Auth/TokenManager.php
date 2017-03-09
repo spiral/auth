@@ -9,11 +9,11 @@
 
 namespace Spiral\Auth;
 
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Configs\AuthConfig;
 use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Core\FactoryInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Provides ability to create and store authorization tokens using set of token operators.
@@ -48,6 +48,7 @@ class TokenManager implements SingletonInterface
     /**
      * @param string        $operator
      * @param UserInterface $user
+     *
      * @return TokenInterface
      */
     public function createToken(string $operator, UserInterface $user): TokenInterface
@@ -59,6 +60,7 @@ class TokenManager implements SingletonInterface
      * Fetch authorization token from request if any.
      *
      * @param Request $request
+     *
      * @return TokenInterface|null
      */
     public function fetchToken(Request $request)
@@ -76,6 +78,7 @@ class TokenManager implements SingletonInterface
 
     /**
      * @param string $name
+     *
      * @return TokenOperatorInterface
      */
     protected function getOperator(string $name): TokenOperatorInterface

@@ -21,6 +21,7 @@ interface BridgeInterface
      * Must return true if request contains auth token.
      *
      * @param Request $request
+     *
      * @return bool
      */
     public function hasToken(Request $request): bool;
@@ -29,6 +30,7 @@ interface BridgeInterface
      * Fetch token value from incoming request if any.
      *
      * @param Request $request
+     *
      * @return string|null
      */
     public function fetchToken(Request $request);
@@ -40,6 +42,7 @@ interface BridgeInterface
      * @param Response    $response
      * @param int         $lifetime
      * @param string|null $token
+     *
      * @return Response
      */
     public function writeToken(

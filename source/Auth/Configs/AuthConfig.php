@@ -39,6 +39,7 @@ class AuthConfig extends InjectableConfig
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasOperator(string $name): bool
@@ -48,6 +49,7 @@ class AuthConfig extends InjectableConfig
 
     /**
      * @param string $name
+     *
      * @return string
      */
     public function operatorClass(string $name): string
@@ -57,6 +59,7 @@ class AuthConfig extends InjectableConfig
 
     /**
      * @param string $name
+     *
      * @return array
      */
     public function operatorOptions(string $name): array

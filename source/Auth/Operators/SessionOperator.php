@@ -126,6 +126,7 @@ class SessionOperator implements TokenOperatorInterface
      * Get session section from given request.
      *
      * @param Request $request
+     *
      * @return SectionInterface
      * @throws AuthException When no session is started.
      */

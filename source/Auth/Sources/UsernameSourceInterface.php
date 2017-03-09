@@ -14,6 +14,7 @@ interface UsernameSourceInterface extends UserSourceInterface
 {
     /**
      * @param string $username
+     *
      * @return PasswordAwareInterface|null
      */
     public function findByUsername(string $username);

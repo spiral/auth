@@ -35,6 +35,7 @@ interface TokenInterface
      * Transfer token to another operator handler.
      *
      * @param TokenOperatorInterface $operator
+     *
      * @return self
      */
     public function withOperator(TokenOperatorInterface $operator): self;

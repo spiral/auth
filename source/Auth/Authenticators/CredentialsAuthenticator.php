@@ -9,9 +9,7 @@
 
 namespace Spiral\Auth\Authenticators;
 
-use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\Exceptions\CredentialsException;
-use Spiral\Auth\Exceptions\InvalidUserException;
 use Spiral\Auth\Exceptions\LogicException;
 use Spiral\Auth\Hashing\PasswordHasher;
 use Spiral\Auth\PasswordAwareInterface;
@@ -45,6 +43,7 @@ class CredentialsAuthenticator
      *
      * @param string $username
      * @param string $password
+     *
      * @return PasswordAwareInterface
      *
      * @throws LogicException When user does not implement proper interface.

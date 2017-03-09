@@ -22,6 +22,7 @@ interface TokenOperatorInterface
      * getOperator() method.
      *
      * @param UserInterface $user
+     *
      * @return TokenInterface
      */
     public function createToken(UserInterface $user): TokenInterface;
@@ -30,6 +31,7 @@ interface TokenOperatorInterface
      * Check if request contains token associated with this operator.
      *
      * @param Request $request
+     *
      * @return bool
      */
     public function hasToken(Request $request): bool;
@@ -39,6 +41,7 @@ interface TokenOperatorInterface
      * or invalid.
      *
      * @param Request $request
+     *
      * @return TokenInterface|null
      */
     public function fetchToken(Request $request);
@@ -49,6 +52,7 @@ interface TokenOperatorInterface
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token
+     *
      * @return Response
      */
     public function mountToken(
@@ -58,12 +62,13 @@ interface TokenOperatorInterface
     ): Response;
 
     /**
-     * Remove token presense in response and detach token from internal storage if any. On practice \
-     * this method is response for de-authorization of user.
+     * Remove token presense in response and detach token from internal storage if any. On practice
+     * \ this method is response for de-authorization of user.
      *
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token
+     *
      * @return Response
      */
     public function removeToken(
@@ -73,11 +78,13 @@ interface TokenOperatorInterface
     ): Response;
 
     /**
-     * Update token presence in response, might regenerate token hash based on internal implementation.
+     * Update token presence in response, might regenerate token hash based on internal
+     * implementation.
      *
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token
+     *
      * @return Response
      */
     public function updateToken(

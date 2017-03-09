@@ -8,7 +8,6 @@
 
 namespace Spiral\Auth\Sources;
 
-use Spiral\Auth\Exceptions\UndefinedTokenException;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 
@@ -21,6 +20,7 @@ interface TokenSourceInterface
      * Find token in persistent storage or return null.
      *
      * @param string $token
+     *
      * @return TokenInterface|null
      */
     public function findToken(string $token);
@@ -30,6 +30,7 @@ interface TokenSourceInterface
      *
      * @param UserInterface $user
      * @param  int          $lifetime
+     *
      * @return TokenInterface
      */
     public function createToken(UserInterface $user, int $lifetime): TokenInterface;
@@ -39,6 +40,7 @@ interface TokenSourceInterface
      *
      * @param TokenInterface $token
      * @param  int           $lifetime
+     *
      * @return bool
      */
     public function touchToken(TokenInterface $token, int $lifetime): bool;

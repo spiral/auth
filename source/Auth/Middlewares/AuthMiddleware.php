@@ -90,6 +90,7 @@ class AuthMiddleware implements MiddlewareInterface
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token
+     *
      * @return Response
      */
     protected function commitContext(
@@ -104,6 +105,7 @@ class AuthMiddleware implements MiddlewareInterface
      * @param Request        $request
      * @param Response       $response
      * @param TokenInterface $token
+     *
      * @return Response
      */
     protected function closeContext(

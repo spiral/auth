@@ -29,6 +29,7 @@ class BasicAuthFirewall extends AbstractFirewall
 
     /**
      * @param string $realm
+     *
      * @return BasicAuthFirewall
      */
     public function withRealm(string $realm): self

@@ -7,7 +7,6 @@
 
 namespace Spiral\Tests;
 
-use Monolog\Handler\NullHandler;
 use PHPUnit\Framework\TestCase;
 use Spiral\Core\Traits\SharedTrait;
 
@@ -39,6 +38,8 @@ use Spiral\Core\Traits\SharedTrait;
  * @property \Spiral\Security\RulesInterface          $rules
  * @property \Spiral\Security\ActorInterface          $actor
  * @property \Spiral\Session\SessionInterface         $session
+ * @property \Spiral\Auth\ContextInterface            $auth
+ * @property \Spiral\Auth\TokenManager                $tokens
  */
 abstract class BaseTest extends TestCase
 {
@@ -67,7 +68,7 @@ abstract class BaseTest extends TestCase
         );
 
         //Monolog love to write to CLI when no handler set
-     //   $this->app->logs->debugHandler(new NullHandler());
+        //   $this->app->logs->debugHandler(new NullHandler());
 
         $files = $this->app->files;
 

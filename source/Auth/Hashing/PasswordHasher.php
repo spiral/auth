@@ -16,6 +16,7 @@ class PasswordHasher
 {
     /**
      * @param string $string
+     *
      * @return string
      */
     public function hash(string $string): string
@@ -28,6 +29,7 @@ class PasswordHasher
      *
      * @param string $password
      * @param string $hash
+     *
      * @return bool
      */
     public function hashEquals(string $password, string $hash): bool
@@ -39,6 +41,7 @@ class PasswordHasher
      * Check if password needs to be rehashed.
      *
      * @param string $hash
+     *
      * @return bool
      */
     public function needsRehash(string $hash): bool

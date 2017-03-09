@@ -26,6 +26,7 @@ class StringHasher
 
     /**
      * @param string $string
+     *
      * @return string
      */
     public function hash(string $string): string
@@ -36,6 +37,7 @@ class StringHasher
     /**
      * @param string $string
      * @param string $hash
+     *
      * @return bool
      */
     public function hashEquals(string $string, string $hash): bool

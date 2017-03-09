@@ -9,11 +9,11 @@
 
 namespace Spiral\Auth\Middlewares\Firewalls;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\ContextInterface;
 use Spiral\Http\MiddlewareInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 abstract class AbstractFirewall implements MiddlewareInterface
 {
@@ -40,6 +40,7 @@ abstract class AbstractFirewall implements MiddlewareInterface
      * @param Request  $request
      * @param Response $response
      * @param callable $next
+     *
      * @return ResponseInterface
      */
     abstract public function denyAccess(Request $request, Response $response, callable $next);
@@ -48,6 +49,7 @@ abstract class AbstractFirewall implements MiddlewareInterface
      * @param Request  $request
      * @param Response $response
      * @param callable $next
+     *
      * @return ResponseInterface
      */
     public function grantAccess(Request $request, Response $response, callable $next)

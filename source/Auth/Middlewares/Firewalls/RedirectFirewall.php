@@ -43,6 +43,7 @@ class RedirectFirewall extends AbstractFirewall
 
     /**
      * @param UriInterface $uri
+     *
      * @return RedirectFirewall
      */
     public function withRedirect(UriInterface $uri): self
