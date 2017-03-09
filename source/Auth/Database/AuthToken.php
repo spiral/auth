@@ -42,6 +42,9 @@ class AuthToken extends Record implements TokenInterface
         [self::UNIQUE, 'token_hash']
     ];
 
+    /**
+     * Touch token and register visit.
+     */
     public function touch()
     {
         $this->touchTimestamps();

@@ -81,7 +81,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge' => bind(Operators\Bridges\CookieBridge::class, [
+                'bridge'   => bind(Operators\Bridges\CookieBridge::class, [
                     'cookie' => 'long-token',
                 ])
             ]
