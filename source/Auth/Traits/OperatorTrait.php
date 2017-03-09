@@ -38,6 +38,7 @@ trait OperatorTrait
         $token = clone $this;
         $token->operator = $operator;
 
+        /** @var TokenInterface $token */
         return $token;
     }
 }
