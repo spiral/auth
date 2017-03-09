@@ -53,7 +53,7 @@ return [
     'connections' => [
         'runtime' => [
             'driver'     => Drivers\SQLite\SQLiteDriver::class,
-            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            'connection' => 'sqlite::memory:',
             'profiling'  => env('DEBUG', false),
             'username'   => 'sqlite',
             'password'   => '',
