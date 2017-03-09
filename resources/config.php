@@ -15,7 +15,7 @@ return [
         /*
          * Uses active session storage to store user information
          */
-        'session'    => [
+        'session'     => [
             'class'   => Operators\SessionOperator::class,
             'options' => [
                 'section' => 'auth'
@@ -25,7 +25,7 @@ return [
         /*
          * Utilized default HTTP basic auth protocol to authenticate user
          */
-        'basic'      => [
+        'basic'       => [
             'class'   => Operators\HttpOperator::class,
             'options' => []
         ],
@@ -33,7 +33,7 @@ return [
         /*
          * Reads token hash from a specified header
          */
-        'header'     => [
+        'header'      => [
             'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Token lifetime
@@ -43,7 +43,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge'  => bind(Operators\Bridges\HeaderBridge::class, [
+                'bridge'   => bind(Operators\Bridges\HeaderBridge::class, [
                     'header' => 'X-Auth-Token',
                 ])
             ]
@@ -52,7 +52,7 @@ return [
         /*
          * Stores authentication token into cookie
          */
-        'cookie'     => [
+        'cookie'      => [
             'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Cookie and token lifetime
@@ -62,7 +62,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
+                'bridge'   => bind(Operators\Bridges\CookieBridge::class, [
                     'cookie' => 'auth-token',
                 ])
             ]
@@ -71,7 +71,7 @@ return [
         /*
          * Stores authentication token into cookie as a remember-me cookie
          */
-        'rememberMe' => [
+        'long-cookie' => [
             'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Cookie and token lifetime
@@ -81,7 +81,7 @@ return [
                 'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge'  => bind(Operators\Bridges\CookieBridge::class, [
+                'bridge' => bind(Operators\Bridges\CookieBridge::class, [
                     'cookie' => 'long-token',
                 ])
             ]

@@ -12,6 +12,9 @@ namespace Spiral\Auth;
 use Spiral\Auth\Exceptions\AuthException;
 use Spiral\Auth\Sources\UserSourceInterface;
 
+/**
+ * @todo move user source into Operators in order to authorize multiple user types
+ */
 final class AuthContext implements ContextInterface
 {
     /**

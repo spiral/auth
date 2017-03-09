@@ -15,7 +15,6 @@ use Spiral\Auth\Sources\TokenSourceInterface;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\UserInterface;
 use Spiral\ORM\Entities\RecordSource;
-use Spiral\ORM\Transaction;
 use Spiral\Support\Strings;
 
 class AuthTokenSource extends RecordSource implements TokenSourceInterface
@@ -50,9 +49,7 @@ class AuthTokenSource extends RecordSource implements TokenSourceInterface
         //Base64 encoded random token value
         $tokenValue = Strings::random(128);
 
-        /**
-         * @var AuthToken $token
-         */
+        /** @var AuthToken $token */
         $token = $this->create([
             'user_pk'     => $user->primaryKey(),
             'token_value' => $tokenValue,
@@ -62,9 +59,7 @@ class AuthTokenSource extends RecordSource implements TokenSourceInterface
             )
         ]);
 
-        $transaction = new Transaction();
-        $transaction->store($token);
-        $transaction->run();
+        $token->save();
 
         return $token;
     }
@@ -79,10 +74,7 @@ class AuthTokenSource extends RecordSource implements TokenSourceInterface
         }
 
         $token->touch();
-
-        $transaction = new Transaction();
-        $transaction->store($token);
-        $transaction->run();
+        $token->save();
 
         return true;
     }
@@ -96,8 +88,6 @@ class AuthTokenSource extends RecordSource implements TokenSourceInterface
             throw new LogicException("Invalid token type, instances of AuthToken are expected");
         }
 
-        $transaction = new Transaction();
-        $transaction->delete($token);
-        $transaction->run();
+        $token->delete();
     }
 }

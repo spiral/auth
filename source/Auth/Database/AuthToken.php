@@ -12,9 +12,9 @@ namespace Spiral\Auth\Database;
 use Spiral\Auth\TokenInterface;
 use Spiral\Auth\Traits\OperatorTrait;
 use Spiral\Models\Traits\TimestampsTrait;
-use Spiral\ORM\RecordEntity;
+use Spiral\ORM\Record;
 
-class AuthToken extends RecordEntity implements TokenInterface
+class AuthToken extends Record implements TokenInterface
 {
     use OperatorTrait;
     use TimestampsTrait {
