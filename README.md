@@ -1,4 +1,4 @@
-# Auth Module (WIP)
+Authorization and Tokens
 =========================
 [![Latest Stable Version](https://poser.pugx.org/spiral/auth/v/stable)](https://packagist.org/packages/spiral/auth) 
 [![License](https://poser.pugx.org/spiral/auth/license)](https://packagist.org/packages/spiral/auth)
