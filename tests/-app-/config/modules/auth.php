@@ -61,31 +61,14 @@ return [
                 //Cookie and token lifetime
                 'lifetime' => 86400 * 7,
 
+                'updateTokens' => true,
+
                 //Persistent token storage
-                'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
+                'source'       => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
 
                 //How to read and write tokens in request
-                'bridge'   => bind(Operators\Bridges\CookieBridge::class, [
+                'bridge'       => bind(Operators\Bridges\CookieBridge::class, [
                     'cookie' => 'auth-token',
-                ])
-            ]
-        ],
-
-        /*
-         * Stores authentication token into cookie as a remember-me cookie
-         */
-        'long'    => [
-            'class'   => Operators\PersistentOperator::class,
-            'options' => [
-                //Cookie and token lifetime
-                'lifetime' => 86400 * 30,
-
-                //Persistent token storage
-                'source'   => bind(\Spiral\Auth\Database\Sources\AuthTokenSource::class),
-
-                //How to read and write tokens in request
-                'bridge'   => bind(Operators\Bridges\CookieBridge::class, [
-                    'cookie' => 'long-token',
                 ])
             ]
         ],

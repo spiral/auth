@@ -68,6 +68,13 @@ class CookieBridge implements BridgeInterface
         int $lifetime,
         string $token = null
     ): Response {
+        $cookies = $request->getCookieParams();
+
+        if (isset($cookies[$this->cookie]) && $cookies[$this->cookie] == $token) {
+            //Nothing to do
+            return $response;
+        }
+
         $cookie = Cookie::create(
             $this->cookie,
             $token,
