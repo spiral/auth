@@ -108,7 +108,7 @@ class PersistentOperator implements TokenOperatorInterface
             $this->source->touchToken($token, $this->lifetime);
         }
 
-        return $this->bridge->writeToken($request, $response, $this->lifetime, null);
+        return $this->bridge->writeToken($request, $response, $this->lifetime, $token->getValue());
     }
 
     /**
