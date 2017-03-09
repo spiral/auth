@@ -26,7 +26,7 @@ return [
          * Utilized default HTTP basic auth protocol to authenticate user
          */
         'basic'      => [
-            'class'   => Operators\HttpAuthOperator::class,
+            'class'   => Operators\HttpOperator::class,
             'options' => []
         ],
 

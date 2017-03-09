@@ -21,7 +21,7 @@ use Spiral\Auth\UserInterface;
  * Provides authorization based on HTTP based Authorization request. Performs password validation
  * on every request!
  */
-class HttpAuthOperator implements TokenOperatorInterface
+class HttpOperator implements TokenOperatorInterface
 {
     /**
      * @var CredentialsAuthenticator
@@ -41,7 +41,7 @@ class HttpAuthOperator implements TokenOperatorInterface
      */
     public function createToken(UserInterface $user): TokenInterface
     {
-        return new AuthToken('basic-auth', $user->primaryKey(), $this);
+        return new AuthToken('http-auth', $user->primaryKey(), $this);
     }
 
     /**

@@ -1,10 +1,9 @@
 <?php
 /**
- * Spiral Framework, SpiralScout LLC.
+ * Spiral Framework.
  *
- * @package   spiralFramework
- * @author    Anton Titov (Wolfy-J)
- * @copyright ©2009-2011
+ * @license   MIT
+ * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
 
 namespace Spiral\Auth;
