@@ -8,10 +8,13 @@
 use Spiral\Auth\Operators;
 
 return [
+    //Default token provider
+    'defaultOperator' => 'cookie',
+
     /*
       * Set of auth providers/operators responsible for user session support
       */
-    'operators' => [
+    'operators'       => [
         /*
          * Uses active session storage to store user information
          */
@@ -71,7 +74,7 @@ return [
         /*
          * Stores authentication token into cookie as a remember-me cookie
          */
-        'long-cookie' => [
+        'long' => [
             'class'   => Operators\PersistentOperator::class,
             'options' => [
                 //Cookie and token lifetime

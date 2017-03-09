@@ -24,7 +24,8 @@ class AuthConfig extends InjectableConfig
      * @var array
      */
     protected $config = [
-        'operators' => []
+        'defaultOperator' => '',
+        'operators'       => []
     ];
 
     /**
@@ -35,6 +36,14 @@ class AuthConfig extends InjectableConfig
     public function getOperators(): array
     {
         return array_keys($this->config['operators']);
+    }
+
+    /**
+     * @return string
+     */
+    public function defaultOperator(): string
+    {
+        return $this->config['defaultOperator'];
     }
 
     /**

@@ -45,14 +45,14 @@ class TokenManager implements SingletonInterface
     }
 
     /**
-     * @param string        $operator
      * @param UserInterface $user
+     * @param string        $operator Default operator to be used when value is null.
      *
      * @return TokenInterface
      */
-    public function createToken(string $operator, UserInterface $user): TokenInterface
+    public function createToken(UserInterface $user, string $operator = null): TokenInterface
     {
-        return $this->getOperator($operator)->createToken($user);
+        return $this->getOperator($operator ?? $this->config->defaultOperator())->createToken($user);
     }
 
     /**

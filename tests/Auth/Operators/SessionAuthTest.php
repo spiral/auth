@@ -27,7 +27,7 @@ class SessionAuthTest extends HttpTest
 
         $this->http->setEndpoint(function () use ($user) {
             $this->auth->init(
-                $this->tokens->createToken('session', $user)
+                $this->tokens->createToken($user, 'session')
             );
 
             $this->assertTrue($this->auth->hasToken());
@@ -60,7 +60,7 @@ class SessionAuthTest extends HttpTest
 
         $this->http->setEndpoint(function () use ($user) {
             $this->auth->init(
-                $this->tokens->createToken('session', $user)
+                $this->tokens->createToken($user, 'session')
             );
         });
 
@@ -94,7 +94,7 @@ class SessionAuthTest extends HttpTest
 
         $this->http->setEndpoint(function () use ($user) {
             $this->auth->init(
-                $this->tokens->createToken('session', $user)
+                $this->tokens->createToken($user, 'session')
             );
         });
 

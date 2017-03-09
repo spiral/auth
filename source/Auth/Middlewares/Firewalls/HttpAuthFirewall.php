@@ -12,7 +12,7 @@ namespace Spiral\Auth\Middlewares\Firewalls;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class BasicAuthFirewall extends AbstractFirewall
+class HttpAuthFirewall extends AbstractFirewall
 {
     /**
      * @var string
@@ -30,7 +30,7 @@ class BasicAuthFirewall extends AbstractFirewall
     /**
      * @param string $realm
      *
-     * @return BasicAuthFirewall
+     * @return HttpAuthFirewall
      */
     public function withRealm(string $realm): self
     {

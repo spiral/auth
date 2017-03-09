@@ -5,3 +5,4 @@ CHANGELOG for 0.9.0 RC
 -----
 - Added tests
 - Updated to support 0.9 version of Spiral
+- API simplification

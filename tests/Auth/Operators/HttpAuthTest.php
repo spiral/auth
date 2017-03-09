@@ -27,7 +27,7 @@ class HttpAuthTest extends HttpTest
 
         $this->http->setEndpoint(function () use ($user) {
             $this->auth->init(
-                $this->tokens->createToken('basic', $user)
+                $this->tokens->createToken($user, 'basic')
             );
 
             $this->assertTrue($this->auth->hasToken());
