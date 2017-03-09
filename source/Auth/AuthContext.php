@@ -90,12 +90,12 @@ final class AuthContext implements ContextInterface
      */
     public function getUser()
     {
-        if (!empty($this->user)) {
-            return $this->user;
+        if (empty($this->token) || $this->isClosed()) {
+            return null;
         }
 
-        if (empty($this->token) || $this->closed) {
-            return null;
+        if (!empty($this->user)) {
+            return $this->user;
         }
 
         return $this->user = $this->users->findByPK($this->token->getUserPK());
