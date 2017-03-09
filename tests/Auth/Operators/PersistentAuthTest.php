@@ -22,6 +22,8 @@ class PersistentAuthTest extends HttpTest
         $user->password_hash = $hasher->hash('password');
         $user->save();
 
+        $this->assertSame(0, $this->dbal->database('auth')->auth_tokens->count());
         $this->tokens->createToken($user)->getValue();
+        $this->assertSame(1, $this->dbal->database('auth')->auth_tokens->count());
     }
 }
