@@ -12,7 +12,7 @@ composer require spiral/auth
 spiral register spiral/auth
 ```
 
-To enable authentication service in your application foollowing steps are reuquired.
+To enable authentication service in your application foollowing steps are required.
 
 ### Add bootloder
 Mount `Spiral\Auth\AuthBootloader` to your application.
@@ -38,16 +38,10 @@ You can either add middleware to a specific route or enable authentication servi
 
 ```php
 'middlewares'  => [
-    Middlewares\CsrfFilter::class,
     Middlewares\ExceptionWrapper::class,
-  
-    //Sample middleware
-    \Middlewares\LocaleDetector::class,
 
-    Session\Http\SessionStarter::class,
-    Http\Cookies\CookieManager::class,
+    //...
 
-    //Auth
     \Spiral\Auth\Middlewares\AuthMiddleware::class,
     
     /*{{middlewares}}*/
@@ -56,10 +50,10 @@ You can either add middleware to a specific route or enable authentication servi
 
 ### Create user entity and source
 
-Entity must extend PasswordAwareInterface:
+User must extend PasswordAwareInterface:
 
 ```php
-class Aware extends Record implements PasswordAwareInterface
+class User extends Record implements PasswordAwareInterface
 {
     //...
 
@@ -75,7 +69,7 @@ Source must implement `UsernameSourceInterface` and needed methods:
 ```php
 class UserSource extends RecordSource implements UsernameSourceInterface
 {
-    const RECORD = Aware::class;
+    const RECORD = User::class;
 
     public function findByUsername($username)
     {
@@ -86,5 +80,3 @@ class UserSource extends RecordSource implements UsernameSourceInterface
     }
 }
 ```
-
-> TODO: Add usage examples and firewalls.
