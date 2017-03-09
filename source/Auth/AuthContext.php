@@ -48,19 +48,19 @@ final class AuthContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function hasToken(): bool
-    {
-        return !empty($this->token);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function init(TokenInterface $token)
     {
         $this->user = null;
         $this->token = $token;
         $this->closed = false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasToken(): bool
+    {
+        return !empty($this->token);
     }
 
     /**
@@ -119,6 +119,7 @@ final class AuthContext implements ContextInterface
     public function close()
     {
         $this->closed = true;
+        $this->user = null;
     }
 
     /**

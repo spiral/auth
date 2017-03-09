@@ -99,11 +99,15 @@ class PersistentOperator implements TokenOperatorInterface
     /**
      * {@inheritdoc}
      */
-    public function mountToken(
+    public function commitToken(
         Request $request,
         Response $response,
         TokenInterface $token
     ): Response {
+        if ($this->updateTokens) {
+            $this->source->touchToken($token, $this->lifetime);
+        }
+
         return $this->bridge->writeToken($request, $response, $this->lifetime, null);
     }
 
@@ -119,22 +123,5 @@ class PersistentOperator implements TokenOperatorInterface
 
         //Reset user token value
         return $this->bridge->writeToken($request, $response, $this->lifetime, null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateToken(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response {
-        if (!$this->updateTokens) {
-            return $response;
-        }
-
-        $this->source->touchToken($token, $this->lifetime);
-
-        return $this->bridge->writeToken($request, $response, $this->lifetime, $token->getValue());
     }
 }

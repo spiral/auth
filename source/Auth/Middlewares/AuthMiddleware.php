@@ -98,7 +98,7 @@ class AuthMiddleware implements MiddlewareInterface
         Response $response,
         TokenInterface $token
     ): Response {
-        return $token->getOperator()->updateToken($request, $response, $token);
+        return $token->getOperator()->commitToken($request, $response, $token);
     }
 
     /**

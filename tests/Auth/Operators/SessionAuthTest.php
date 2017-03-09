@@ -42,7 +42,7 @@ class SessionAuthTest extends HttpTest
 
             $token = $this->auth->getToken();
 
-            $this->assertSame('session-token', $token->getValue());
+            $this->assertSame('session-auth', $token->getValue());
             $this->assertInstanceOf(SessionOperator::class, $token->getOperator());
         });
 

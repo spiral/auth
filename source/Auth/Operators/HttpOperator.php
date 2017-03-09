@@ -64,7 +64,10 @@ class HttpOperator implements TokenOperatorInterface
             return null;
         }
 
-        list($username, $password) = $this->parseHeader($header);
+        list($username, $password) = self::parseHeader($header);
+        if (empty($username) || empty($password)) {
+            return null;
+        }
 
         //Direct authentication
         try {
@@ -73,13 +76,13 @@ class HttpOperator implements TokenOperatorInterface
             return null;
         }
 
-        return new AuthToken('basic-auth', $user->primaryKey(), $this);
+        return new AuthToken('http-auth', $user->primaryKey(), $this);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function mountToken(
+    public function commitToken(
         Request $request,
         Response $response,
         TokenInterface $token
@@ -101,18 +104,6 @@ class HttpOperator implements TokenOperatorInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function updateToken(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response {
-        //Nothing to do
-        return $response;
-    }
-
-    /**
      * @param string $header
      *
      * @return array
@@ -121,6 +112,7 @@ class HttpOperator implements TokenOperatorInterface
     {
         $header = explode(':', base64_decode(substr($header, 6)), 2);
 
+        //Username, password
         return [$header[0], isset($header[1]) ? $header[1] : null];
     }
 }

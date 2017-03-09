@@ -37,4 +37,17 @@ class ContextTest extends HttpTest
         $this->http->pushMiddleware(AuthMiddleware::class);
         $this->get('/');
     }
+
+    /**
+     * @expectedException \Spiral\Auth\Exceptions\AuthException
+     */
+    public function testGetTokenWhenNoToken()
+    {
+        $this->http->setEndpoint(function () {
+            $this->auth->getToken();
+        });
+
+        $this->http->pushMiddleware(AuthMiddleware::class);
+        $this->get('/');
+    }
 }

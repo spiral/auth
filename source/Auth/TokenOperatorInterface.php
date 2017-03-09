@@ -55,7 +55,7 @@ interface TokenOperatorInterface
      *
      * @return Response
      */
-    public function mountToken(
+    public function commitToken(
         Request $request,
         Response $response,
         TokenInterface $token
@@ -72,22 +72,6 @@ interface TokenOperatorInterface
      * @return Response
      */
     public function removeToken(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response;
-
-    /**
-     * Update token presence in response, might regenerate token hash based on internal
-     * implementation.
-     *
-     * @param Request        $request
-     * @param Response       $response
-     * @param TokenInterface $token
-     *
-     * @return Response
-     */
-    public function updateToken(
         Request $request,
         Response $response,
         TokenInterface $token

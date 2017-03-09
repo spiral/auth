@@ -54,7 +54,7 @@ class SessionOperator implements TokenOperatorInterface
     public function createToken(UserInterface $user): TokenInterface
     {
         //Session tokens does not share session id but rather static token id
-        return new AuthToken('session-token', $user->primaryKey(), $this);
+        return new AuthToken('session-auth', $user->primaryKey(), $this);
     }
 
     /**
@@ -75,7 +75,7 @@ class SessionOperator implements TokenOperatorInterface
         }
 
         return new AuthToken(
-            'session-token',
+            'session-auth',
             $this->sessionSection($request)->get(static::USER_PK),
             $this
         );
@@ -84,7 +84,7 @@ class SessionOperator implements TokenOperatorInterface
     /**
      * {@inheritdoc}
      */
-    public function mountToken(
+    public function commitToken(
         Request $request,
         Response $response,
         TokenInterface $token
@@ -107,18 +107,6 @@ class SessionOperator implements TokenOperatorInterface
     ): Response {
         $this->sessionSection($request)->clear();
 
-        return $response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateToken(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response {
-        //Nothing to do
         return $response;
     }
 
