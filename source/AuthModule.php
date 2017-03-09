@@ -5,10 +5,11 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral;
 
 use Spiral\Auth\Configs\AuthConfig;
-use Spiral\Auth\Configs\GeneratorConfig;
+use Spiral\Auth\Configs\TokensConfig;
 use Spiral\Auth\Configs\HashesConfig;
 use Spiral\Core\DirectoriesInterface;
 use Spiral\Modules\ModuleInterface;
@@ -22,14 +23,19 @@ class AuthModule implements ModuleInterface
      */
     public function register(RegistratorInterface $registrator)
     {
+        //Exclude auth token from being encrypted
         $registrator->configure('http', 'cookies.excluded', 'spiral/auth', [
-            "//Authorization cookie",
-            "'auth-token'"
+            "'auth-token',"
         ]);
 
-        //Models
+        //Database based tokens
         $registrator->configure('tokenizer', 'directories', 'spiral/auth', [
-            "directory('libraries') . 'spiral/auth'"
+            "directory('libraries') . 'spiral/auth/source/Auth/Database/',"
+        ]);
+
+        //Merge auth database with default database
+        $registrator->configure('databases', 'aliases', 'spiral/auth', [
+            "'auth' => 'default',"
         ]);
     }
 
@@ -40,20 +46,8 @@ class AuthModule implements ModuleInterface
     public function publish(PublisherInterface $publisher, DirectoriesInterface $directories)
     {
         $publisher->publish(
-            __DIR__ . '/config/auth.php',
+            dirname(__DIR__) . '/resources/config.php',
             $directories->directory('config') . AuthConfig::CONFIG . '.php',
-            PublisherInterface::FOLLOW
-        );
-
-        $publisher->publish(
-            __DIR__ . '/config/hashes.php',
-            $directories->directory('config') . HashesConfig::CONFIG . '.php',
-            PublisherInterface::FOLLOW
-        );
-
-        $publisher->publish(
-            __DIR__ . '/config/generator.php',
-            $directories->directory('config') . GeneratorConfig::CONFIG . '.php',
             PublisherInterface::FOLLOW
         );
     }

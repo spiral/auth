@@ -1,10 +1,12 @@
 <?php
 /**
- * Spiral Framework.
+ * Spiral Framework, SpiralScout LLC.
  *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J), Lev Seleznev
+ * @package   spiralFramework
+ * @author    Anton Titov (Wolfy-J)
+ * @copyright ©2009-2011
  */
+
 namespace Spiral\Auth\Middlewares\Firewalls;
 
 use Psr\Http\Message\ResponseInterface as Response;

@@ -5,47 +5,53 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral\Auth\Middlewares;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Auth\AuthContext;
 use Spiral\Auth\ContextInterface;
-use Spiral\Auth\Entities\AuthContext;
+use Spiral\Auth\Sources\UserSourceInterface;
+use Spiral\Auth\TokenInterface;
 use Spiral\Auth\TokenManager;
-use Spiral\Auth\UserProviderInterface;
-use Spiral\Core\ContainerInterface;
+use Spiral\Core\ScoperInterface;
 use Spiral\Http\MiddlewareInterface;
 
+/**
+ * Manages user session over database tokens. This is primary middleware which must always be set
+ * before any auth firewalls.
+ */
 class AuthMiddleware implements MiddlewareInterface
 {
     /**
-     * @var UserProviderInterface
+     * @var UserSourceInterface
      */
-    protected $users;
+    private $users;
 
     /**
      * @var TokenManager
      */
-    protected $manager;
+    private $tokens;
 
     /**
-     * @var ContainerInterface
+     * @var ScoperInterface
      */
-    protected $container;
+    private $scopes;
 
     /**
-     * @param UserProviderInterface $users
-     * @param TokenManager          $manager
-     * @param ContainerInterface    $container
+     * @param UserSourceInterface $users
+     * @param TokenManager        $tokens
+     * @param ScoperInterface     $scopes
      */
     public function __construct(
-        UserProviderInterface $users,
-        TokenManager $manager,
-        ContainerInterface $container
+        UserSourceInterface $users,
+        TokenManager $tokens,
+        ScoperInterface $scopes
     ) {
         $this->users = $users;
-        $this->manager = $manager;
-        $this->container = $container;
+        $this->tokens = $tokens;
+        $this->scopes = $scopes;
     }
 
     /**
@@ -53,81 +59,60 @@ class AuthMiddleware implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        $context = $this->createContext($request);
+        //Contains information about current user session
+        $context = new AuthContext($this->users, $this->tokens->fetchToken($request));
 
-        $scope = $this->container->replace(ContextInterface::class, $context);
+        $scope = $this->scopes->replace(ContextInterface::class, $context);
         try {
-            $response = $next($request->withAttribute('auth', $context), $response);
+            $response = $next(
+                $request->withAttribute('auth', $context),
+                $response
+            );
         } finally {
-            $this->container->restore($scope);
+            $this->scopes->restore($scope);
         }
 
         if ($context->hasToken()) {
-            $response = $this->updateToken($request, $response, $context);
-        } elseif ($context->hasUser()) {
-            $response = $this->createToken($request, $response, $context);
+            if ($context->isClosed()) {
+                //Close user session and remove associated tokens
+                return $this->closeContext($request, $response, $context->getToken());
+            }
+
+            //Mount token value in response or remove it if context is closed
+            return $this->commitContext($request, $response, $context->getToken());
         }
 
+        //No user session was created
         return $response;
     }
 
     /**
-     * @param Request $request
-     * @return AuthContext
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
+     *
+     * @return Response
      */
-    protected function createContext(Request $request)
-    {
-        $operator = $this->manager->detectOperator($request, $name);
-
-        if (empty($operator)) {
-            return new AuthContext($this->users);
-        }
-
-        $token = $operator->fetchToken($request);
-        if (!empty($token)) {
-            $token->setOperator($name);
-        }
-
-        return new AuthContext($this->users, $name, $token);
+    protected function commitContext(
+        Request $request,
+        Response $response,
+        TokenInterface $token
+    ): Response {
+        return $token->getOperator()->commitToken($request, $response, $token);
     }
 
     /**
-     * @param Request     $request
-     * @param Response    $response
-     * @param AuthContext $context
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
+     *
      * @return Response
      */
-    private function updateToken(Request $request, Response $response, AuthContext $context)
-    {
-        $operator = $this->manager->getOperator($context->getOperator());
-
-        $token = $context->getToken();
-        if (!empty($token)) {
-            $token->setOperator($context->getOperator());
-        }
-
-        //Session was either continued or ended.
-        if ($context->isLogout()) {
-            return $operator->removeToken($request, $response, $token);
-        }
-
-        return $operator->updateToken($request, $response, $token);
-    }
-
-    /**
-     * @param Request     $request
-     * @param Response    $response
-     * @param AuthContext $context
-     * @return Response
-     */
-    private function createToken(Request $request, Response $response, AuthContext $context)
-    {
-        $operator = $this->manager->getOperator($context->getOperator());
-        $token = $operator->createToken($context->getUser());
-        if (!empty($token)) {
-            $token->setOperator($context->getOperator());
-        }
-
-        return $operator->mountToken($request, $response, $token);
+    protected function closeContext(
+        Request $request,
+        Response $response,
+        TokenInterface $token
+    ): Response {
+        return $token->getOperator()->removeToken($request, $response, $token);
     }
 }

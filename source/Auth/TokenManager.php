@@ -5,18 +5,29 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral\Auth;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Spiral\Auth\Configs\AuthConfig;
+use Spiral\Auth\Exceptions\AuthException;
+use Spiral\Core\Container\SingletonInterface;
 use Spiral\Core\FactoryInterface;
 
-class TokenManager
+/**
+ * Provides ability to create and store authorization tokens using set of token operators.
+ */
+class TokenManager implements SingletonInterface
 {
     /**
      * @var AuthConfig
      */
     private $config;
+
+    /**
+     * @var TokenOperatorInterface[]
+     */
+    private $operators = [];
 
     /**
      * @var FactoryInterface
@@ -34,27 +45,30 @@ class TokenManager
     }
 
     /**
-     * @param string        $operator
      * @param UserInterface $user
+     * @param string        $operator Default operator to be used when value is null.
+     *
      * @return TokenInterface
      */
-    public function createToken($operator, UserInterface $user)
+    public function createToken(UserInterface $user, string $operator = null): TokenInterface
     {
-        return $this->getOperator($operator)->createToken($user);
+        return $this->getOperator($operator ?? $this->config->defaultOperator())->createToken($user);
     }
 
     /**
+     * Fetch authorization token from request if any.
+     *
      * @param Request $request
-     * @param string  $name
-     * @return TokenOperatorInterface|null
+     *
+     * @return TokenInterface|null
      */
-    public function detectOperator(Request $request, &$name)
+    public function fetchToken(Request $request)
     {
         foreach ($this->config->getOperators() as $name) {
             $operator = $this->getOperator($name);
 
             if ($operator->hasToken($request)) {
-                return $operator;
+                return $operator->fetchToken($request);
             }
         }
 
@@ -63,11 +77,20 @@ class TokenManager
 
     /**
      * @param string $name
+     *
      * @return TokenOperatorInterface
      */
-    public function getOperator($name)
+    protected function getOperator(string $name): TokenOperatorInterface
     {
-        return $this->factory->make(
+        if (isset($this->operators[$name])) {
+            return $this->operators[$name];
+        }
+
+        if (!$this->config->hasOperator($name)) {
+            throw new AuthException("Undefined token operator '{$name}'");
+        }
+
+        return $this->operators[$name] = $this->factory->make(
             $this->config->operatorClass($name),
             $this->config->operatorOptions($name)
         );

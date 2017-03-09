@@ -5,15 +5,16 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral\Auth;
 
 /**
- * User which knows about it's password hash.
+ * Declares ability to provide hashed password value.
  */
 interface PasswordAwareInterface extends UserInterface
 {
     /**
      * @return string
      */
-    public function getPasswordHash();
+    public function getPasswordHash(): string;
 }

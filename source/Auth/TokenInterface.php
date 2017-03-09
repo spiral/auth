@@ -5,49 +5,38 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J), Lev Seleznev
  */
+
 namespace Spiral\Auth;
 
 interface TokenInterface
 {
     /**
-     * Char to join/explode token partials.
-     */
-    const DELIMITER = '.';
-
-    /**
      * Fully compiled hash code for a stored token.
      *
      * @return string
      */
-    public function getHash();
+    public function getValue(): string;
 
     /**
+     * PrimaryKey of associated user instance.
+     *
      * @return mixed
      */
     public function getUserPK();
 
     /**
-     * @return bool
+     * Associated token operator.
+     *
+     * @return TokenOperatorInterface
      */
-    public function isExpired();
+    public function getOperator(): TokenOperatorInterface;
 
     /**
-     * @return string
+     * Transfer token to another operator handler.
+     *
+     * @param TokenOperatorInterface $operator
+     *
+     * @return self
      */
-    public function getOperator();
-
-    /**
-     * @param string $operator
-     */
-    public function setOperator($operator);
-
-    /**
-     * @return string
-     */
-    public function getSource();
-
-    /**
-     * @param string $source
-     */
-    public function setSource($source);
+    public function withOperator(TokenOperatorInterface $operator): self;
 }

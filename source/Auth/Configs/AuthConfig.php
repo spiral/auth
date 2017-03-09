@@ -5,10 +5,14 @@
  * @license MIT
  * @author  Anton Titov (Wolfy-J)
  */
+
 namespace Spiral\Auth\Configs;
 
 use Spiral\Core\InjectableConfig;
 
+/**
+ * Set of auth operators used to handle user tokens.
+ */
 class AuthConfig extends InjectableConfig
 {
     /**
@@ -20,42 +24,54 @@ class AuthConfig extends InjectableConfig
      * @var array
      */
     protected $config = [
-        'userSource' => '',
-        'operators'  => [
-
-        ]
+        'defaultOperator' => '',
+        'operators'       => []
     ];
 
     /**
-     * @return string
-     */
-    public function userSource()
-    {
-        return $this->config['userSource'];
-    }
-
-    /**
+     * All token operator names.
+     *
      * @return array
      */
-    public function getOperators()
+    public function getOperators(): array
     {
         return array_keys($this->config['operators']);
     }
 
     /**
-     * @param string $name
      * @return string
      */
-    public function operatorClass($name)
+    public function defaultOperator(): string
+    {
+        return $this->config['defaultOperator'];
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasOperator(string $name): bool
+    {
+        return isset($this->config['operators'][$name]);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function operatorClass(string $name): string
     {
         return $this->config['operators'][$name]['class'];
     }
 
     /**
      * @param string $name
+     *
      * @return array
      */
-    public function operatorOptions($name)
+    public function operatorOptions(string $name): array
     {
         return $this->config['operators'][$name]['options'];
     }

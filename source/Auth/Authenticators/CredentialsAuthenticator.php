@@ -1,14 +1,17 @@
 <?php
 /**
- * Spiral Framework.
+ * Spiral Framework, SpiralScout LLC.
  *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J), Lev Seleznev
+ * @package   spiralFramework
+ * @author    Anton Titov (Wolfy-J)
+ * @copyright ©2009-2011
  */
+
 namespace Spiral\Auth\Authenticators;
 
-use Spiral\Auth\Exceptions\InvalidUserException;
-use Spiral\Auth\Hashes\PasswordHashes;
+use Spiral\Auth\Exceptions\CredentialsException;
+use Spiral\Auth\Exceptions\LogicException;
+use Spiral\Auth\Hashing\PasswordHasher;
 use Spiral\Auth\PasswordAwareInterface;
 use Spiral\Auth\Sources\UsernameSourceInterface;
 
@@ -20,43 +23,47 @@ class CredentialsAuthenticator
     private $source;
 
     /**
-     * @var PasswordHashes
+     * @var PasswordHasher
      */
-    private $hashes;
+    private $hasher;
 
     /**
-     * CredentialsAuthenticator constructor.
-     *
      * @param UsernameSourceInterface $source
-     * @param PasswordHashes          $hashes
+     * @param PasswordHasher          $hasher
      */
-    public function __construct(UsernameSourceInterface $source, PasswordHashes $hashes)
+    public function __construct(UsernameSourceInterface $source, PasswordHasher $hasher)
     {
         $this->source = $source;
-        $this->hashes = $hashes;
+        $this->hasher = $hasher;
     }
 
     /**
+     * Authorizes user based on given credentials. Will throw CredentialsException in case of any
+     * auth related error (i.e. invalid password, invalid username).
+     *
      * @param string $username
      * @param string $password
-     * @return null|PasswordAwareInterface
+     *
+     * @return PasswordAwareInterface
+     *
+     * @throws LogicException When user does not implement proper interface.
+     * @throws CredentialsException When user does not exists or credentials do not match.
      */
-    public function getUser($username, $password)
+    public function getUser(string $username, string $password): PasswordAwareInterface
     {
         $user = $this->source->findByUsername($username);
         if (empty($user)) {
-            return null;
+            throw new CredentialsException("Unable to authorize, no such user");
         }
 
         if (!$user instanceof PasswordAwareInterface) {
-            throw new InvalidUserException("User must be instance of PasswordAwareInterface");
+            throw new LogicException("User must be instance of PasswordAwareInterface");
         }
 
-        if ($this->hashes->hashEquals($password, $user->getPasswordHash())) {
-            //Password needs rehash logic dedicated to user application
-            return $user;
+        if (!$this->hasher->hashEquals($password, $user->getPasswordHash())) {
+            throw new CredentialsException("Unable to authorize, invalid password");
         }
 
-        return null;
+        return $user;
     }
 }
