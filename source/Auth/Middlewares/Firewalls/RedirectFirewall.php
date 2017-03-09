@@ -38,7 +38,7 @@ class RedirectFirewall extends AbstractFirewall
             $redirect = new Uri($redirect);
         }
 
-        $this->withRedirect($redirect);
+        $this->redirect = $redirect;
     }
 
     /**
