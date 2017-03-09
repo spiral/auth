@@ -100,9 +100,6 @@ abstract class BaseTest extends TestCase
 
         TestApplication::shareContainer(null);
 
-        //Clean users
-        $this->app->db->users->truncateData();
-
         //Forcing destruction
         $this->app = null;
 

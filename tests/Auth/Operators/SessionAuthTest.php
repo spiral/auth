@@ -78,7 +78,54 @@ class SessionAuthTest extends HttpTest
             $this->assertSame('session-auth', $this->auth->getToken()->getValue());
         });
 
-        $response = $this->get('/', [], [], [
+        $this->get('/', [], [], [
+            'SID' => $cookies['SID']
+        ]);
+    }
+
+    public function testLogout()
+    {
+        $hasher = new PasswordHasher();
+
+        $user = new User();
+        $user->username = 'username';
+        $user->password_hash = $hasher->hash('password');
+        $user->save();
+
+        $this->http->setEndpoint(function () use ($user) {
+            $this->auth->init(
+                $this->tokens->createToken('session', $user)
+            );
+        });
+
+        $this->http->pushMiddleware(AuthMiddleware::class);
+        $response = $this->get('/', [], []);
+
+        $cookies = $this->fetchCookies($response->getHeader('Set-Cookie'));
+
+        $this->http->setEndpoint(function () use ($user) {
+            $this->assertTrue($this->auth->hasToken());
+            $this->assertTrue($this->auth->hasUser());
+            $this->assertTrue($this->auth->isAuthenticated());
+
+            $this->assertSame($user->primaryKey(), $this->auth->getUser()->primaryKey());
+            $this->assertSame('session-auth', $this->auth->getToken()->getValue());
+
+            //logout
+            $this->auth->close();
+        });
+
+        $this->get('/', [], [], [
+            'SID' => $cookies['SID']
+        ]);
+
+        $this->http->setEndpoint(function () use ($user) {
+            $this->assertFalse($this->auth->hasToken());
+            $this->assertFalse($this->auth->hasUser());
+            $this->assertFalse($this->auth->isAuthenticated());
+        });
+
+        $this->get('/', [], [], [
             'SID' => $cookies['SID']
         ]);
     }
