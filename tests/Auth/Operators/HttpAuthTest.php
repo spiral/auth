@@ -42,6 +42,9 @@ class HttpAuthTest extends HttpTest
             $token = $this->auth->getToken();
 
             $this->assertSame('http-auth', $token->getValue());
+            $this->assertSame('http-auth', (string)$token);
+            $this->assertSame('"http-auth"', json_encode($token));
+
             $this->assertInstanceOf(HttpOperator::class, $token->getOperator());
         });
 

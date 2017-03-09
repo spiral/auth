@@ -60,10 +60,6 @@ class HttpOperator implements TokenOperatorInterface
     {
         $header = $request->getHeaderLine('Authorization');
 
-        if (strpos($header, 'Basic') !== 0) {
-            return null;
-        }
-
         list($username, $password) = self::parseHeader($header);
         if (empty($username) || empty($password)) {
             return null;
