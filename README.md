@@ -60,11 +60,11 @@ You can either add middleware to a specific route or enable authentication servi
 Entity must extend PasswordAwareInterface:
 
 ```php
-class Aware extends Record implements PasswordAwareInterface
+class User extends Record implements PasswordAwareInterface
 {
     //...
 
-    public function getPasswordHash()
+    public function getPasswordHash(): string
     {
         return $this->password;
     }
@@ -76,9 +76,9 @@ Source must implement `UsernameSourceInterface` and needed methods:
 ```php
 class UserSource extends RecordSource implements UsernameSourceInterface
 {
-    const RECORD = Aware::class;
+    const RECORD = User::class;
 
-    public function findByUsername($username)
+    public function findByUsername(string $username)
     {
         return $this->findOne([
             'status'   => 'active',
@@ -87,5 +87,3 @@ class UserSource extends RecordSource implements UsernameSourceInterface
     }
 }
 ```
-
-> TODO: Add usage examples and firewalls.
