@@ -14,6 +14,7 @@ interface UserSourceInterface
 {
     /**
      * @param mixed $id
+     *
      * @return UserInterface|null
      */
     public function findByPK($id);

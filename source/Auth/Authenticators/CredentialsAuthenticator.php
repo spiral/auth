@@ -15,12 +15,12 @@ use Spiral\Auth\Exceptions\InvalidUserException;
 use Spiral\Auth\Exceptions\LogicException;
 use Spiral\Auth\Hashing\PasswordHasher;
 use Spiral\Auth\PasswordAwareInterface;
-use Spiral\Auth\Sources\CredentialsSourceInterface;
+use Spiral\Auth\Sources\UsernameSourceInterface;
 
 class CredentialsAuthenticator
 {
     /**
-     * @var CredentialsSourceInterface
+     * @var UsernameSourceInterface
      */
     private $source;
 
@@ -30,10 +30,10 @@ class CredentialsAuthenticator
     private $hasher;
 
     /**
-     * @param CredentialsSourceInterface $source
-     * @param PasswordHasher             $hasher
+     * @param UsernameSourceInterface $source
+     * @param PasswordHasher          $hasher
      */
-    public function __construct(CredentialsSourceInterface $source, PasswordHasher $hasher)
+    public function __construct(UsernameSourceInterface $source, PasswordHasher $hasher)
     {
         $this->source = $source;
         $this->hasher = $hasher;
@@ -54,7 +54,7 @@ class CredentialsAuthenticator
     {
         $user = $this->source->findByUsername($username);
         if (empty($user)) {
-            throw new CredentialsException("Unable to authorize, undefined username");
+            throw new CredentialsException("Unable to authorize, no such user");
         }
 
         if (!$user instanceof PasswordAwareInterface) {

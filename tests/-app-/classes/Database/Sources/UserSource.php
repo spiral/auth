@@ -9,11 +9,11 @@
 
 namespace TestApplication\Database\Sources;
 
-use Spiral\Auth\Sources\CredentialsSourceInterface;
+use Spiral\Auth\Sources\UsernameSourceInterface;
 use Spiral\ORM\Entities\RecordSource;
 use TestApplication\Database\User;
 
-class UserSource extends RecordSource implements CredentialsSourceInterface
+class UserSource extends RecordSource implements UsernameSourceInterface
 {
     const RECORD = User::class;
 
