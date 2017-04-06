@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "spiral/framework": "^0.9"
+    "spiral/framework": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
