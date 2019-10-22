@@ -33,7 +33,7 @@ class AuthTokenSource extends RecordSource implements TokenSourceInterface
             'token_hash' => hash('sha512', $token)
         ]);
 
-        if (!empty($token) && $token->getExpiration() < new \DateTime('now')) {
+        if (!empty($token) && $token->getExpiresAt() < new \DateTime('now')) {
             //Token has expired
             return null;
         }

@@ -29,7 +29,7 @@ abstract class AbstractFirewall implements MiddlewareInterface
         /** @var ContextInterface $context */
         $authContext = $request->getAttribute('auth');
 
-        if (empty($authContext) || !$authContext->isAuthenticated()) {
+        if (empty($authContext) || $authContext->getActor() !== null) {
             return $this->denyAccess($request, $response, $next);
         }
 

@@ -11,6 +11,9 @@ namespace Spiral\Auth\Hashing;
 
 /**
  * Works at top of default password hashes.
+ *
+ * @todo: do we need it?
+ * @deprecated
  */
 class PasswordHasher
 {

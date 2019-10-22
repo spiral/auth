@@ -91,7 +91,7 @@ class SessionOperator implements TokenOperatorInterface
     ): Response {
         $this->sessionSection($request)->set(
             static::USER_PK,
-            $token->getUserPK()
+            $token->getUserID()
         );
 
         return $response;

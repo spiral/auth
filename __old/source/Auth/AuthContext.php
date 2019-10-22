@@ -101,7 +101,7 @@ final class AuthContext implements ContextInterface
             return $this->user;
         }
 
-        return $this->user = $this->users->findByPK($this->token->getUserPK());
+        return $this->user = $this->users->findByPK($this->token->getUserID());
     }
 
     /**

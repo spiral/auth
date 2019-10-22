@@ -52,7 +52,7 @@ final class AuthToken implements TokenInterface, \JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getUserPK()
+    public function getUserID()
     {
         return $this->userPK;
     }

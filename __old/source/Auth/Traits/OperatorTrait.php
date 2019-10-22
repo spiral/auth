@@ -14,6 +14,8 @@ use Spiral\Auth\TokenOperatorInterface;
 
 /**
  * Provides ability to carry reference to associated operator.
+ *
+ * @todo: WHY?
  */
 trait OperatorTrait
 {

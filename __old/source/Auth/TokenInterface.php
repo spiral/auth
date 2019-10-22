@@ -8,7 +8,7 @@
 
 namespace Spiral\Auth;
 
-interface TokenInterface
+interface TokenInterface2
 {
     /**
      * Fully compiled hash code for a stored token.
@@ -22,7 +22,11 @@ interface TokenInterface
      *
      * @return mixed
      */
-    public function getUserPK();
+    public function getUserID(); // todo: getPayload()
+
+    // todo: operator?
+
+    // todo: DO I NEED IT HERE?
 
     /**
      * Associated token operator.

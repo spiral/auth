@@ -18,23 +18,14 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 interface TokenOperatorInterface
 {
     /**
-     * Create token for a given user intance, returned token must be associated with operator via
-     * getOperator() method.
-     *
-     * @param UserInterface $user
-     *
-     * @return TokenInterface
-     */
-    public function createToken(UserInterface $user): TokenInterface;
-
-    /**
-     * Check if request contains token associated with this operator.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    public function hasToken(Request $request): bool;
+ * Create token for a given user intance, returned token must be associated with operator via
+ * getOperator() method.
+ *
+ * @param UserInterface $user
+ *
+ * @return TokenInterface
+ */
+    public function createToken(UserInterface $user): TokenInterface; // token must be created via another instance
 
     /**
      * Fetch token from request, make sure to call hasToken first. Return null when token not found
@@ -56,7 +47,6 @@ interface TokenOperatorInterface
      * @return Response
      */
     public function commitToken(
-        Request $request,
         Response $response,
         TokenInterface $token
     ): Response;
@@ -72,7 +62,6 @@ interface TokenOperatorInterface
      * @return Response
      */
     public function removeToken(
-        Request $request,
         Response $response,
         TokenInterface $token
     ): Response;

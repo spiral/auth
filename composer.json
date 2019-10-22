@@ -9,21 +9,22 @@
     }
   ],
   "require": {
-    "spiral/framework": "^0.9"
+    "php": "^7.2",
+    "ext-json": "*",
+    "spiral/boot": "^1.0",
+    "psr/http-message": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~6.0",
-    "mockery/mockery": "^0.9.4"
+    "phpunit/phpunit": "~7.0"
   },
   "autoload": {
     "psr-4": {
-      "Spiral\\": "source/"
+      "Spiral\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Spiral\\Tests\\": "tests/",
-      "TestApplication\\": "tests/-app-/classes/"
+      "Spiral\\Tests\\": "tests/"
     }
   }
 }

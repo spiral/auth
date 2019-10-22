@@ -62,7 +62,7 @@ class AuthToken extends Record implements TokenInterface
     /**
      * @return \DateTimeInterface
      */
-    public function getExpiration(): \DateTimeInterface
+    public function getExpiresAt(): \DateTimeInterface
     {
         return $this->expires_at instanceof \DateTimeInterface
             ? $this->expires_at
@@ -72,7 +72,7 @@ class AuthToken extends Record implements TokenInterface
     /**
      * @return mixed
      */
-    public function getUserPK()
+    public function getUserID()
     {
         return $this->user_pk;
     }

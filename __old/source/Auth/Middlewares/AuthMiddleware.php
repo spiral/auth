@@ -44,11 +44,8 @@ class AuthMiddleware implements MiddlewareInterface
      * @param TokenManager        $tokens
      * @param ScoperInterface     $scopes
      */
-    public function __construct(
-        UserSourceInterface $users,
-        TokenManager $tokens,
-        ScoperInterface $scopes
-    ) {
+    public function __construct(UserSourceInterface $users, TokenManager $tokens, ScoperInterface $scopes)
+    {
         $this->users = $users;
         $this->tokens = $tokens;
         $this->scopes = $scopes;
@@ -93,11 +90,8 @@ class AuthMiddleware implements MiddlewareInterface
      *
      * @return Response
      */
-    protected function commitContext(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response {
+    protected function commitContext(Request $request, Response $response, TokenInterface $token): Response
+    {
         return $token->getOperator()->commitToken($request, $response, $token);
     }
 
@@ -108,11 +102,8 @@ class AuthMiddleware implements MiddlewareInterface
      *
      * @return Response
      */
-    protected function closeContext(
-        Request $request,
-        Response $response,
-        TokenInterface $token
-    ): Response {
+    protected function closeContext(Request $request, Response $response, TokenInterface $token): Response
+    {
         return $token->getOperator()->removeToken($request, $response, $token);
     }
 }
