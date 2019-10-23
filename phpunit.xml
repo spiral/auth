@@ -3,25 +3,23 @@
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
-         verbose="true"
+         verbose="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
-         processIsolation="true"
+         processIsolation="false"
          stopOnFailure="false"
          stopOnError="false"
-         syntaxCheck="true"
-         stderr="true"
->
+         stderr="true">
     <testsuites>
-        <testsuite name="Auth Module Tests">
+        <testsuite name="Common Authentication Interfaces">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>source/Auth</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>
