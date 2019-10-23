@@ -13,7 +13,7 @@ install:
 
 script:
   - phpunit --coverage-clover=clover.xml
-  - vendor/bin/spiral-cs check src tests functions.php
+  - vendor/bin/spiral-cs check src tests
 
 after_script:
   - bash <(curl -s https://codecov.io/bash) -f coverage.xml
