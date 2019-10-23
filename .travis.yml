@@ -12,7 +12,7 @@ install:
   - composer install --no-interaction --prefer-source
 
 script:
-  - phpunit --coverage-clover=clover.xml
+  - phpunit --coverage-clover=coverage.xml
   - vendor/bin/spiral-cs check src tests
 
 after_script:
