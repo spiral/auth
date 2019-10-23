@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Auth;
@@ -30,12 +32,12 @@ interface TokenStorageInterface
      * Create token based on the payload provided by actor provider.
      *
      * @param array                   $payload
-     * @param \DateTimeInterface|null $expiration
+     * @param \DateTimeInterface|null $expiresAt
      * @return TokenInterface
      *
      * @throws TokenStorageException
      */
-    public function create(array $payload, \DateTimeInterface $expiration = null): TokenInterface;
+    public function create(array $payload, \DateTimeInterface $expiresAt = null): TokenInterface;
 
     /**
      * Delete token from the persistent storage.

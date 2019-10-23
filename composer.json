@@ -1,7 +1,7 @@
 {
   "name": "spiral/auth",
   "license": "MIT",
-  "description": "Authorization component with set of authentication middlewares and providers",
+  "description": "Common Authentication Interfaces",
   "authors": [
     {
       "name": "Anton Titov / Wolfy-J",
@@ -9,17 +9,15 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "ext-json": "*",
-    "spiral/boot": "^1.0",
-    "psr/http-message": "^1.0"
+    "php": "^7.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "~7.0"
+    "phpunit/phpunit": "~7.0",
+    "spiral/code-style": "^1.0"
   },
   "autoload": {
     "psr-4": {
-      "Spiral\\": "src/"
+      "Spiral\\Auth\\": "src/"
     }
   },
   "autoload-dev": {
