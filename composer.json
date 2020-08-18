@@ -1,105 +1,34 @@
 {
-    "name": "spiral/framework",
+    "name": "spiral/auth",
     "type": "library",
-    "description": "Spiral, High-Performance PHP/Go Framework",
-    "homepage": "https://spiral.dev",
     "license": "MIT",
+    "description": "Common Authentication Interfaces",
+    "homepage": "https://spiral.dev",
     "support": {
         "issues": "https://github.com/spiral/framework/issues",
-        "source": "https://github.com/spiral/framework"
+        "source": "https://github.com/spiral/auth"
     },
     "authors": [
         {
-            "name": "Wolfy-J",
+            "name": "Anton Titov / Wolfy-J",
             "email": "wolfy.jd@gmail.com"
         }
     ],
-    "bin": [
-        "bin/spiral"
-    ],
     "require": {
-        "php": "^7.2",
-        "ext-json": "*",
-        "ext-mbstring": "*",
-        "defuse/php-encryption": "^2.2",
-        "psr/container": "^1.0",
-        "spiral/boot": "^1.1",
-        "spiral/composer-publish-plugin": "^1.0",
-        "spiral/tokenizer": "^2.0"
-    },
-    "autoload": {
-        "files": [
-            "src/Framework/helpers.php"
-        ],
-        "psr-4": {
-            "Spiral\\": "src/Framework",
-            "Spiral\\Config\\": "src/Config/src",
-            "Spiral\\Core\\": "src/Core/src",
-            "Spiral\\Encrypter\\": "src/Encrypter/src",
-            "Spiral\\Files\\": "src/Files/src",
-            "Spiral\\Models\\": "src/Models/src"
-        }
+        "php": "^7.2"
     },
     "require-dev": {
-        "cycle/annotated": "^2.0",
-        "cycle/migrations": "^1.0",
-        "cycle/orm": "^1.0",
-        "cycle/proxy-factory": "^1.0",
-        "mockery/mockery": "^1.1",
-        "phpunit/phpunit": "^8.5|^9.0",
-        "roave/security-advisories": "dev-master",
-        "spiral/auth": "^1.0",
-        "spiral/auth-http": "^1.1",
-        "spiral/broadcast": "^2.0",
-        "spiral/broadcast-ws": "^1.0",
-        "spiral/code-style": "^1.0",
-        "spiral/console": "^1.0",
-        "spiral/cookies": "^1.2",
-        "spiral/csrf": "^1.1",
-        "spiral/database": "^2.4",
-        "spiral/debug": "^1.1",
-        "spiral/filters": "^1.0",
-        "spiral/http": "^1.0",
-        "spiral/jobs": "^2.0",
-        "spiral/logger": "^1.0",
-        "spiral/migrations": "^2.0",
-        "spiral/php-grpc": "^1.0",
-        "spiral/roadrunner": "^1.2",
-        "spiral/router": "^1.0",
-        "spiral/security": "^2.0",
-        "spiral/session": "^1.2.2",
-        "spiral/snapshots": "^1.0",
-        "spiral/translator": "^1.2",
-        "spiral/validation": "^1.4.4",
-        "spiral/views": "^1.0",
-        "symplify/monorepo-builder": "^7.0"
+        "phpunit/phpunit": "^8.5|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spiral\\Auth\\": "src"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spiral\\App\\": "tests/app/src",
-            "Spiral\\Tests\\Config\\": "src/Config/tests",
-            "Spiral\\Tests\\Core\\": "src/Core/tests",
-            "Spiral\\Tests\\Encrypter\\": "src/Encrypter/tests",
-            "Spiral\\Tests\\Files\\": "src/Files/tests",
-            "Spiral\\Tests\\Framework\\": "tests/Framework",
-            "Spiral\\Tests\\Models\\": "src/Models/tests"
+            "Spiral\\Tests\\Auth\\": "tests"
         }
-    },
-    "replace": {
-        "spiral/config": "*",
-        "spiral/core": "*",
-        "spiral/encrypter": "*",
-        "spiral/files": "*",
-        "spiral/models": "*"
-    },
-    "scripts": {
-        "cs": "spiral-cs check src tests",
-        "cs-fix": "spiral-cs fix src tests",
-        "merge": [
-            "monorepo-builder merge",
-            "@php bin/sync"
-        ],
-        "split": "monorepo-builder split"
     },
     "extra": {
         "branch-alias": {
