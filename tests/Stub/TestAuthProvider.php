@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Auth;
+namespace Spiral\Tests\Auth\Stub;
 
 use Spiral\Auth\ActorProviderInterface;
 use Spiral\Auth\TokenInterface;
 
-class TestProvider implements ActorProviderInterface
+class TestAuthProvider implements ActorProviderInterface
 {
     public function getActor(TokenInterface $token): ?object
     {
