@@ -19,11 +19,11 @@ class AuthContextTest extends TestCase
     {
         $context = new AuthContext(new TestAuthProvider());
 
-        self::assertNull($context->getToken());
-        self::assertNull($context->getActor());
-        self::assertNull($context->getTransport());
+        $this->assertNull($context->getToken());
+        $this->assertNull($context->getActor());
+        $this->assertNull($context->getTransport());
 
-        self::assertFalse($context->isClosed());
+        $this->assertFalse($context->isClosed());
     }
 
     public function testTokenButNoActor(): void
@@ -31,9 +31,9 @@ class AuthContextTest extends TestCase
         $context = new AuthContext(new TestAuthProvider());
         $context->start(new TestAuthToken('1', ['ok' => false]), 'cookie');
 
-        self::assertInstanceOf(TokenInterface::class, $context->getToken());
-        self::assertNull($context->getActor());
-        self::assertSame('cookie', $context->getTransport());
+        $this->assertInstanceOf(TokenInterface::class, $context->getToken());
+        $this->assertNull($context->getActor());
+        $this->assertSame('cookie', $context->getTransport());
     }
 
     public function testActor(): void
@@ -41,9 +41,9 @@ class AuthContextTest extends TestCase
         $context = new AuthContext(new TestAuthProvider());
         $context->start(new TestAuthToken('ok', ['ok' => true]), 'cookie');
 
-        self::assertInstanceOf(TokenInterface::class, $context->getToken());
-        self::assertInstanceOf(\stdClass::class, $context->getActor());
-        self::assertSame('cookie', $context->getTransport());
+        $this->assertInstanceOf(TokenInterface::class, $context->getToken());
+        $this->assertInstanceOf(\stdClass::class, $context->getActor());
+        $this->assertSame('cookie', $context->getTransport());
     }
 
     public function testClosed(): void
@@ -51,16 +51,16 @@ class AuthContextTest extends TestCase
         $context = new AuthContext(new TestAuthProvider());
         $context->start(new TestAuthToken('1', ['ok' => true]), 'cookie');
 
-        self::assertInstanceOf(TokenInterface::class, $context->getToken());
-        self::assertInstanceOf(\stdClass::class, $context->getActor());
-        self::assertSame('cookie', $context->getTransport());
+        $this->assertInstanceOf(TokenInterface::class, $context->getToken());
+        $this->assertInstanceOf(\stdClass::class, $context->getActor());
+        $this->assertSame('cookie', $context->getTransport());
 
         $context->close();
 
-        self::assertInstanceOf(TokenInterface::class, $context->getToken());
-        self::assertNull($context->getActor());
-        self::assertSame('cookie', $context->getTransport());
-        self::assertTrue($context->isClosed());
+        $this->assertInstanceOf(TokenInterface::class, $context->getToken());
+        $this->assertNull($context->getActor());
+        $this->assertSame('cookie', $context->getTransport());
+        $this->assertTrue($context->isClosed());
     }
 
     public function testAuthenticatedEventShouldBeDispatched(): void
