@@ -26,7 +26,7 @@ class TokenStorageProviderTest extends TestCase
             ]), m::mock(FactoryInterface::class)
         );
 
-        self::assertSame($storage, $provider->getStorage('database'));
+        $this->assertSame($storage, $provider->getStorage('database'));
     }
 
     public function testGetDefaultStorage(): void
@@ -41,7 +41,7 @@ class TokenStorageProviderTest extends TestCase
             ]), m::mock(FactoryInterface::class)
         );
 
-        self::assertSame($storage, $provider->getStorage());
+        $this->assertSame($storage, $provider->getStorage());
     }
 
     public function testGetInvalidStorage(): void
@@ -94,7 +94,7 @@ class TokenStorageProviderTest extends TestCase
 
         $factory->shouldReceive('make')->once()->with('some', [])->andReturn($storage);
 
-        self::assertSame($storage, $provider->getStorage('session'));
+        $this->assertSame($storage, $provider->getStorage('session'));
     }
 
     public function testGetStringStorage(): void
@@ -113,7 +113,7 @@ class TokenStorageProviderTest extends TestCase
 
         $factory->shouldReceive('make')->once()->with('test2')->andReturn($storage);
 
-        self::assertSame($storage, $provider->getStorage('database'));
+        $this->assertSame($storage, $provider->getStorage('database'));
     }
 
     public function testGetStorageTwice(): void
@@ -134,10 +134,10 @@ class TokenStorageProviderTest extends TestCase
 
         $sameStorage = $provider->getStorage('database');
 
-        self::assertSame($sameStorage, $provider->getStorage('database'));
+        $this->assertSame($sameStorage, $provider->getStorage('database'));
     }
 
-    public function testGetDifferentStorage(): void
+    public function testGetDifferentStorage()
     {
         $provider = new TokenStorageProvider(
             new AuthConfig([
@@ -161,6 +161,6 @@ class TokenStorageProviderTest extends TestCase
 
         $notSameStorage = $provider->getStorage('session');
 
-        self::assertNotSame($notSameStorage, $provider->getStorage('database'));
+        $this->assertNotSame($notSameStorage, $provider->getStorage('database'));
     }
 }
