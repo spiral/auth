@@ -23,10 +23,11 @@ class TokenStorageProviderTest extends TestCase
                     'database' => $storage = m::mock(TokenStorageInterface::class),
                     'session' => 'test',
                 ],
-            ]), m::mock(FactoryInterface::class)
+            ]),
+            m::mock(FactoryInterface::class),
         );
 
-        $this->assertSame($storage, $provider->getStorage('database'));
+        self::assertSame($storage, $provider->getStorage('database'));
     }
 
     public function testGetDefaultStorage(): void
@@ -38,10 +39,11 @@ class TokenStorageProviderTest extends TestCase
                     'session' => $storage = m::mock(TokenStorageInterface::class),
                     'database' => 'test',
                 ],
-            ]), m::mock(FactoryInterface::class)
+            ]),
+            m::mock(FactoryInterface::class),
         );
 
-        $this->assertSame($storage, $provider->getStorage());
+        self::assertSame($storage, $provider->getStorage());
     }
 
     public function testGetInvalidStorage(): void
@@ -53,9 +55,10 @@ class TokenStorageProviderTest extends TestCase
             new AuthConfig([
                 'storages' => [
                     'session' => 'test1',
-                    'database' => 'test2'
+                    'database' => 'test2',
                 ],
-            ]), m::mock(FactoryInterface::class)
+            ]),
+            m::mock(FactoryInterface::class),
         );
 
         $provider->getStorage('123');
@@ -71,9 +74,10 @@ class TokenStorageProviderTest extends TestCase
                 'defaultStorage' => 'invalid',
                 'storages' => [
                     'session' => 'test1',
-                    'database' => 'test2'
+                    'database' => 'test2',
                 ],
-            ]), m::mock(FactoryInterface::class)
+            ]),
+            m::mock(FactoryInterface::class),
         );
 
         $provider->getStorage();
@@ -89,12 +93,13 @@ class TokenStorageProviderTest extends TestCase
                     'session' => new Autowire('some'),
                     'database' => 'test',
                 ],
-            ]), $factory = m::mock(FactoryInterface::class)
+            ]),
+            $factory = m::mock(FactoryInterface::class),
         );
 
         $factory->shouldReceive('make')->once()->with('some', [])->andReturn($storage);
 
-        $this->assertSame($storage, $provider->getStorage('session'));
+        self::assertSame($storage, $provider->getStorage('session'));
     }
 
     public function testGetStringStorage(): void
@@ -108,12 +113,13 @@ class TokenStorageProviderTest extends TestCase
                     'session' => 'test1',
                     'database' => 'test2',
                 ],
-            ]), $factory = m::mock(FactoryInterface::class)
+            ]),
+            $factory = m::mock(FactoryInterface::class),
         );
 
         $factory->shouldReceive('make')->once()->with('test2')->andReturn($storage);
 
-        $this->assertSame($storage, $provider->getStorage('database'));
+        self::assertSame($storage, $provider->getStorage('database'));
     }
 
     public function testGetStorageTwice(): void
@@ -125,28 +131,30 @@ class TokenStorageProviderTest extends TestCase
                 'defaultStorage' => 'session',
                 'storages' => [
                     'database' => 'test',
-                    'session' => 'test2'
+                    'session' => 'test2',
                 ],
-            ]), $factory = m::mock(FactoryInterface::class)
+            ]),
+            $factory = m::mock(FactoryInterface::class),
         );
 
         $factory->shouldReceive('make')->once()->with('test')->andReturn($storage);
 
         $sameStorage = $provider->getStorage('database');
 
-        $this->assertSame($sameStorage, $provider->getStorage('database'));
+        self::assertSame($sameStorage, $provider->getStorage('database'));
     }
 
-    public function testGetDifferentStorage()
+    public function testGetDifferentStorage(): void
     {
         $provider = new TokenStorageProvider(
             new AuthConfig([
                 'defaultStorage' => 'session',
                 'storages' => [
                     'database' => 'test',
-                    'session' => 'test2'
+                    'session' => 'test2',
                 ],
-            ]), $factory = m::mock(FactoryInterface::class)
+            ]),
+            $factory = m::mock(FactoryInterface::class),
         );
 
         $factory->shouldReceive('make')
@@ -161,6 +169,6 @@ class TokenStorageProviderTest extends TestCase
 
         $notSameStorage = $provider->getStorage('session');
 
-        $this->assertNotSame($notSameStorage, $provider->getStorage('database'));
+        self::assertNotSame($notSameStorage, $provider->getStorage('database'));
     }
 }
