@@ -7,7 +7,7 @@ namespace Spiral\Tests\Auth\Stub;
 use Spiral\Auth\ActorProviderInterface;
 use Spiral\Auth\TokenInterface;
 
-final class TestAuthProvider implements ActorProviderInterface
+class TestAuthProvider implements ActorProviderInterface
 {
     public function getActor(TokenInterface $token): ?object
     {
